@@ -3,6 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="ศูนย์ข้อมูลสถิติการจราจรและขนส่งกรุงเทพมหานคร — Dashboard ผู้โดยสารขนส่งสาธารณะ ความเร็วการจราจร และเรือไฟฟ้า โดยกลุ่มงานสถิติและวิจัย สจส. กทม.">
+<meta name="theme-color" content="#0A2342">
+<!-- Open Graph / Social Media -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="BMA Transport Index · ศูนย์ข้อมูลสถิติการจราจรและขนส่ง กทม.">
+<meta property="og:description" content="รวบรวมและนำเสนอข้อมูลสถิติด้านการจราจรและระบบขนส่งสาธารณะ เพื่อสนับสนุนการวิเคราะห์และกำหนดนโยบายของ สำนักการจราจรและขนส่ง กทม.">
+<meta property="og:url" content="https://bma-statistics-pw.github.io/BMA-Transport-Index/">
+<meta property="og:site_name" content="BMA Transport Index">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="BMA Transport Index · สจส. กทม.">
+<meta name="twitter:description" content="ศูนย์ข้อมูลสถิติการจราจรและขนส่งกรุงเทพมหานคร — Dashboard ผู้โดยสาร ความเร็วการจราจร และเรือไฟฟ้า">
 <title>BMA Transport Index · ศูนย์ข้อมูลสถิติการจราจรและขนส่ง กทม.</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=Chakra+Petch:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -758,29 +769,33 @@ body {
 .dcard:nth-child(4){ animation-delay:.25s }
 .dcard:nth-child(5){ animation-delay:.31s }
 
-/* ══════════════════════════════════
+/* ══════════════════════════════════════════════════
    RESPONSIVE BREAKPOINTS
-   PC     ≥ 1100px  → full layout
-   Tablet  768–1099 → condensed sidebar
-   Mobile  < 768px  → no sidebar, stack
-══════════════════════════════════ */
+   PC Desktop  ≥ 1100px  → full layout (5-col KPI)
+   Tablet Lg   1000–1099 → 4-col KPI, padding 28px
+   Tablet      768–999   → 3-col KPI, sidebar 180px
+   Mobile      480–767   → 2-col KPI, no sidebar
+   Small Mobile < 480px  → 1-2 col KPI
+══════════════════════════════════════════════════ */
 
-/* ── TABLET LANDSCAPE (1100px) */
-@media(max-width:1100px){
-  .kpi-strip{ grid-template-columns:repeat(3,1fr); }
+/* ── TABLET LARGE (1000–1099px) */
+@media(max-width:1099px){
+  html{ font-size: 14.5px; }
+  .kpi-strip{ grid-template-columns:repeat(4,1fr); }
   .cards-grid{ grid-template-columns:1fr 1fr; }
   .dcard.featured{ grid-column:span 2; }
   .roadmap-grid{ grid-template-columns:1fr 1fr; }
-  .content{ padding:24px 24px 48px; }
+  .content{ padding:28px 28px 48px; }
 }
 
-/* ── TABLET PORTRAIT (768–899px) */
-@media(max-width:899px){
-  :root { --sidebar-w: 200px; }
+/* ── TABLET (768–999px) */
+@media(max-width:999px){
+  :root { --sidebar-w: 180px; }
+  html{ font-size: 14px; }
   .sb-brand-name{ font-size:12px; }
   .sb-org-box{ font-size:10.5px; }
   .sb-item{ font-size:13px; padding:8px 14px; }
-  .hero{ padding:28px 22px 24px; }
+  .hero{ padding:26px 22px 22px; }
   .hero-inner{ flex-direction:column; align-items:flex-start; gap:16px; }
   .hero-counters{ width:100%; justify-content:space-between; }
   .kpi-strip{ grid-template-columns:repeat(3,1fr); }
@@ -790,16 +805,17 @@ body {
   .dcard.featured{ grid-column:span 2; flex-direction:column; }
   .featured .card-vis{ width:100%; }
   .roadmap-grid{ grid-template-columns:1fr 1fr; }
+  .content{ padding:24px 24px 48px; }
   .src-table th,.src-table td{ font-size:12px; padding:9px 12px; }
   .top-nav{ display:none; }
 }
 
-/* ── SMALL TABLET / LARGE MOBILE (640–767px) */
+/* ── MOBILE (480–767px) */
 @media(max-width:767px){
   .sidebar{ width:0; transform:translateX(-100%); overflow:hidden; }
   .main-wrapper{ margin-left:0; }
-  html{ font-size: 14px; }
-  .hero{ padding:20px 16px 18px; }
+  html{ font-size: 13px; }
+  .hero{ padding:20px 18px 18px; }
   .hero-h1{ font-size:22px; }
   .hero-sub{ font-size:13px; }
   .hero-counters{ gap:12px; padding:12px 14px; }
@@ -809,7 +825,7 @@ body {
   .kpi-num{ font-size:18px; }
   .kpi-lbl{ font-size:10.5px; }
   .kpi-chg{ font-size:10.5px; }
-  .content{ padding:18px 16px 44px; }
+  .content{ padding:18px 18px 44px; }
   .cards-grid{ grid-template-columns:1fr; gap:14px; }
   .dcard.featured{ grid-column:span 1; flex-direction:column; }
   .featured .card-vis{ width:100%; }
@@ -826,9 +842,10 @@ body {
   .date-badge{ display:none; }
 }
 
-/* ── MOBILE (< 480px) */
+/* ── SMALL MOBILE (< 480px) */
 @media(max-width:479px){
-  html{ font-size: 13px; }
+  html{ font-size: 12.5px; }
+  .hero{ padding:16px 16px 14px; }
   .hero-h1{ font-size:20px; }
   .kpi-strip{ grid-template-columns:1fr 1fr; }
   .kpi-num{ font-size:16px; }
@@ -841,6 +858,7 @@ body {
   .fbtn{ font-size:12px; padding:5px 11px; }
   .rp-title{ font-size:12.5px; }
   .rp-list li{ font-size:12px; }
+  .content{ padding:16px 16px 40px; }
   .modal-head{ padding:18px 20px 14px; }
   .modal-body{ padding:16px 20px 22px; }
   .modal-title{ font-size:16px; }

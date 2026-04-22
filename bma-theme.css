@@ -651,37 +651,45 @@ body.bma-layout {
 
 /* ──────────────────────────────────────────────────────────────
    16. RESPONSIVE BREAKPOINTS
+   PC Desktop  ≥ 1100px  → full layout (5-col KPI, sidebar 228px)
+   Tablet Lg   1000–1099 → 4-col KPI, font 14.5px, padding 28px
+   Tablet      768–999   → 3-col KPI, sidebar 180px, font 14px
+   Mobile      480–767   → 2-col KPI, no sidebar, font 13px
+   Small Mobile < 480px  → 1-2 col KPI, font 12.5px
 ────────────────────────────────────────────────────────────── */
 
-/* ── PC Laptop (≤ 1100px) */
-@media (max-width: 1100px) {
-  .bma-kpi-strip { grid-template-columns: repeat(3, 1fr); }
+/* ── Tablet Large (1000–1099px) */
+@media (max-width: 1099px) {
+  html           { font-size: 14.5px; }
+  .bma-kpi-strip { grid-template-columns: repeat(4, 1fr); }
   .bma-kpi-grid  { grid-template-columns: repeat(2, 1fr); }
-  .bma-content   { padding: 24px 24px 48px; }
+  .bma-content   { padding: 28px 28px 48px; }
 }
 
-/* ── Tablet Landscape (≤ 899px) */
-@media (max-width: 899px) {
-  :root { --bma-sidebar-w: 200px; }
-  .bma-sb-name   { font-size: 12px; }
-  .bma-sb-org    { font-size: 10.5px; }
-  .bma-sb-item   { font-size: 13px; padding: 8px 14px; }
-  .bma-hero      { padding: 28px 22px 24px; }
-  .bma-hero-inner{ flex-direction: column; align-items: flex-start; gap: 16px; }
+/* ── Tablet (768–999px) */
+@media (max-width: 999px) {
+  :root { --bma-sidebar-w: 180px; }
+  html             { font-size: 14px; }
+  .bma-sb-name     { font-size: 12px; }
+  .bma-sb-org      { font-size: 10.5px; }
+  .bma-sb-item     { font-size: 13px; padding: 8px 14px; }
+  .bma-hero        { padding: 26px 22px 22px; }
+  .bma-hero-inner  { flex-direction: column; align-items: flex-start; gap: 16px; }
   .bma-hero-counters { width: 100%; justify-content: space-between; }
-  .bma-kpi-strip { grid-template-columns: repeat(3, 1fr); }
-  .bma-kpi-cell  { padding: 13px 14px; }
-  .bma-kpi-num   { font-size: 18px; }
-  .bma-kpi-grid  { grid-template-columns: repeat(2, 1fr); }
-  .bma-top-nav   { display: none; }
+  .bma-kpi-strip   { grid-template-columns: repeat(3, 1fr); }
+  .bma-kpi-cell    { padding: 13px 14px; }
+  .bma-kpi-num     { font-size: 18px; }
+  .bma-kpi-grid    { grid-template-columns: repeat(2, 1fr); }
+  .bma-content     { padding: 24px 24px 48px; }
+  .bma-top-nav     { display: none; }
 }
 
-/* ── Tablet Portrait / Large Mobile (≤ 767px) */
+/* ── Mobile (480–767px) */
 @media (max-width: 767px) {
   .bma-sidebar     { width: 0; transform: translateX(-100%); overflow: hidden; }
   .bma-main        { margin-left: 0; }
-  html             { font-size: 14px; }
-  .bma-hero        { padding: 20px 16px 18px; }
+  html             { font-size: 13px; }
+  .bma-hero        { padding: 20px 18px 18px; }
   .bma-hero-h1     { font-size: 22px; }
   .bma-hero-sub    { font-size: 13px; }
   .bma-hero-counters { gap: 12px; padding: 12px 14px; }
@@ -690,7 +698,7 @@ body.bma-layout {
   .bma-kpi-cell:nth-child(5) { grid-column: span 2; border-top: 1px solid var(--bma-border); }
   .bma-kpi-num     { font-size: 18px; }
   .bma-kpi-grid    { grid-template-columns: 1fr 1fr; }
-  .bma-content     { padding: 18px 16px 44px; }
+  .bma-content     { padding: 18px 18px 44px; }
   .bma-footer      { padding: 14px 16px; flex-direction: column; text-align: center; }
   .bma-footer-right{ text-align: center; }
   .bma-topbar      { padding: 0 16px; }
@@ -699,14 +707,16 @@ body.bma-layout {
   .bma-table th, .bma-table td { font-size: 12px; padding: 8px 11px; }
 }
 
-/* ── Mobile (≤ 479px) */
+/* ── Small Mobile (≤ 479px) */
 @media (max-width: 479px) {
-  html             { font-size: 13px; }
+  html             { font-size: 12.5px; }
+  .bma-hero        { padding: 16px 16px 14px; }
   .bma-hero-h1     { font-size: 20px; }
   .bma-kpi-strip   { grid-template-columns: 1fr 1fr; }
   .bma-kpi-num     { font-size: 16px; }
   .bma-kpi-lbl     { font-size: 10px; }
   .bma-hcnt-val    { font-size: 16px; }
   .bma-kpi-grid    { grid-template-columns: 1fr; }
+  .bma-content     { padding: 16px 16px 40px; }
   .bma-card-val    { font-size: 22px; }
 }

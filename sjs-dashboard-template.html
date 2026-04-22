@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard สถิติและวิจัย | สจส. กรุงเทพมหานคร</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  :root {
+    --bma-navy:    #0A2342;
+    --bma-blue:    #1A5276;
+    --bma-mid:     #2E86C1;
+    --bma-accent:  #F4A300;
+    --bma-green:   #1E8449;
+    --bma-red:     #C0392B;
+    --bma-light:   #EAF4FB;
+    --bma-pale:    #F5F8FA;
+    --bma-border:  #D5E8F5;
+    --text-dark:   #0D1B2A;
+    --text-mid:    #2C3E50;
+    --text-muted:  #7F8C8D;
+    --white:       #FFFFFF;
+    --shadow-sm:   0 2px 8px rgba(10,35,66,0.08);
+    --shadow-md:   0 4px 20px rgba(10,35,66,0.12);
+    --shadow-lg:   0 8px 40px rgba(10,35,66,0.16);
+    --radius:      12px;
+    --radius-sm:   8px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Sarabun', 'IBM Plex Sans Thai', sans-serif;
+    background: var(--bma-pale);
+    color: var(--text-dark);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ─── SIDEBAR ─────────────────────────────────────── */
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: 240px;
+    height: 100vh;
+    background: var(--bma-navy);
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+    box-shadow: 4px 0 24px rgba(0,0,0,0.18);
+  }
+
+  .sidebar-brand {
+    padding: 24px 20px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .logo-circle {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--bma-accent), #E67E22);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 18px; color: white;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(244,163,0,0.4);
+  }
+
+  .brand-text { flex: 1; }
+  .brand-name {
+    font-size: 13px; font-weight: 700;
+    color: var(--white); line-height: 1.3;
+    letter-spacing: 0.3px;
+  }
+  .brand-sub {
+    font-size: 11px; color: rgba(255,255,255,0.5);
+    margin-top: 2px;
+  }
+
+  .org-badge {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.5;
+  }
+  .org-badge strong { color: var(--bma-accent); display: block; font-size: 10px; margin-bottom: 2px; }
+
+  .sidebar-nav { flex: 1; padding: 16px 0; overflow-y: auto; }
+
+  .nav-section-label {
+    font-size: 10px; font-weight: 600;
+    color: rgba(255,255,255,0.3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 12px 20px 6px;
+  }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 20px;
+    color: rgba(255,255,255,0.65);
+    font-size: 13.5px;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .nav-item:hover { background: rgba(255,255,255,0.06); color: white; }
+  .nav-item.active {
+    background: rgba(46,134,193,0.2);
+    color: white;
+    border-left-color: var(--bma-accent);
+    font-weight: 600;
+  }
+  .nav-icon { width: 18px; text-align: center; font-size: 15px; }
+
+  .sidebar-footer {
+    padding: 16px 20px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+    text-align: center;
+    line-height: 1.6;
+  }
+
+  /* ─── MAIN CONTENT ────────────────────────────────── */
+  .main {
+    margin-left: 240px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ─── TOPBAR ──────────────────────────────────────── */
+  .topbar {
+    background: var(--white);
+    border-bottom: 1px solid var(--bma-border);
+    padding: 0 32px;
+    height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 50;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .page-title { font-size: 17px; font-weight: 700; color: var(--bma-navy); }
+  .breadcrumb { font-size: 12px; color: var(--text-muted); }
+  .breadcrumb span { color: var(--bma-mid); }
+
+  .topbar-right { display: flex; align-items: center; gap: 16px; }
+
+  .year-selector {
+    background: var(--bma-light);
+    border: 1px solid var(--bma-border);
+    border-radius: var(--radius-sm);
+    padding: 7px 12px;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 13px;
+    color: var(--bma-navy);
+    font-weight: 600;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .topbar-date {
+    font-size: 12px; color: var(--text-muted);
+    background: var(--bma-pale);
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--bma-border);
+  }
+
+  .btn-refresh {
+    background: var(--bma-mid);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 8px 16px;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 6px;
+    transition: background 0.2s;
+  }
+  .btn-refresh:hover { background: var(--bma-blue); }
+
+  /* ─── CONTENT AREA ────────────────────────────────── */
+  .content { padding: 28px 32px; flex: 1; }
+
+  /* ─── SECTION HEADER ──────────────────────────────── */
+  .section-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .section-title {
+    font-size: 15px; font-weight: 700;
+    color: var(--bma-navy);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-title::before {
+    content: '';
+    width: 4px; height: 18px;
+    background: var(--bma-accent);
+    border-radius: 2px;
+    display: inline-block;
+  }
+  .section-meta { font-size: 12px; color: var(--text-muted); }
+
+  /* ─── KPI CARDS ───────────────────────────────────── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .kpi-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--bma-border);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .kpi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .kpi-card.blue::before   { background: var(--bma-mid); }
+  .kpi-card.gold::before   { background: var(--bma-accent); }
+  .kpi-card.green::before  { background: var(--bma-green); }
+  .kpi-card.red::before    { background: var(--bma-red); }
+
+  .kpi-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; margin-bottom: 14px;
+  }
+  .kpi-card.blue .kpi-icon   { background: #EAF4FB; }
+  .kpi-card.gold .kpi-icon   { background: #FEF9E7; }
+  .kpi-card.green .kpi-icon  { background: #EAFAF1; }
+  .kpi-card.red .kpi-icon    { background: #FDEDEC; }
+
+  .kpi-label { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
+  .kpi-value { font-size: 26px; font-weight: 700; color: var(--text-dark); line-height: 1; margin-bottom: 8px; }
+  .kpi-unit  { font-size: 13px; font-weight: 400; color: var(--text-muted); margin-left: 4px; }
+
+  .kpi-change {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 12px; font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 20px;
+  }
+  .kpi-change.up   { background: #EAFAF1; color: var(--bma-green); }
+  .kpi-change.down { background: #FDEDEC; color: var(--bma-red); }
+  .kpi-change.flat { background: #F2F3F4; color: var(--text-muted); }
+
+  /* ─── CHART GRID ──────────────────────────────────── */
+  .chart-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+
+  .chart-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+
+  .card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--bma-border);
+  }
+
+  .card-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .card-title { font-size: 14px; font-weight: 700; color: var(--bma-navy); }
+  .card-subtitle { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+  .chart-container { position: relative; }
+  .chart-container canvas { width: 100% !important; }
+
+  /* ─── TABLE ───────────────────────────────────────── */
+  .table-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--bma-border);
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .table-card-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--bma-border);
+  }
+
+  .data-table { width: 100%; border-collapse: collapse; }
+  .data-table th {
+    background: var(--bma-light);
+    font-size: 12px; font-weight: 700;
+    color: var(--bma-navy);
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--bma-border);
+    white-space: nowrap;
+  }
+  .data-table td {
+    padding: 11px 16px;
+    font-size: 13px;
+    color: var(--text-mid);
+    border-bottom: 1px solid #F0F4F8;
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tbody tr:hover { background: var(--bma-pale); }
+  .data-table .number { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .badge.high   { background: #EAFAF1; color: var(--bma-green); }
+  .badge.mid    { background: #FEF9E7; color: #B7770D; }
+  .badge.low    { background: #FDEDEC; color: var(--bma-red); }
+
+  /* ─── PROGRESS BAR ────────────────────────────────── */
+  .progress-list { display: flex; flex-direction: column; gap: 14px; }
+  .progress-item {}
+  .progress-label {
+    display: flex; justify-content: space-between;
+    font-size: 13px; margin-bottom: 6px;
+    color: var(--text-mid);
+  }
+  .progress-label strong { font-weight: 600; color: var(--text-dark); }
+  .progress-label span   { font-weight: 700; color: var(--bma-mid); }
+  .progress-bar-bg {
+    height: 8px;
+    background: var(--bma-light);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--bma-mid), var(--bma-accent));
+    transition: width 1s ease;
+  }
+
+  /* ─── FOOTER ──────────────────────────────────────── */
+  .footer {
+    background: var(--white);
+    border-top: 1px solid var(--bma-border);
+    padding: 14px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 11.5px;
+    color: var(--text-muted);
+  }
+  .footer-left { display: flex; align-items: center; gap: 16px; }
+  .footer-copy { font-weight: 600; color: var(--bma-navy); }
+
+  /* ─── RESPONSIVE ──────────────────────────────────── */
+  @media (max-width: 1200px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .chart-grid { grid-template-columns: 1fr; }
+    .chart-grid-3 { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 768px) {
+    .sidebar { width: 200px; }
+    .main { margin-left: 200px; }
+    .kpi-grid { grid-template-columns: 1fr 1fr; }
+    .chart-grid-3 { grid-template-columns: 1fr; }
+    .content { padding: 20px 16px; }
+  }
+
+  /* ─── ANIMATIONS ──────────────────────────────────── */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .kpi-card   { animation: fadeInUp 0.4s ease both; }
+  .kpi-card:nth-child(1) { animation-delay: 0.05s; }
+  .kpi-card:nth-child(2) { animation-delay: 0.10s; }
+  .kpi-card:nth-child(3) { animation-delay: 0.15s; }
+  .kpi-card:nth-child(4) { animation-delay: 0.20s; }
+  .card, .table-card { animation: fadeInUp 0.5s ease 0.2s both; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════ SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="sidebar-logo">
+      <div class="logo-circle">ก</div>
+      <div class="brand-text">
+        <div class="brand-name">สำนักการจราจรและขนส่ง</div>
+        <div class="brand-sub">กรุงเทพมหานคร</div>
+      </div>
+    </div>
+    <div class="org-badge">
+      <strong>หน่วยงาน</strong>
+      กลุ่มงานสถิติและวิจัย<br>
+      กองนโยบายและแผนงาน
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">เมนูหลัก</div>
+    <a class="nav-item active" href="#">
+      <span class="nav-icon">📊</span> ภาพรวมสถิติ
+    </a>
+    <a class="nav-item" href="#">
+      <span class="nav-icon">🚇</span> ระบบขนส่งมวลชน
+    </a>
+    <a class="nav-item" href="#">
+      <span class="nav-icon">🚌</span> รถโดยสารสาธารณะ
+    </a>
+    <a class="nav-item" href="#">
+      <span class="nav-icon">⛵</span> เรือโดยสาร
+    </a>
+    <a class="nav-item" href="#">
+      <span class="nav-icon">🚦</span> การจราจร
+    </a>
+
+    <div class="nav-section-label">วิเคราะห์</div>
+    <a class="nav-item" href="#">
+      <span class="nav-icon">📈</span> แนวโน้มผู้โดยสาร
+    </a>
+    <a class="nav-item" href="#">
+      <span class="nav-icon">🗺️</span> แผนที่เส้นทาง
+    </a>
+    <a class="nav-item" href="#">
+      <span class="nav-icon">📋</span> รายงานสรุป
+    </a>
+
+    <div class="nav-section-label">ระบบ</div>
+    <a class="nav-item" href="#">
+      <span class="nav-icon">⚙️</span> ตั้งค่า
+    </a>
+    <a class="nav-item" href="#">
+      <span class="nav-icon">📥</span> ส่งออกข้อมูล
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    กลุ่มงานสถิติและวิจัย<br>
+    กองนโยบายและแผนงาน สจส.<br>
+    © Prapawadee_W.
+  </div>
+</aside>
+
+<!-- ═══════════════════════════════════════════════════════ MAIN -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div>
+        <div class="page-title">ภาพรวมสถิติการขนส่ง</div>
+        <div class="breadcrumb">สจส. › กองนโยบายและแผนงาน › <span>กลุ่มงานสถิติและวิจัย</span></div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <select class="year-selector" id="yearSelect">
+        <option value="2568">ปีงบประมาณ 2568</option>
+        <option value="2567">ปีงบประมาณ 2567</option>
+        <option value="2566">ปีงบประมาณ 2566</option>
+      </select>
+      <div class="topbar-date" id="currentDate">—</div>
+      <button class="btn-refresh" onclick="refreshData()">↻ รีเฟรช</button>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- KPI SECTION -->
+    <div class="section-header">
+      <div class="section-title">ตัวชี้วัดหลัก (KPI)</div>
+      <div class="section-meta" id="kpiMeta">ข้อมูล ณ วันที่ —</div>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card blue">
+        <div class="kpi-icon">🚇</div>
+        <div class="kpi-label">ผู้โดยสารรถไฟฟ้า (เฉลี่ย/วัน)</div>
+        <div class="kpi-value">1.24<span class="kpi-unit">ล้านคน</span></div>
+        <span class="kpi-change up">▲ 8.3%</span>
+      </div>
+      <div class="kpi-card gold">
+        <div class="kpi-icon">🚌</div>
+        <div class="kpi-label">ผู้โดยสารรถโดยสาร (เฉลี่ย/วัน)</div>
+        <div class="kpi-value">580<span class="kpi-unit">พันคน</span></div>
+        <span class="kpi-change down">▼ 2.1%</span>
+      </div>
+      <div class="kpi-card green">
+        <div class="kpi-icon">⛵</div>
+        <div class="kpi-label">ผู้โดยสารเรือโดยสาร (เฉลี่ย/วัน)</div>
+        <div class="kpi-value">42<span class="kpi-unit">พันคน</span></div>
+        <span class="kpi-change up">▲ 5.7%</span>
+      </div>
+      <div class="kpi-card red">
+        <div class="kpi-icon">🚦</div>
+        <div class="kpi-label">ความเร็วเฉลี่ยการจราจร</div>
+        <div class="kpi-value">18.4<span class="kpi-unit">กม./ชม.</span></div>
+        <span class="kpi-change flat">● คงที่</span>
+      </div>
+    </div>
+
+    <!-- CHARTS ROW 1 -->
+    <div class="section-header">
+      <div class="section-title">แนวโน้มผู้โดยสาร</div>
+      <div class="section-meta">รายเดือน ปีงบประมาณ 2568</div>
+    </div>
+
+    <div class="chart-grid">
+      <!-- Line Chart -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">ปริมาณผู้โดยสารรายเดือน</div>
+            <div class="card-subtitle">เปรียบเทียบระบบขนส่งหลัก (หน่วย: พันคน/วัน)</div>
+          </div>
+        </div>
+        <div class="chart-container" style="height:260px">
+          <canvas id="lineChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Doughnut Chart -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">สัดส่วน Modal Share</div>
+            <div class="card-subtitle">ปีงบประมาณ 2568</div>
+          </div>
+        </div>
+        <div class="chart-container" style="height:220px">
+          <canvas id="doughnutChart"></canvas>
+        </div>
+        <div id="doughnutLegend" style="margin-top:12px"></div>
+      </div>
+    </div>
+
+    <!-- CHARTS ROW 2 -->
+    <div class="chart-grid-3">
+      <!-- Bar Chart -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">ผู้โดยสาร BTS รายสาย</div>
+            <div class="card-subtitle">เปรียบเทียบรายไตรมาส</div>
+          </div>
+        </div>
+        <div class="chart-container" style="height:200px">
+          <canvas id="barChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Radar Chart -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">ประสิทธิภาพระบบขนส่ง</div>
+            <div class="card-subtitle">ปี 2567 vs 2568</div>
+          </div>
+        </div>
+        <div class="chart-container" style="height:200px">
+          <canvas id="radarChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Progress List -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">ความสำเร็จเป้าหมาย</div>
+            <div class="card-subtitle">ปีงบประมาณ 2568</div>
+          </div>
+        </div>
+        <div class="progress-list">
+          <div class="progress-item">
+            <div class="progress-label"><strong>ผู้โดยสารรถไฟฟ้า</strong><span>83%</span></div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:83%"></div></div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-label"><strong>ผู้โดยสารรถโดยสาร</strong><span>67%</span></div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:67%"></div></div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-label"><strong>ผู้โดยสารเรือ</strong><span>91%</span></div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:91%"></div></div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-label"><strong>ความพึงพอใจผู้ใช้บริการ</strong><span>78%</span></div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:78%"></div></div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-label"><strong>ตรงต่อเวลา</strong><span>88%</span></div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:88%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DATA TABLE -->
+    <div class="section-header">
+      <div class="section-title">ตารางข้อมูลระบบขนส่ง</div>
+      <div class="section-meta">ข้อมูลสะสม ปีงบประมาณ 2568</div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-card-header">
+        <div>
+          <div class="card-title">สรุปสถิติผู้โดยสารแยกตามระบบขนส่ง</div>
+          <div class="card-subtitle">หน่วย: พันคน | แหล่งข้อมูล: กลุ่มงานสถิติและวิจัย สจส.</div>
+        </div>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>ระบบขนส่ง</th>
+            <th>หน่วยงาน</th>
+            <th class="number">ผู้โดยสาร/วัน (พัน)</th>
+            <th class="number">เปลี่ยนแปลง (%)</th>
+            <th class="number">สะสม YTD (ล้าน)</th>
+            <th>ระดับ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td><td><strong>BTS Skytrain</strong></td><td>BTSC</td>
+            <td class="number">780</td><td class="number" style="color:var(--bma-green)">+9.2%</td>
+            <td class="number">142.3</td><td><span class="badge high">สูง</span></td>
+          </tr>
+          <tr>
+            <td>2</td><td><strong>MRT Blue Line</strong></td><td>MRTA/BEM</td>
+            <td class="number">380</td><td class="number" style="color:var(--bma-green)">+7.5%</td>
+            <td class="number">69.4</td><td><span class="badge high">สูง</span></td>
+          </tr>
+          <tr>
+            <td>3</td><td><strong>Airport Rail Link</strong></td><td>SRTET</td>
+            <td class="number">72</td><td class="number" style="color:var(--bma-green)">+4.1%</td>
+            <td class="number">13.1</td><td><span class="badge mid">ปานกลาง</span></td>
+          </tr>
+          <tr>
+            <td>4</td><td><strong>Red Line</strong></td><td>SRT</td>
+            <td class="number">28</td><td class="number" style="color:var(--bma-green)">+12.8%</td>
+            <td class="number">5.1</td><td><span class="badge mid">ปานกลาง</span></td>
+          </tr>
+          <tr>
+            <td>5</td><td><strong>รถโดยสาร ขสมก.</strong></td><td>BMTA</td>
+            <td class="number">320</td><td class="number" style="color:var(--bma-red)">-3.2%</td>
+            <td class="number">58.4</td><td><span class="badge mid">ปานกลาง</span></td>
+          </tr>
+          <tr>
+            <td>6</td><td><strong>เรือด่วนเจ้าพระยา</strong></td><td>CRB</td>
+            <td class="number">28</td><td class="number" style="color:var(--bma-green)">+6.1%</td>
+            <td class="number">5.1</td><td><span class="badge mid">ปานกลาง</span></td>
+          </tr>
+          <tr>
+            <td>7</td><td><strong>เรือคลองแสนแสบ</strong></td><td>กทม.</td>
+            <td class="number">40</td><td class="number" style="color:var(--bma-green)">+3.8%</td>
+            <td class="number">7.3</td><td><span class="badge mid">ปานกลาง</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-left">
+      <span class="footer-copy">© Prapawadee_W.</span>
+      <span>กลุ่มงานสถิติและวิจัย | กองนโยบายและแผนงาน | สำนักการจราจรและขนส่ง | กรุงเทพมหานคร</span>
+    </div>
+    <div>Dashboard Template v1.0 | ปีงบประมาณ 2568</div>
+  </footer>
+
+</div><!-- /main -->
+
+<!-- ═══════════════════════════════════════════════════════ SCRIPTS -->
+<script>
+// ─── DATE ────────────────────────────────────────────────────
+const today = new Date()
+const thaiMonths = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.']
+const thaiDate = `${today.getDate()} ${thaiMonths[today.getMonth()]} ${today.getFullYear() + 543}`
+document.getElementById('currentDate').textContent = thaiDate
+document.getElementById('kpiMeta').textContent = `ข้อมูล ณ วันที่ ${thaiDate}`
+
+// ─── CHART DEFAULTS ──────────────────────────────────────────
+Chart.defaults.font.family = "'Sarabun', sans-serif"
+Chart.defaults.font.size = 12
+Chart.defaults.color = '#7F8C8D'
+
+const COLORS = {
+  blue:   '#2E86C1',
+  gold:   '#F4A300',
+  green:  '#1E8449',
+  red:    '#C0392B',
+  purple: '#7D3C98',
+  teal:   '#148F77',
+  navy:   '#0A2342',
+}
+
+// ─── LINE CHART ──────────────────────────────────────────────
+const months = ['ต.ค.','พ.ย.','ธ.ค.','ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.']
+
+new Chart(document.getElementById('lineChart'), {
+  type: 'line',
+  data: {
+    labels: months,
+    datasets: [
+      {
+        label: 'BTS Skytrain',
+        data: [740,755,790,800,770,780,760,785,800,810,795,820],
+        borderColor: COLORS.blue, backgroundColor: 'rgba(46,134,193,0.08)',
+        tension: 0.4, fill: true, pointRadius: 4, borderWidth: 2,
+      },
+      {
+        label: 'MRT Blue Line',
+        data: [355,360,390,385,370,380,375,388,395,400,385,410],
+        borderColor: COLORS.gold, backgroundColor: 'rgba(244,163,0,0.06)',
+        tension: 0.4, fill: true, pointRadius: 4, borderWidth: 2,
+      },
+      {
+        label: 'เรือคลองแสนแสบ',
+        data: [38,39,41,42,40,40,39,41,43,44,42,45],
+        borderColor: COLORS.green, backgroundColor: 'rgba(30,132,73,0.06)',
+        tension: 0.4, fill: true, pointRadius: 4, borderWidth: 2,
+      },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: { legend: { position: 'top', labels: { usePointStyle: true, padding: 16, font: { size: 12 } } } },
+    scales: {
+      x: { grid: { color: '#F0F4F8' } },
+      y: { grid: { color: '#F0F4F8' }, ticks: { callback: v => v.toLocaleString() } }
+    }
+  }
+})
+
+// ─── DOUGHNUT CHART ──────────────────────────────────────────
+const doughnutLabels = ['BTS','MRT','ARL','Red Line','ขสมก.','เรือ']
+const doughnutData   = [42, 20, 4, 2, 18, 14]
+const doughnutColors = [COLORS.blue, COLORS.gold, COLORS.green, COLORS.purple, COLORS.red, COLORS.teal]
+
+new Chart(document.getElementById('doughnutChart'), {
+  type: 'doughnut',
+  data: {
+    labels: doughnutLabels,
+    datasets: [{ data: doughnutData, backgroundColor: doughnutColors, borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    cutout: '68%',
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed}%` } }
+    }
+  }
+})
+
+// Custom legend
+const legendHTML = doughnutLabels.map((l,i) =>
+  `<span style="display:inline-flex;align-items:center;gap:5px;margin:3px 8px 3px 0;font-size:12px">
+    <span style="width:10px;height:10px;border-radius:50%;background:${doughnutColors[i]};display:inline-block"></span>
+    ${l} <strong>${doughnutData[i]}%</strong></span>`
+).join('')
+document.getElementById('doughnutLegend').innerHTML = `<div style="display:flex;flex-wrap:wrap">${legendHTML}</div>`
+
+// ─── BAR CHART ───────────────────────────────────────────────
+new Chart(document.getElementById('barChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Q1','Q2','Q3','Q4'],
+    datasets: [
+      { label: 'สายสุขุมวิท', data: [68, 72, 74, 78], backgroundColor: COLORS.blue, borderRadius: 6 },
+      { label: 'สายสีลม',     data: [31, 33, 34, 36], backgroundColor: COLORS.gold, borderRadius: 6 },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'top', labels: { usePointStyle: true, font: { size: 11 } } } },
+    scales: {
+      x: { grid: { display: false } },
+      y: { grid: { color: '#F0F4F8' }, ticks: { callback: v => v + ' ล.' } }
+    }
+  }
+})
+
+// ─── RADAR CHART ─────────────────────────────────────────────
+new Chart(document.getElementById('radarChart'), {
+  type: 'radar',
+  data: {
+    labels: ['ความถี่', 'ตรงเวลา', 'ความจุ', 'ความปลอดภัย', 'ความพึงพอใจ', 'ครอบคลุมพื้นที่'],
+    datasets: [
+      {
+        label: 'ปี 2567',
+        data: [70, 72, 65, 80, 74, 60],
+        borderColor: 'rgba(46,134,193,0.6)', backgroundColor: 'rgba(46,134,193,0.08)',
+        pointBackgroundColor: COLORS.blue, borderWidth: 2,
+      },
+      {
+        label: 'ปี 2568',
+        data: [78, 80, 74, 85, 82, 72],
+        borderColor: 'rgba(244,163,0,0.8)', backgroundColor: 'rgba(244,163,0,0.08)',
+        pointBackgroundColor: COLORS.gold, borderWidth: 2,
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'top', labels: { usePointStyle: true, font: { size: 11 } } } },
+    scales: {
+      r: {
+        min: 0, max: 100, ticks: { stepSize: 20, font: { size: 10 } },
+        grid: { color: '#E8EEF4' }, pointLabels: { font: { size: 11 } }
+      }
+    }
+  }
+})
+
+// ─── REFRESH ─────────────────────────────────────────────────
+function refreshData() {
+  const btn = document.querySelector('.btn-refresh')
+  btn.textContent = '↻ กำลังโหลด...'
+  btn.disabled = true
+  setTimeout(() => { btn.textContent = '↻ รีเฟรช'; btn.disabled = false }, 1200)
+}
+</script>
+</body>
+</html>

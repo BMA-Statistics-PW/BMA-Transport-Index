@@ -1,0 +1,59 @@
+{
+  "meta": {
+    "year": 2568,
+    "unit": "พันคน/วัน",
+    "source": "กลุ่มงานสถิติและวิจัย กองนโยบายและแผนงาน สจส. กทม.",
+    "copyright": "© Prapawadee_W."
+  },
+
+  "kpi": {
+    "rail":    { "label": "ผู้โดยสารรถไฟฟ้า (เฉลี่ย/วัน)", "value": "1.24", "unit": "ล้านคน", "change": 8.3,  "trend": "up"   },
+    "bus":     { "label": "ผู้โดยสารรถโดยสาร (เฉลี่ย/วัน)", "value": "580",  "unit": "พันคน",  "change": -2.1, "trend": "down" },
+    "ferry":   { "label": "ผู้โดยสารเรือโดยสาร (เฉลี่ย/วัน)", "value": "42",  "unit": "พันคน",  "change": 5.7,  "trend": "up"   },
+    "traffic": { "label": "ความเร็วเฉลี่ยการจราจร",           "value": "18.4", "unit": "กม./ชม.","change": 0,    "trend": "flat" }
+  },
+
+  "monthly": {
+    "labels": ["ต.ค.","พ.ย.","ธ.ค.","ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย."],
+    "datasets": [
+      { "label": "BTS Skytrain",    "data": [740,755,790,800,770,780,760,785,800,810,795,820] },
+      { "label": "MRT Blue Line",   "data": [355,360,390,385,370,380,375,388,395,400,385,410] },
+      { "label": "เรือคลองแสนแสบ", "data": [38,39,41,42,40,40,39,41,43,44,42,45]            }
+    ]
+  },
+
+  "modalShare": {
+    "labels": ["BTS","MRT","ARL","Red Line","ขสมก.","เรือ"],
+    "data":   [42, 20, 4, 2, 18, 14]
+  },
+
+  "btsQuarterly": {
+    "labels": ["Q1","Q2","Q3","Q4"],
+    "sukhumvit": [68, 72, 74, 78],
+    "silom":     [31, 33, 34, 36]
+  },
+
+  "performance": {
+    "labels": ["ความถี่","ตรงเวลา","ความจุ","ความปลอดภัย","ความพึงพอใจ","ครอบคลุมพื้นที่"],
+    "year2567": [70, 72, 65, 80, 74, 60],
+    "year2568": [78, 80, 74, 85, 82, 72]
+  },
+
+  "targets": [
+    { "label": "ผู้โดยสารรถไฟฟ้า",      "pct": 83 },
+    { "label": "ผู้โดยสารรถโดยสาร",     "pct": 67 },
+    { "label": "ผู้โดยสารเรือ",          "pct": 91 },
+    { "label": "ความพึงพอใจผู้ใช้บริการ","pct": 78 },
+    { "label": "ตรงต่อเวลา",            "pct": 88 }
+  ],
+
+  "systems": [
+    { "no":1, "name":"BTS Skytrain",     "agency":"BTSC",     "daily":780, "change":9.2,  "ytd":142.3, "level":"high" },
+    { "no":2, "name":"MRT Blue Line",    "agency":"MRTA/BEM", "daily":380, "change":7.5,  "ytd":69.4,  "level":"high" },
+    { "no":3, "name":"Airport Rail Link","agency":"SRTET",    "daily":72,  "change":4.1,  "ytd":13.1,  "level":"mid"  },
+    { "no":4, "name":"Red Line",         "agency":"SRT",      "daily":28,  "change":12.8, "ytd":5.1,   "level":"mid"  },
+    { "no":5, "name":"รถโดยสาร ขสมก.",  "agency":"BMTA",     "daily":320, "change":-3.2, "ytd":58.4,  "level":"mid"  },
+    { "no":6, "name":"เรือด่วนเจ้าพระยา","agency":"CRB",     "daily":28,  "change":6.1,  "ytd":5.1,   "level":"mid"  },
+    { "no":7, "name":"เรือคลองแสนแสบ",  "agency":"กทม.",     "daily":40,  "change":3.8,  "ytd":7.3,   "level":"mid"  }
+  ]
+}

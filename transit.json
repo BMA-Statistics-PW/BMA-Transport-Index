@@ -1,0 +1,111 @@
+/* ═══════════════════════════════════════════════════════════════
+   main.js  |  ควบคุม UI หลัก
+   กลุ่มงานสถิติและวิจัย สจส. กทม.
+   © Prapawadee_W.
+   ═══════════════════════════════════════════════════════════════ */
+
+// ─── วันที่ภาษาไทย ──────────────────────────────────────────────
+const THAI_MONTHS = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.',
+                     'ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.']
+
+function getThaiDate() {
+  const d = new Date()
+  return `${d.getDate()} ${THAI_MONTHS[d.getMonth()]} ${d.getFullYear() + 543}`
+}
+
+function setDate() {
+  const td = getThaiDate()
+  const el1 = document.getElementById('currentDate')
+  const el2 = document.getElementById('kpiMeta')
+  if (el1) el1.textContent = td
+  if (el2) el2.textContent = `ข้อมูล ณ วันที่ ${td}`
+}
+
+// ─── KPI CARDS ──────────────────────────────────────────────────
+const KPI_CONFIG = [
+  { key: 'rail',    icon: '🚇', color: 'blue'  },
+  { key: 'bus',     icon: '🚌', color: 'gold'  },
+  { key: 'ferry',   icon: '⛵', color: 'green' },
+  { key: 'traffic', icon: '🚦', color: 'red'   },
+]
+
+function renderKPI() {
+  const container = document.getElementById('kpiGrid')
+  if (!container || !TRANSIT.kpi) return
+
+  container.innerHTML = KPI_CONFIG.map(cfg => {
+    const k = TRANSIT.kpi[cfg.key]
+    const trendLabel = k.trend === 'up'   ? `▲ ${k.change}%`
+                     : k.trend === 'down' ? `▼ ${Math.abs(k.change)}%`
+                     : '● คงที่'
+    return `
+      <div class="kpi-card ${cfg.color}">
+        <div class="kpi-icon">${cfg.icon}</div>
+        <div class="kpi-label">${k.label}</div>
+        <div class="kpi-value">${k.value}<span class="kpi-unit">${k.unit}</span></div>
+        <span class="kpi-change ${k.trend}">${trendLabel}</span>
+      </div>`
+  }).join('')
+}
+
+// ─── PROGRESS BARS ──────────────────────────────────────────────
+function renderTargets() {
+  const container = document.getElementById('targetList')
+  if (!container || !TRANSIT.targets) return
+
+  container.innerHTML = TRANSIT.targets.map(t => `
+    <div class="progress-item">
+      <div class="progress-label">
+        <strong>${t.label}</strong><span>${t.pct}%</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" style="width:${t.pct}%"></div>
+      </div>
+    </div>`
+  ).join('')
+}
+
+// ─── DATA TABLE ──────────────────────────────────────────────────
+function renderTable() {
+  const tbody = document.getElementById('systemTableBody')
+  if (!tbody || !TRANSIT.systems) return
+
+  tbody.innerHTML = TRANSIT.systems.map(s => {
+    const changeColor = s.change >= 0 ? 'var(--bma-green)' : 'var(--bma-red)'
+    const changeSign  = s.change >= 0 ? '+' : ''
+    const badgeClass  = s.level === 'high' ? 'high' : s.level === 'mid' ? 'mid' : 'low'
+    const badgeText   = s.level === 'high' ? 'สูง' : s.level === 'mid' ? 'ปานกลาง' : 'ต่ำ'
+    return `
+      <tr>
+        <td>${s.no}</td>
+        <td><strong>${s.name}</strong></td>
+        <td>${s.agency}</td>
+        <td class="number">${s.daily.toLocaleString()}</td>
+        <td class="number" style="color:${changeColor}">${changeSign}${s.change}%</td>
+        <td class="number">${s.ytd.toFixed(1)}</td>
+        <td><span class="badge ${badgeClass}">${badgeText}</span></td>
+      </tr>`
+  }).join('')
+}
+
+// ─── REFRESH BUTTON ──────────────────────────────────────────────
+function refreshData() {
+  const btn = document.querySelector('.btn-refresh')
+  if (!btn) return
+  btn.textContent = '↻ กำลังโหลด...'
+  btn.disabled = true
+  setTimeout(() => {
+    renderAll()
+    btn.textContent = '↻ รีเฟรช'
+    btn.disabled = false
+  }, 1000)
+}
+
+// ─── RENDER ALL (เรียกจาก data.js หลังโหลดเสร็จ) ────────────────
+function renderAll() {
+  setDate()
+  renderKPI()
+  renderCharts()
+  renderTargets()
+  renderTable()
+}

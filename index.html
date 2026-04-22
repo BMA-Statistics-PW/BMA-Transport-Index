@@ -1,0 +1,1482 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BMA Transport Index · ศูนย์ข้อมูลสถิติการจราจรและขนส่ง กทม.</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=Chakra+Petch:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════
+   DESIGN SYSTEM — BMA Transport Index
+   พื้นขาว · Sidebar มาตรฐานราชการ · Interactive
+   © Prapawadee_W.
+══════════════════════════════════════════════════ */
+:root {
+  /* Brand */
+  --navy:        #0A2342;
+  --navy-light:  #0D2B4E;
+  --blue:        #1A6BAD;
+  --blue-mid:    #2E86C1;
+  --blue-light:  #EBF5FB;
+  --blue-pale:   #F4F9FD;
+  --gold:        #D4890A;
+  --gold-bright: #E8960A;
+  --gold-light:  #FEF9EE;
+  --green:       #1A9B4B;
+  --green-light: #EDFAF3;
+  --teal:        #148F77;
+  --teal-light:  #E8F8F5;
+  --red:         #C0392B;
+  --red-light:   #FDF3F2;
+  --slate:       #5D7B8A;
+  /* Layout */
+  --sidebar-w:   228px;
+  /* Neutral */
+  --bg:          #F5F8FA;
+  --white:       #FFFFFF;
+  --border:      #DDE8F0;
+  --border-mid:  #C4D8E8;
+  /* Text */
+  --text:        #0D1B2A;
+  --text-mid:    #3A5068;
+  --text-muted:  #7A9AB0;
+  /* Shadow */
+  --sh-xs: 0 1px 3px rgba(10,35,66,0.06);
+  --sh-sm: 0 2px 8px rgba(10,35,66,0.08);
+  --sh-md: 0 4px 20px rgba(10,35,66,0.10);
+  --sh-lg: 0 10px 40px rgba(10,35,66,0.14);
+  /* Radius */
+  --r:    12px;
+  --r-sm: 7px;
+}
+
+/* ══════════════════════════════════
+   FLUID TYPE SCALE
+   PC (≥1100px): base 15px
+   Tablet (768–1099px): base 14px
+   Mobile (<768px): base 13px
+   Minimum readable: 11px (labels)
+══════════════════════════════════ */
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html {
+  scroll-behavior:smooth;
+  /* fluid base: 13px mobile → 15px desktop */
+  font-size: clamp(13px, 1.2vw + 10px, 15px);
+}
+body {
+  font-family: 'Sarabun', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 1rem;        /* inherits clamp above */
+  line-height: 1.65;
+  min-height: 100vh;
+  display: flex;
+}
+
+/* ══════════════════════════════════
+   SIDEBAR (มาตรฐานราชการ)
+══════════════════════════════════ */
+.sidebar {
+  position: fixed;
+  top: 0; left: 0;
+  width: var(--sidebar-w);
+  height: 100vh;
+  background: var(--navy);
+  display: flex; flex-direction: column;
+  z-index: 300;
+  box-shadow: 3px 0 20px rgba(0,0,0,0.15);
+  overflow: hidden;
+}
+
+/* top accent stripe */
+.sidebar::before {
+  content: '';
+  position: absolute; top:0; left:0; right:0; height:3px;
+  background: linear-gradient(90deg, var(--gold-bright), #F4C430);
+}
+
+.sb-brand {
+  padding: 22px 18px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  margin-top: 3px;
+}
+.sb-logo-row {
+  display: flex; align-items: center; gap: 11px;
+  margin-bottom: 11px;
+}
+.sb-logo-circle {
+  width: 42px; height: 42px; border-radius: 11px;
+  background: linear-gradient(135deg, var(--gold-bright), #C77A05);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 17px; font-weight: 700; color: #fff;
+  flex-shrink: 0;
+  box-shadow: 0 2px 10px rgba(212,137,10,0.4);
+}
+.sb-brand-name {
+  font-size: 13px; font-weight: 700; color: #fff;
+  line-height: 1.3;
+}
+.sb-brand-sub { font-size: 11px; color: rgba(255,255,255,0.45); margin-top:2px; }
+
+.sb-org-box {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 7px;
+  padding: 8px 11px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.55;
+}
+.sb-org-box strong {
+  color: var(--gold-bright);
+  display: block; font-size: 10px;
+  font-family: 'Chakra Petch', sans-serif;
+  letter-spacing: 0.8px; text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+/* nav */
+.sb-nav { flex:1; padding: 14px 0; overflow-y: auto; }
+.sb-nav::-webkit-scrollbar { width: 3px; }
+.sb-nav::-webkit-scrollbar-track { background: transparent; }
+.sb-nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
+.sb-section-label {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 10px; font-weight: 600;
+  color: rgba(255,255,255,0.28);
+  letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 12px 18px 5px;
+}
+
+.sb-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 18px;
+  color: rgba(255,255,255,0.6);
+  font-size: 13.5px;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  transition: all 0.18s;
+  text-decoration: none;
+  position: relative;
+}
+.sb-item:hover {
+  background: rgba(255,255,255,0.05);
+  color: rgba(255,255,255,0.9);
+}
+.sb-item.active {
+  background: rgba(46,134,193,0.18);
+  color: #fff;
+  border-left-color: var(--gold-bright);
+  font-weight: 600;
+}
+.sb-icon { width: 17px; text-align:center; font-size:14px; flex-shrink:0; }
+
+/* live badge on nav item */
+.sb-badge {
+  margin-left: auto;
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 10px; font-weight: 700;
+  padding: 2px 7px; border-radius: 3px;
+  text-transform: uppercase;
+}
+.sb-badge.live { background: rgba(26,155,75,0.2); color: #4BCA7A; }
+.sb-badge.soon { background: rgba(212,137,10,0.2); color: var(--gold-bright); }
+
+.sb-divider { height:1px; background: rgba(255,255,255,0.06); margin: 8px 18px; }
+
+.sb-footer {
+  padding: 14px 18px;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  font-size: 11px;
+  color: rgba(255,255,255,0.28);
+  text-align: center;
+  line-height: 1.7;
+}
+.sb-footer strong { color: rgba(255,255,255,0.45); }
+
+/* ══════════════════════════════════
+   MAIN WRAPPER
+══════════════════════════════════ */
+.main-wrapper {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  display: flex; flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ══════════════════════════════════
+   TOPBAR
+══════════════════════════════════ */
+.topbar {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  height: 54px;
+  padding: 0 28px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top:0; z-index:200;
+  box-shadow: var(--sh-xs);
+  gap: 16px;
+}
+.topbar-left { display:flex; align-items:center; gap:16px; }
+.page-title  { font-size: clamp(14px, 1.2vw, 16px); font-weight:700; color:var(--navy); }
+.breadcrumb  { font-size: 11.5px; color:var(--text-muted); }
+.breadcrumb span { color:var(--blue); font-weight:600; }
+
+/* inline nav pills (topbar) */
+.top-nav { display:flex; align-items:center; gap:3px; }
+.tnav-pill {
+  padding: 5px 13px;
+  border-radius: 18px; font-size: 13px; font-weight:500;
+  color: var(--text-mid); cursor:pointer;
+  border:none; background:transparent;
+  font-family:'Sarabun',sans-serif;
+  transition:all 0.15s;
+}
+.tnav-pill:hover { background:var(--blue-light); color:var(--blue); }
+.tnav-pill.active { background:var(--blue-light); color:var(--blue); font-weight:700; }
+
+.topbar-right { display:flex; align-items:center; gap:10px; flex-shrink:0; }
+.live-chip {
+  display:flex; align-items:center; gap:5px;
+  background:var(--green-light);
+  border:1px solid rgba(26,155,75,0.22);
+  border-radius:18px; padding:4px 10px;
+  font-size: 11px; font-weight:700; color:var(--green);
+  font-family:'Chakra Petch',sans-serif;
+}
+.live-dot {
+  width:5px; height:5px; border-radius:50%;
+  background:var(--green);
+  animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.25} }
+.date-badge {
+  font-size: 11.5px; color:var(--text-muted);
+  font-family:'Chakra Petch',sans-serif;
+  background:var(--bg); border:1px solid var(--border);
+  border-radius:6px; padding:4px 10px;
+}
+
+/* ══════════════════════════════════
+   HERO BANNER
+══════════════════════════════════ */
+.hero {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 32px 32px 26px;
+  position: relative; overflow: hidden;
+}
+.hero-stripe {
+  position:absolute; top:0; left:0; right:0; height:3px;
+  background: linear-gradient(90deg, var(--navy) 0%, var(--blue-mid) 45%, var(--gold-bright) 100%);
+}
+.hero-deco {
+  position:absolute; right:-40px; top:-40px;
+  width:280px; height:280px; border-radius:50%;
+  background:radial-gradient(circle,rgba(46,134,193,0.05) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-deco2 {
+  position:absolute; right:100px; bottom:-60px;
+  width:180px; height:180px; border-radius:50%;
+  background:radial-gradient(circle,rgba(212,137,10,0.05) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-inner { position:relative; z-index:1; display:flex; align-items:flex-end; justify-content:space-between; gap:24px; flex-wrap:wrap; }
+.hero-crumb {
+  display:flex; align-items:center; gap:6px;
+  font-size: 11px; color:var(--text-muted);
+  font-family:'Chakra Petch',sans-serif; letter-spacing:0.3px;
+  margin-bottom:10px;
+}
+.hero-crumb::before { content:''; width:16px; height:2px; background:var(--gold-bright); display:inline-block; }
+.hero-crumb span { color:var(--blue); }
+.hero-h1 {
+  font-size: clamp(22px, 3vw, 30px); font-weight:800; color:var(--navy);
+  line-height:1.15; letter-spacing:-0.3px;
+}
+.hero-h1 em { color:var(--blue-mid); font-style:normal; }
+.hero-sub {
+  margin-top:8px; font-size: clamp(13px, 1.1vw, 14px); color:var(--text-mid);
+  font-weight:400; max-width:520px; line-height:1.7;
+}
+.hero-counters {
+  display:flex; gap:20px;
+  background:var(--blue-pale); border:1px solid var(--border);
+  border-radius:var(--r); padding:14px 20px;
+  flex-shrink:0;
+}
+.hcnt-val {
+  font-size: clamp(18px, 2vw, 22px); font-weight:800; color:var(--navy);
+  font-family:'Chakra Petch',sans-serif; line-height:1;
+}
+.hcnt-lbl { font-size: 11px; color:var(--text-muted); margin-top:3px; }
+
+/* ══════════════════════════════════
+   KPI STRIP
+══════════════════════════════════ */
+.kpi-strip {
+  display:grid; grid-template-columns:repeat(5,1fr);
+  background:var(--white);
+  border-bottom:1px solid var(--border);
+}
+.kpi-cell {
+  padding:15px 18px;
+  border-right:1px solid var(--border);
+  position:relative; cursor:default;
+  transition:background 0.15s;
+}
+.kpi-cell:last-child { border-right:none; }
+.kpi-cell:hover { background:var(--blue-pale); }
+.kpi-cell::after {
+  content:''; position:absolute;
+  bottom:0; left:0; right:0; height:2px;
+  transform:scaleX(0); transform-origin:left;
+  transition:transform 0.28s ease;
+}
+.kpi-cell:hover::after { transform:scaleX(1); }
+.kc-b::after { background:var(--blue-mid); }
+.kc-g::after { background:var(--gold-bright); }
+.kc-gr::after{ background:var(--green); }
+.kc-t::after { background:var(--teal); }
+.kc-r::after { background:var(--red); }
+
+.kpi-em   { font-size: 16px; margin-bottom:5px; }
+.kpi-lbl  { font-size: 11px; color:var(--text-muted); font-family:'Chakra Petch',sans-serif; letter-spacing:0.4px; margin-bottom:3px; }
+.kpi-num  { font-size: clamp(18px, 2vw, 22px); font-weight:800; color:var(--navy); line-height:1; font-family:'Chakra Petch',sans-serif; }
+.kpi-unit { font-size: 11px; font-weight:400; color:var(--text-muted); margin-left:2px; font-family:'Sarabun',sans-serif; }
+.kpi-chg  { margin-top:4px; font-size: 11px; font-weight:600; }
+.up   { color:var(--green); }
+.down { color:var(--red); }
+.flat { color:var(--text-muted); }
+
+/* ══════════════════════════════════
+   CONTENT AREA
+══════════════════════════════════ */
+.content { padding:28px 32px 56px; flex:1; }
+
+/* Section header */
+.sec-head {
+  display:flex; align-items:center; gap:10px;
+  margin-bottom:18px;
+}
+.sec-num {
+  font-family:'Chakra Petch',sans-serif;
+  font-size: 11px; font-weight:700; color:var(--gold-bright); letter-spacing:1px;
+}
+.sec-title { font-size: 15px; font-weight:700; color:var(--navy); }
+.sec-hr { flex:1; height:1px; background:var(--border); }
+.sec-meta { font-size: 11.5px; color:var(--text-muted); }
+
+/* ══════════════════════════════════
+   FILTER BAR
+══════════════════════════════════ */
+.filter-bar {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:22px; flex-wrap:wrap; gap:10px;
+}
+.filter-left { display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+.filter-lbl {
+  font-size: 11px; color:var(--text-muted);
+  font-family:'Chakra Petch',sans-serif;
+  letter-spacing:0.8px; text-transform:uppercase;
+}
+.fbtn {
+  padding: 6px 14px; border-radius:16px;
+  font-size: 12.5px; font-weight:600;
+  font-family:'Sarabun',sans-serif; cursor:pointer;
+  border:1px solid var(--border);
+  background:var(--white); color:var(--text-mid);
+  transition:all 0.15s;
+}
+.fbtn:hover { border-color:var(--blue-mid); color:var(--blue); }
+.fbtn.on { background:var(--navy); color:#fff; border-color:var(--navy); }
+
+.search-wrap {
+  display:flex; align-items:center; gap:7px;
+  background:var(--white); border:1px solid var(--border);
+  border-radius:20px; padding:6px 14px;
+  transition:border-color 0.15s;
+}
+.search-wrap:focus-within { border-color:var(--blue-mid); box-shadow:0 0 0 3px rgba(46,134,193,0.08); }
+.search-wrap input {
+  border:none; outline:none; background:transparent;
+  font-family:'Sarabun',sans-serif; font-size: 13px;
+  color:var(--text); width:170px;
+}
+.search-wrap input::placeholder { color:var(--text-muted); }
+
+/* ══════════════════════════════════
+   DASHBOARD CARDS GRID
+══════════════════════════════════ */
+.cards-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px; margin-bottom:36px;
+}
+
+.dcard {
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:var(--r);
+  overflow:hidden;
+  display:flex; flex-direction:column;
+  text-decoration:none; color:inherit;
+  cursor:pointer; position:relative;
+  transition:transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+.dcard:not(.disabled):hover {
+  transform:translateY(-4px);
+  box-shadow:var(--sh-lg);
+  border-color:var(--border-mid);
+}
+.dcard.featured { grid-column:span 2; flex-direction:row; }
+.dcard.disabled { opacity:0.52; cursor:not-allowed; pointer-events:none; }
+.dcard[data-hidden="true"] { display:none; }
+
+/* accent top bar */
+.dcard::before {
+  content:''; position:absolute;
+  top:0; left:0; right:0; height:3px;
+}
+.dcard.c-blue::before  { background:linear-gradient(90deg,var(--blue),var(--blue-mid)); }
+.dcard.c-gold::before  { background:linear-gradient(90deg,#B5700A,var(--gold-bright)); }
+.dcard.c-teal::before  { background:linear-gradient(90deg,var(--teal),#1ABC9C); }
+.dcard.c-slate::before { background:var(--border); }
+
+/* card visual panel */
+.card-vis {
+  background:var(--blue-pale);
+  padding:22px 20px 16px;
+  flex-shrink:0; position:relative; overflow:hidden;
+}
+.featured .card-vis {
+  width:220px; padding:26px 22px;
+  display:flex; flex-direction:column; justify-content:center;
+}
+.dcard.c-gold .card-vis  { background:var(--gold-light); }
+.dcard.c-teal .card-vis  { background:var(--teal-light); }
+.dcard.c-slate .card-vis { background:var(--bg); }
+
+.vis-deco { position:absolute; inset:0; pointer-events:none; opacity:0.45; }
+.card-icon { font-size:32px; display:block; margin-bottom:8px; position:relative; z-index:1; }
+.featured .card-icon { font-size:42px; }
+.card-type {
+  font-family:'Chakra Petch',sans-serif;
+  font-size: 10px; font-weight:700; letter-spacing:1.5px;
+  text-transform:uppercase; position:relative; z-index:1;
+}
+.dcard.c-blue .card-type  { color:var(--blue); }
+.dcard.c-gold .card-type  { color:var(--gold); }
+.dcard.c-teal .card-type  { color:var(--teal); }
+.dcard.c-slate .card-type { color:var(--text-muted); }
+
+/* sparkline */
+.spark { width:100%; height:42px; margin-top:10px; position:relative; z-index:1; }
+.featured .spark { height:64px; }
+.spark svg { width:100%; height:100%; overflow:visible; }
+.spark path { fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+.spark .area { fill-opacity:0.12; stroke:none; }
+
+/* status pill */
+.card-pill {
+  position:absolute; top:11px; right:11px;
+  font-family:'Chakra Petch',sans-serif;
+  font-size: 10px; font-weight:700; letter-spacing:1px;
+  padding:3px 8px; border-radius:4px; text-transform:uppercase;
+}
+.pill-live { background:var(--green-light); color:var(--green); border:1px solid rgba(26,155,75,0.22); }
+.pill-soon { background:var(--gold-light);  color:var(--gold);  border:1px solid rgba(212,137,10,0.22); }
+
+/* card body */
+.card-body { padding:18px 20px 20px; flex:1; display:flex; flex-direction:column; }
+.featured .card-body { padding:22px 24px; }
+
+.card-title { font-size: clamp(13px, 1.1vw, 15px); font-weight:700; color:var(--navy); line-height:1.3; margin-bottom:6px; }
+.featured .card-title { font-size: clamp(15px, 1.3vw, 17px); }
+.card-desc  { font-size: clamp(12px, 0.95vw, 13px); color:var(--text-mid); line-height:1.65; flex:1; }
+
+.card-stats {
+  display:flex; gap:12px; flex-wrap:wrap;
+  margin-top:12px; padding-top:11px;
+  border-top:1px solid var(--border);
+}
+.cstat-val { font-size: 15px; font-weight:800; color:var(--navy); font-family:'Chakra Petch',sans-serif; line-height:1; }
+.cstat-lbl { font-size: 10.5px; color:var(--text-muted); margin-top:2px; }
+
+.card-foot {
+  margin-top:12px;
+  display:flex; align-items:center; justify-content:space-between;
+  gap:8px; flex-wrap:wrap;
+}
+.tags { display:flex; gap:4px; flex-wrap:wrap; }
+.tag {
+  font-size: 10.5px; font-weight:700;
+  padding:3px 9px; border-radius:4px;
+  font-family:'Chakra Petch',sans-serif; letter-spacing:0.2px;
+}
+.t-blue  { background:var(--blue-light);  color:var(--blue); }
+.t-gold  { background:var(--gold-light);  color:#9A5F0A; }
+.t-green { background:var(--green-light); color:var(--green); }
+.t-teal  { background:var(--teal-light);  color:var(--teal); }
+.t-slate { background:var(--bg); color:var(--text-muted); border:1px solid var(--border); }
+
+.detail-btn {
+  display:inline-flex; align-items:center; gap:5px;
+  background:var(--navy); color:#fff;
+  font-family:'Chakra Petch',sans-serif;
+  font-size: 11px; font-weight:600;
+  padding:7px 14px; border-radius:16px;
+  border:none; cursor:pointer;
+  transition:all 0.15s; text-decoration:none; white-space:nowrap;
+}
+.detail-btn:hover { background:var(--blue); }
+.detail-btn .arr { transition:transform 0.15s; display:inline-block; }
+.dcard:hover .arr { transform:translateX(3px); }
+
+/* no-results */
+#noResults {
+  display:none; text-align:center; padding:40px;
+  color:var(--text-muted); font-size:13px;
+}
+
+/* ══════════════════════════════════
+   ROADMAP
+══════════════════════════════════ */
+.roadmap-grid {
+  display:grid; grid-template-columns:repeat(4,1fr);
+  gap:1px; background:var(--border);
+  border:1px solid var(--border); border-radius:var(--r);
+  overflow:hidden; margin-bottom:36px;
+  box-shadow:var(--sh-xs);
+}
+.rphase {
+  background:var(--white); padding:18px;
+  position:relative; overflow:hidden;
+}
+.rphase::before {
+  content:''; position:absolute;
+  top:0; left:0; right:0; height:3px;
+}
+.rphase.done::before   { background:var(--green); }
+.rphase.active::before { background:var(--blue-mid); }
+.rphase.next::before   { background:var(--gold-bright); }
+.rphase.future::before { background:var(--border); }
+
+.rp-label {
+  font-family:'Chakra Petch',sans-serif;
+  font-size: 10px; font-weight:700; letter-spacing:1.5px;
+  text-transform:uppercase; margin-bottom:7px;
+}
+.done   .rp-label { color:var(--green); }
+.active .rp-label { color:var(--blue); }
+.next   .rp-label { color:var(--gold-bright); }
+.future .rp-label { color:var(--text-muted); }
+
+.rp-title { font-size: 13px; font-weight:700; color:var(--navy); margin-bottom:9px; }
+.rp-list  { list-style:none; display:flex; flex-direction:column; gap:4px; }
+.rp-list li {
+  font-size: 12.5px; color:var(--text-mid);
+  display:flex; align-items:center; gap:6px;
+}
+.rp-list li::before { content:''; width:5px; height:5px; border-radius:50%; flex-shrink:0; }
+.done   li::before { background:var(--green); }
+.active li::before { background:var(--blue-mid); }
+.next   li::before { background:var(--gold-bright); }
+.future li::before { background:var(--border-mid); }
+
+.rp-badge {
+  margin-top:11px; display:inline-block;
+  font-family:'Chakra Petch',sans-serif;
+  font-size: 10px; font-weight:700; letter-spacing:1px;
+  padding:3px 9px; border-radius:4px; text-transform:uppercase;
+}
+.done   .rp-badge { background:var(--green-light);  color:var(--green); }
+.active .rp-badge { background:var(--blue-light);   color:var(--blue); }
+.next   .rp-badge { background:var(--gold-light);   color:#9A5F0A; }
+.future .rp-badge { background:var(--bg); color:var(--text-muted); border:1px solid var(--border); }
+
+/* ══════════════════════════════════
+   DATA SOURCE TABLE
+══════════════════════════════════ */
+.src-table {
+  width:100%; border-collapse:collapse;
+  margin-bottom:36px;
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:var(--r); overflow:hidden;
+  box-shadow:var(--sh-xs);
+}
+.src-table th {
+  background:var(--blue-pale);
+  padding:10px 15px; text-align:left;
+  font-family:'Chakra Petch',sans-serif;
+  font-size: 10.5px; font-weight:700; letter-spacing:1.2px;
+  text-transform:uppercase; color:var(--text-muted);
+  border-bottom:1px solid var(--border);
+}
+.src-table td {
+  padding:10px 15px; font-size: 13px; color:var(--text-mid);
+  border-bottom:1px solid var(--bg);
+}
+.src-table tr:last-child td { border-bottom:none; }
+.src-table tbody tr:hover td { background:var(--blue-pale); }
+.src-table td strong { color:var(--navy); font-weight:700; }
+.src-dot {
+  display:inline-block; width:7px; height:7px;
+  border-radius:50%; margin-right:7px; vertical-align:middle;
+}
+
+/* ══════════════════════════════════
+   FOOTER
+══════════════════════════════════ */
+.footer {
+  background:var(--white);
+  border-top:1px solid var(--border);
+  padding:18px 32px;
+  display:flex; align-items:center; justify-content:space-between;
+  flex-wrap:wrap; gap:12px;
+}
+.footer-left { font-size: 12px; color:var(--text-muted); line-height:1.7; }
+.footer-left strong { color:var(--navy); }
+.footer-right { text-align:right; }
+.footer-copy  { font-family:'Chakra Petch',sans-serif; font-weight:700; color:var(--gold-bright); font-size: 12px; }
+.footer-ver   { font-size: 11px; color:var(--text-muted); margin-top:2px; }
+
+/* ══════════════════════════════════
+   MODAL
+══════════════════════════════════ */
+.overlay {
+  position:fixed; inset:0;
+  background:rgba(10,35,66,0.42);
+  backdrop-filter:blur(5px);
+  z-index:800;
+  display:none; align-items:center; justify-content:center;
+  padding:20px;
+}
+.overlay.open { display:flex; animation:fadeIn 0.18s ease; }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+.modal {
+  background:var(--white); border-radius:18px;
+  width:100%; max-width:660px;
+  max-height:86vh; overflow-y:auto;
+  box-shadow:var(--sh-lg);
+  animation:slideUp 0.22s ease;
+}
+@keyframes slideUp {
+  from{ transform:translateY(20px); opacity:0; }
+  to  { transform:translateY(0);    opacity:1; }
+}
+.modal-head {
+  padding:24px 28px 18px;
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:flex-start; justify-content:space-between; gap:14px;
+}
+.modal-icon { font-size:38px; flex-shrink:0; }
+.modal-title-area { flex:1; }
+.modal-tag {
+  font-family:'Chakra Petch',sans-serif;
+  font-size: 10.5px; font-weight:700; letter-spacing:1.5px;
+  text-transform:uppercase; color:var(--blue); margin-bottom:5px;
+}
+.modal-title { font-size: clamp(16px, 1.5vw, 19px); font-weight:800; color:var(--navy); line-height:1.2; }
+.modal-x {
+  width:34px; height:34px; border-radius:50%;
+  background:var(--bg); border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; font-size:16px; color:var(--text-mid);
+  flex-shrink:0; transition:all 0.14s;
+}
+.modal-x:hover { background:var(--red-light); color:var(--red); border-color:var(--red); }
+
+.modal-body { padding:22px 28px 28px; }
+.modal-sec { margin-bottom:20px; }
+.modal-sec-title {
+  font-family:'Chakra Petch',sans-serif;
+  font-size: 10px; font-weight:700; letter-spacing:1.5px;
+  text-transform:uppercase; color:var(--text-muted);
+  margin-bottom:9px; padding-bottom:6px;
+  border-bottom:1px solid var(--border);
+}
+.modal-desc { font-size: 13.5px; color:var(--text-mid); line-height:1.75; }
+
+.modal-kpis { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+.mkpi {
+  background:var(--blue-pale); border-radius:var(--r-sm);
+  padding:12px 14px; border:1px solid var(--border);
+}
+.mkpi-val { font-size: clamp(16px, 1.5vw, 20px); font-weight:800; color:var(--navy); font-family:'Chakra Petch',sans-serif; }
+.mkpi-lbl { font-size: 11px; color:var(--text-muted); margin-top:2px; }
+
+.modal-feats { list-style:none; display:flex; flex-direction:column; gap:7px; }
+.modal-feats li {
+  display:flex; align-items:flex-start; gap:9px;
+  font-size: 13.5px; color:var(--text-mid);
+}
+.modal-feats li::before { content:'✓'; color:var(--green); font-weight:700; flex-shrink:0; margin-top:1px; }
+
+.modal-src {
+  background:var(--bg); border-radius:var(--r-sm);
+  padding:11px 14px; border:1px solid var(--border);
+  font-size: 12.5px; color:var(--text-mid); line-height:1.65;
+}
+.modal-src strong { color:var(--navy); }
+
+.modal-foot { display:flex; gap:8px; flex-wrap:wrap; }
+.btn-go {
+  flex:1; padding:11px 18px;
+  background:var(--navy); color:#fff; border:none;
+  border-radius:var(--r-sm);
+  font-family:'Chakra Petch',sans-serif;
+  font-size: 12px; font-weight:700; cursor:pointer;
+  transition:background 0.15s; text-decoration:none;
+  display:flex; align-items:center; justify-content:center; gap:7px;
+}
+.btn-go:hover { background:var(--blue); }
+.btn-cancel {
+  padding:11px 18px; background:var(--white); color:var(--text-mid);
+  border:1px solid var(--border); border-radius:var(--r-sm);
+  font-family:'Chakra Petch',sans-serif; font-size: 12px; font-weight:600;
+  cursor:pointer; transition:all 0.14s;
+}
+.btn-cancel:hover { border-color:var(--blue-mid); color:var(--blue); }
+
+/* ══════════════════════════════════
+   ANIMATIONS
+══════════════════════════════════ */
+@keyframes fadeUp {
+  from{ opacity:0; transform:translateY(16px); }
+  to  { opacity:1; transform:translateY(0); }
+}
+.dcard { animation:fadeUp 0.42s ease both; }
+.dcard:nth-child(1){ animation-delay:.07s }
+.dcard:nth-child(2){ animation-delay:.13s }
+.dcard:nth-child(3){ animation-delay:.19s }
+.dcard:nth-child(4){ animation-delay:.25s }
+.dcard:nth-child(5){ animation-delay:.31s }
+
+/* ══════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+   PC     ≥ 1100px  → full layout
+   Tablet  768–1099 → condensed sidebar
+   Mobile  < 768px  → no sidebar, stack
+══════════════════════════════════ */
+
+/* ── TABLET LANDSCAPE (1100px) */
+@media(max-width:1100px){
+  .kpi-strip{ grid-template-columns:repeat(3,1fr); }
+  .cards-grid{ grid-template-columns:1fr 1fr; }
+  .dcard.featured{ grid-column:span 2; }
+  .roadmap-grid{ grid-template-columns:1fr 1fr; }
+  .content{ padding:24px 24px 48px; }
+}
+
+/* ── TABLET PORTRAIT (768–899px) */
+@media(max-width:899px){
+  :root { --sidebar-w: 200px; }
+  .sb-brand-name{ font-size:12px; }
+  .sb-org-box{ font-size:10.5px; }
+  .sb-item{ font-size:13px; padding:8px 14px; }
+  .hero{ padding:28px 22px 24px; }
+  .hero-inner{ flex-direction:column; align-items:flex-start; gap:16px; }
+  .hero-counters{ width:100%; justify-content:space-between; }
+  .kpi-strip{ grid-template-columns:repeat(3,1fr); }
+  .kpi-cell{ padding:13px 14px; }
+  .kpi-num{ font-size:18px; }
+  .cards-grid{ grid-template-columns:1fr 1fr; gap:14px; }
+  .dcard.featured{ grid-column:span 2; flex-direction:column; }
+  .featured .card-vis{ width:100%; }
+  .roadmap-grid{ grid-template-columns:1fr 1fr; }
+  .src-table th,.src-table td{ font-size:12px; padding:9px 12px; }
+  .top-nav{ display:none; }
+}
+
+/* ── SMALL TABLET / LARGE MOBILE (640–767px) */
+@media(max-width:767px){
+  .sidebar{ width:0; transform:translateX(-100%); overflow:hidden; }
+  .main-wrapper{ margin-left:0; }
+  html{ font-size: 14px; }
+  .hero{ padding:20px 16px 18px; }
+  .hero-h1{ font-size:22px; }
+  .hero-sub{ font-size:13px; }
+  .hero-counters{ gap:12px; padding:12px 14px; }
+  .hcnt-val{ font-size:18px; }
+  .kpi-strip{ grid-template-columns:repeat(2,1fr); }
+  .kpi-cell:nth-child(5){ grid-column:span 2; border-top:1px solid var(--border); }
+  .kpi-num{ font-size:18px; }
+  .kpi-lbl{ font-size:10.5px; }
+  .kpi-chg{ font-size:10.5px; }
+  .content{ padding:18px 16px 44px; }
+  .cards-grid{ grid-template-columns:1fr; gap:14px; }
+  .dcard.featured{ grid-column:span 1; flex-direction:column; }
+  .featured .card-vis{ width:100%; }
+  .card-title{ font-size:14px; }
+  .card-desc{ font-size:12.5px; }
+  .filter-bar{ flex-direction:column; align-items:flex-start; }
+  .search-wrap input{ width:140px; }
+  .roadmap-grid{ grid-template-columns:1fr; }
+  .modal-kpis{ grid-template-columns:1fr 1fr; }
+  .footer{ padding:14px 16px; flex-direction:column; text-align:center; }
+  .footer-right{ text-align:center; }
+  .topbar{ padding:0 16px; }
+  .top-nav{ display:none; }
+  .date-badge{ display:none; }
+}
+
+/* ── MOBILE (< 480px) */
+@media(max-width:479px){
+  html{ font-size: 13px; }
+  .hero-h1{ font-size:20px; }
+  .kpi-strip{ grid-template-columns:1fr 1fr; }
+  .kpi-num{ font-size:16px; }
+  .kpi-lbl{ font-size:10px; }
+  .hcnt-val{ font-size:16px; }
+  .hcnt-lbl{ font-size:10px; }
+  .card-title{ font-size:13.5px; }
+  .cstat-val{ font-size:14px; }
+  .cstat-lbl{ font-size:10px; }
+  .fbtn{ font-size:12px; padding:5px 11px; }
+  .rp-title{ font-size:12.5px; }
+  .rp-list li{ font-size:12px; }
+  .modal-head{ padding:18px 20px 14px; }
+  .modal-body{ padding:16px 20px 22px; }
+  .modal-title{ font-size:16px; }
+  .modal-desc{ font-size:13px; }
+  .mkpi-val{ font-size:16px; }
+  .mkpi-lbl{ font-size:10.5px; }
+  .modal-feats li{ font-size:13px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════ SIDEBAR -->
+<aside class="sidebar">
+  <div class="sb-brand">
+    <div class="sb-logo-row">
+      <div class="sb-logo-circle">ก</div>
+      <div>
+        <div class="sb-brand-name">สำนักการจราจรและขนส่ง</div>
+        <div class="sb-brand-sub">กรุงเทพมหานคร · สจส.</div>
+      </div>
+    </div>
+    <div class="sb-org-box">
+      <strong>หน่วยงาน</strong>
+      กลุ่มงานสถิติและวิจัย<br>กองนโยบายและแผนงาน
+    </div>
+  </div>
+
+  <nav class="sb-nav">
+    <div class="sb-section-label">ศูนย์ข้อมูล</div>
+    <a class="sb-item active" href="#">
+      <span class="sb-icon">🏠</span> ภาพรวมทั้งหมด
+    </a>
+
+    <div class="sb-section-label">Dashboard · Live</div>
+    <a class="sb-item" href="https://bma-statistics-pw.github.io/Bangkok_urban_Transport/" target="_blank">
+      <span class="sb-icon">🚇</span> ผู้โดยสารขนส่งสาธารณะ
+      <span class="sb-badge live">ACTIVE</span>
+    </a>
+    <a class="sb-item" href="https://bma-statistics-pw.github.io/BMA-travel-time-dashboard-TH/" target="_blank">
+      <span class="sb-icon">🚦</span> ความเร็วการจราจร
+      <span class="sb-badge live">ACTIVE</span>
+    </a>
+    <a class="sb-item" href="https://bma-statistics-pw.github.io/BMA-EV_Passenger-boat/" target="_blank">
+      <span class="sb-icon">⛵</span> เรือไฟฟ้าคลองผดุงฯ
+      <span class="sb-badge live">ACTIVE</span>
+    </a>
+
+    <div class="sb-divider"></div>
+    <div class="sb-section-label">กำลังพัฒนา</div>
+    <a class="sb-item" href="#" style="pointer-events:none;opacity:0.5">
+      <span class="sb-icon">🚗</span> ปริมาณจราจร V/C
+      <span class="sb-badge soon">P.3</span>
+    </a>
+    <a class="sb-item" href="#" style="pointer-events:none;opacity:0.5">
+      <span class="sb-icon">⚠️</span> สถิติอุบัติเหตุ
+      <span class="sb-badge soon">P.3</span>
+    </a>
+
+    <div class="sb-divider"></div>
+    <div class="sb-section-label">เนวิเกต</div>
+    <button class="sb-item" onclick="navScroll('#dashboards')" style="width:100%;text-align:left;background:transparent;border:none;cursor:pointer;font-family:inherit;">
+      <span class="sb-icon">📊</span> Dashboard
+    </button>
+    <button class="sb-item" onclick="navScroll('#roadmap')" style="width:100%;text-align:left;background:transparent;border:none;cursor:pointer;font-family:inherit;">
+      <span class="sb-icon">🗺️</span> แผนพัฒนา
+    </button>
+    <button class="sb-item" onclick="navScroll('#sources')" style="width:100%;text-align:left;background:transparent;border:none;cursor:pointer;font-family:inherit;">
+      <span class="sb-icon">📋</span> แหล่งข้อมูล
+    </button>
+  </nav>
+
+  <div class="sb-footer">
+    <strong>กลุ่มงานสถิติและวิจัย</strong><br>
+    กองนโยบายและแผนงาน สจส.<br>
+    © Prapawadee_W.
+  </div>
+</aside>
+
+<!-- ══════════════════════════════════════ MAIN -->
+<div class="main-wrapper">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div>
+        <div class="page-title">BMA Transport Index</div>
+        <div class="breadcrumb">สจส. › กองนโยบายและแผนงาน › <span>กลุ่มงานสถิติและวิจัย</span></div>
+      </div>
+      <nav class="top-nav">
+        <button class="tnav-pill active" onclick="navScroll('#dashboards',this)">Dashboard</button>
+        <button class="tnav-pill" onclick="navScroll('#roadmap',this)">แผนพัฒนา</button>
+        <button class="tnav-pill" onclick="navScroll('#sources',this)">แหล่งข้อมูล</button>
+      </nav>
+    </div>
+    <div class="topbar-right">
+      <div class="live-chip"><span class="live-dot"></span>ACTIVE</div>
+      <div class="date-badge" id="topDate">—</div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-stripe"></div>
+    <div class="hero-deco"></div>
+    <div class="hero-deco2"></div>
+    <div class="hero-inner">
+      <div>
+        <div class="hero-crumb">สจส. กทม. <span>กลุ่มงานสถิติและวิจัย</span></div>
+        <h1 class="hero-h1">ศูนย์ข้อมูลสถิติ<em>การจราจร</em><br>และขนส่ง กรุงเทพมหานคร</h1>
+        <p class="hero-sub">รวบรวมและนำเสนอข้อมูลสถิติด้านการจราจรและระบบขนส่งสาธารณะ เพื่อสนับสนุนการวิเคราะห์และกำหนดนโยบายของ สำนักการจราจรและขนส่ง กทม.</p>
+      </div>
+      <div class="hero-counters">
+        <div><div class="hcnt-val">3</div><div class="hcnt-lbl">Dashboard Active</div></div>
+        <div><div class="hcnt-val">11</div><div class="hcnt-lbl">ระบบขนส่ง</div></div>
+        <div><div class="hcnt-val">13+</div><div class="hcnt-lbl">ปีข้อมูล</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KPI STRIP -->
+  <div class="kpi-strip">
+    <div class="kpi-cell kc-b">
+      <div class="kpi-em">🚇</div>
+      <div class="kpi-lbl">ผู้โดยสารรถไฟฟ้า</div>
+      <div class="kpi-num">1.24<span class="kpi-unit">ล้านคน/วัน</span></div>
+      <div class="kpi-chg up">▲ 8.3% จากปีก่อน</div>
+    </div>
+    <div class="kpi-cell kc-g">
+      <div class="kpi-em">🚦</div>
+      <div class="kpi-lbl">ความเร็วเฉลี่ยในเมือง</div>
+      <div class="kpi-num">18.4<span class="kpi-unit">กม./ชม.</span></div>
+      <div class="kpi-chg down">▼ ต่ำกว่าฐาน 2560</div>
+    </div>
+    <div class="kpi-cell kc-gr">
+      <div class="kpi-em">📊</div>
+      <div class="kpi-lbl">Modal Share สาธารณะ</div>
+      <div class="kpi-num">11.7<span class="kpi-unit">%</span></div>
+      <div class="kpi-chg flat">● อ้างอิง BTDM 2565</div>
+    </div>
+    <div class="kpi-cell kc-t">
+      <div class="kpi-em">⛵</div>
+      <div class="kpi-lbl">เรือไฟฟ้าคลองผดุงฯ</div>
+      <div class="kpi-num">548K<span class="kpi-unit">คนสะสม</span></div>
+      <div class="kpi-chg up">▲ มี.ค. 66–ก.พ. 69</div>
+    </div>
+    <div class="kpi-cell kc-r">
+      <div class="kpi-em">🌍</div>
+      <div class="kpi-lbl">Bangkok Congestion</div>
+      <div class="kpi-num">67.9<span class="kpi-unit">%</span></div>
+      <div class="kpi-chg down">อันดับ 10 โลก (TomTom)</div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- ① DASHBOARDS -->
+    <div id="dashboards">
+      <div class="sec-head">
+        <span class="sec-num">01</span>
+        <span class="sec-title">Dashboard ทั้งหมด</span>
+        <div class="sec-hr"></div>
+        <span class="sec-meta">3 Live · 2 Coming Soon</span>
+      </div>
+
+      <!-- filter bar -->
+      <div class="filter-bar">
+        <div class="filter-left">
+          <span class="filter-lbl">แสดง ·</span>
+          <button class="fbtn on" onclick="filterCards('all',this)">ทั้งหมด</button>
+          <button class="fbtn" onclick="filterCards('live',this)">Active เท่านั้น</button>
+          <button class="fbtn" onclick="filterCards('transport',this)">ขนส่งสาธารณะ</button>
+          <button class="fbtn" onclick="filterCards('traffic',this)">การจราจร</button>
+        </div>
+        <div class="search-wrap">
+          <span style="color:var(--text-muted);font-size:13px">🔍</span>
+          <input type="text" placeholder="ค้นหา Dashboard..." oninput="searchCards(this.value)">
+        </div>
+      </div>
+
+      <!-- cards -->
+      <div class="cards-grid" id="cardsGrid">
+
+        <!-- ① Bangkok Urban Transport (featured) -->
+        <a class="dcard featured c-blue"
+           href="https://bma-statistics-pw.github.io/Bangkok_urban_Transport/"
+           target="_blank"
+           data-status="live" data-cat="transport"
+           data-kw="รถไฟฟ้า bts mrt arl เรือ ขสมก modal share ผู้โดยสาร"
+           onclick="trackClick(event,'Bangkok Urban Transport')">
+          <div class="card-vis">
+            <div class="vis-deco">
+              <svg width="100%" height="100%" viewBox="0 0 220 170" preserveAspectRatio="xMidYMid slice">
+                <circle cx="110" cy="85" r="75" fill="none" stroke="#2E86C1" stroke-width="0.6" opacity="0.3"/>
+                <circle cx="110" cy="85" r="48" fill="none" stroke="#2E86C1" stroke-width="0.4" opacity="0.2"/>
+                <circle cx="110" cy="85" r="22" fill="#2E86C1" opacity="0.05"/>
+              </svg>
+            </div>
+            <span class="card-icon">🚇</span>
+            <div class="card-type">Public Transport · ผู้โดยสาร</div>
+            <div class="spark">
+              <svg viewBox="0 0 200 64">
+                <path class="area" d="M0,52 C28,47 52,26 86,20 S138,14 166,11 S190,9 200,7 L200,64 L0,64Z" fill="#2E86C1"/>
+                <path d="M0,52 C28,47 52,26 86,20 S138,14 166,11 S190,9 200,7" stroke="#2E86C1"/>
+              </svg>
+            </div>
+            <div class="card-pill pill-live">● ACTIVE</div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Bangkok Urban Transport<br>Dashboard สถิติผู้โดยสาร 2556–2568</div>
+            <div class="card-desc">ข้อมูลผู้โดยสารระบบขนส่งสาธารณะครบทุกระบบ รถไฟฟ้า 8 สาย รถโดยสาร และเรือ 5 ประเภท พร้อมสัดส่วน Modal Share ย้อนหลัง 13 ปี</div>
+            <div class="card-stats">
+              <div><div class="cstat-val">13</div><div class="cstat-lbl">ปีข้อมูล</div></div>
+              <div><div class="cstat-val">11</div><div class="cstat-lbl">ระบบขนส่ง</div></div>
+              <div><div class="cstat-val">5</div><div class="cstat-lbl">หัวข้อวิเคราะห์</div></div>
+            </div>
+            <div class="card-foot">
+              <div class="tags">
+                <span class="tag t-blue">รถไฟฟ้า</span>
+                <span class="tag t-green">เรือโดยสาร</span>
+                <span class="tag t-gold">Modal Share</span>
+              </div>
+              <span class="detail-btn" onclick="openModal('transport',event)">รายละเอียด <span class="arr">→</span></span>
+            </div>
+          </div>
+        </a>
+
+        <!-- ② Travel Time -->
+        <a class="dcard c-gold"
+           href="https://bma-statistics-pw.github.io/BMA-travel-time-dashboard-TH/"
+           target="_blank"
+           data-status="live" data-cat="traffic"
+           data-kw="ความเร็ว เวลาเดินทาง จราจร tomtom ถนน โซน"
+           onclick="trackClick(event,'Travel Time')">
+          <div class="card-vis">
+            <div class="vis-deco">
+              <svg width="100%" height="100%" viewBox="0 0 190 130" preserveAspectRatio="xMidYMid slice">
+                <line x1="0" y1="65" x2="190" y2="65" stroke="#D4890A" stroke-width="0.5" opacity="0.3"/>
+                <line x1="0" y1="42" x2="190" y2="42" stroke="#D4890A" stroke-width="0.3" opacity="0.2"/>
+                <line x1="0" y1="88" x2="190" y2="88" stroke="#D4890A" stroke-width="0.3" opacity="0.2"/>
+              </svg>
+            </div>
+            <span class="card-icon">🚦</span>
+            <div class="card-type">Traffic Speed · ความเร็วการจราจร</div>
+            <div class="spark">
+              <svg viewBox="0 0 170 42">
+                <path class="area" d="M0,19 C24,16 43,7 72,8 S110,32 138,35 S160,29 170,27 L170,42 L0,42Z" fill="#D4890A"/>
+                <path d="M0,19 C24,16 43,7 72,8 S110,32 138,35 S160,29 170,27" stroke="#D4890A"/>
+              </svg>
+            </div>
+            <div class="card-pill pill-live">● ACTIVE</div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Bangkok Travel Time<br>&amp; Speed Analysis Dashboard</div>
+            <div class="card-desc">ความเร็วและเวลาเดินทาง 50 เส้นทาง 3 โซน Peak เช้า-เย็น ย้อนหลัง 9 ปี เปรียบ TomTom 2025</div>
+            <div class="card-stats">
+              <div><div class="cstat-val">50</div><div class="cstat-lbl">เส้นทาง</div></div>
+              <div><div class="cstat-val">9</div><div class="cstat-lbl">ปีข้อมูล</div></div>
+              <div><div class="cstat-val">3</div><div class="cstat-lbl">โซนเมือง</div></div>
+            </div>
+            <div class="card-foot">
+              <div class="tags">
+                <span class="tag t-gold">ความเร็ว</span>
+                <span class="tag t-blue">TomTom 2025</span>
+              </div>
+              <span class="detail-btn" onclick="openModal('travel',event)">รายละเอียด <span class="arr">→</span></span>
+            </div>
+          </div>
+        </a>
+
+        <!-- ③ EV Boat -->
+        <a class="dcard c-teal"
+           href="https://bma-statistics-pw.github.io/BMA-EV_Passenger-boat/"
+           target="_blank"
+           data-status="live" data-cat="transport"
+           data-kw="เรือ คลอง ผดุง ev ไฟฟ้า ผู้โดยสาร"
+           onclick="trackClick(event,'EV Boat')">
+          <div class="card-vis">
+            <div class="vis-deco">
+              <svg width="100%" height="100%" viewBox="0 0 190 130" preserveAspectRatio="xMidYMid slice">
+                <path d="M0,85 C38,74 76,55 114,59 S176,76 190,70" fill="none" stroke="#148F77" stroke-width="0.7" opacity="0.35"/>
+                <path d="M0,105 C38,94 76,75 114,79 S176,96 190,90" fill="none" stroke="#148F77" stroke-width="0.4" opacity="0.2"/>
+              </svg>
+            </div>
+            <span class="card-icon">⛵</span>
+            <div class="card-type">EV Boat · เรือไฟฟ้าคลอง</div>
+            <div class="spark">
+              <svg viewBox="0 0 170 42">
+                <path class="area" d="M0,32 L21,28 L42,24 L63,34 L84,12 L105,9 L126,17 L147,15 L168,19 L170,13 L170,42 L0,42Z" fill="#148F77"/>
+                <path d="M0,32 L21,28 L42,24 L63,34 L84,12 L105,9 L126,17 L147,15 L168,19 L170,13" stroke="#148F77"/>
+              </svg>
+            </div>
+            <div class="card-pill pill-live">● ACTIVE</div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">เรือไฟฟ้าคลองผดุงกรุงเกษม<br>Passenger Analytics Dashboard</div>
+            <div class="card-desc">วิเคราะห์ผู้โดยสารเรือไฟฟ้า รายเดือน แยกช่วงเช้า-บ่าย Seasonal Pattern ตั้งแต่เปิดให้บริการ มี.ค. 2566</div>
+            <div class="card-stats">
+              <div><div class="cstat-val">548K</div><div class="cstat-lbl">คนสะสม</div></div>
+              <div><div class="cstat-val">35</div><div class="cstat-lbl">เดือน</div></div>
+              <div><div class="cstat-val">1.7×</div><div class="cstat-lbl">บ่าย/เช้า</div></div>
+            </div>
+            <div class="card-foot">
+              <div class="tags">
+                <span class="tag t-teal">เรือไฟฟ้า</span>
+                <span class="tag t-green">รายเดือน</span>
+              </div>
+              <span class="detail-btn" onclick="openModal('boat',event)">รายละเอียด <span class="arr">→</span></span>
+            </div>
+          </div>
+        </a>
+
+        <!-- ④ Coming: Traffic Volume -->
+        <div class="dcard c-slate disabled"
+             data-status="soon" data-cat="traffic"
+             data-kw="ปริมาณจราจร vc ratio คอขวด">
+          <div class="card-vis">
+            <span class="card-icon" style="opacity:0.4">🚗</span>
+            <div class="card-type">Traffic Volume · ปริมาณจราจร</div>
+            <div class="card-pill pill-soon">COMING SOON</div>
+          </div>
+          <div class="card-body">
+            <div class="card-title" style="color:var(--text-muted)">ปริมาณจราจรและ V/C Ratio</div>
+            <div class="card-desc">ปริมาณรถยนต์ V/C ratio และแผนที่จุดคอขวด กำลังพัฒนา Phase 3</div>
+            <div class="card-foot"><div class="tags"><span class="tag t-slate">Phase 3</span></div></div>
+          </div>
+        </div>
+
+        <!-- ⑤ Coming: Road Safety -->
+        <div class="dcard c-slate disabled"
+             data-status="soon" data-cat="traffic"
+             data-kw="อุบัติเหตุ ความปลอดภัย จุดเสี่ยง">
+          <div class="card-vis">
+            <span class="card-icon" style="opacity:0.4">⚠️</span>
+            <div class="card-type">Road Safety · ความปลอดภัย</div>
+            <div class="card-pill pill-soon">COMING SOON</div>
+          </div>
+          <div class="card-body">
+            <div class="card-title" style="color:var(--text-muted)">สถิติอุบัติเหตุและจุดเสี่ยง</div>
+            <div class="card-desc">สถิติอุบัติเหตุทางถนน จุดเสี่ยง แนวโน้มรายปี กำลังพัฒนา Phase 3</div>
+            <div class="card-foot"><div class="tags"><span class="tag t-slate">Phase 3</span></div></div>
+          </div>
+        </div>
+
+      </div><!-- /cards-grid -->
+      <div id="noResults">
+        <div style="font-size:28px;margin-bottom:10px">🔍</div>
+        ไม่พบ Dashboard ที่ตรงกับการค้นหา
+      </div>
+    </div><!-- /#dashboards -->
+
+    <!-- ② ROADMAP -->
+    <div id="roadmap">
+      <div class="sec-head">
+        <span class="sec-num">02</span>
+        <span class="sec-title">แผนพัฒนา Dashboard</span>
+        <div class="sec-hr"></div>
+      </div>
+      <div class="roadmap-grid">
+        <div class="rphase done">
+          <div class="rp-label">Phase 1 · เสร็จแล้ว</div>
+          <div class="rp-title">ระบบขนส่งหลัก</div>
+          <ul class="rp-list">
+            <li>Bangkok Urban Transport</li>
+            <li>ผู้โดยสาร 11 ระบบ 13 ปี</li>
+            <li>Modal Share BTDM 2565</li>
+            <li>EV Boat คลองผดุงฯ</li>
+          </ul>
+          <span class="rp-badge">Completed ✓</span>
+        </div>
+        <div class="rphase active">
+          <div class="rp-label">Phase 2 · กำลังดำเนินการ</div>
+          <div class="rp-title">การจราจรและความเร็ว</div>
+          <ul class="rp-list">
+            <li>Travel Time 50 เส้นทาง</li>
+            <li>TomTom Benchmark 2025</li>
+            <li>Thai + English version</li>
+            <li>Master Index (หน้านี้)</li>
+          </ul>
+          <span class="rp-badge">In Progress</span>
+        </div>
+        <div class="rphase next">
+          <div class="rp-label">Phase 3 · ถัดไป</div>
+          <div class="rp-title">ปริมาณและความปลอดภัย</div>
+          <ul class="rp-list">
+            <li>ปริมาณจราจร V/C Ratio</li>
+            <li>แผนที่จุดคอขวด</li>
+            <li>สถิติอุบัติเหตุ</li>
+            <li>รายงานเปรียบเทียบปี</li>
+          </ul>
+          <span class="rp-badge">Planned</span>
+        </div>
+        <div class="rphase future">
+          <div class="rp-label">Phase 4 · ระยะยาว</div>
+          <div class="rp-title">ข้อมูลเชิงลึก</div>
+          <ul class="rp-list">
+            <li>PM2.5 เชื่อมการจราจร</li>
+            <li>Walkability Index</li>
+            <li>Park &amp; Ride Statistics</li>
+            <li>API Data Export</li>
+          </ul>
+          <span class="rp-badge">Future</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ③ DATA SOURCES -->
+    <div id="sources">
+      <div class="sec-head">
+        <span class="sec-num">03</span>
+        <span class="sec-title">แหล่งข้อมูลหลัก</span>
+        <div class="sec-hr"></div>
+      </div>
+      <table class="src-table">
+        <thead>
+          <tr>
+            <th>หน่วยงาน</th>
+            <th>ข้อมูลที่ใช้</th>
+            <th>Dashboard ที่เกี่ยวข้อง</th>
+            <th>ความถี่</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong><span class="src-dot" style="background:#2E86C1"></span>สจส. กทม.</strong></td>
+            <td>สำรวจความเร็ว 50 เส้นทาง, เรือไฟฟ้าคลองผดุงฯ</td>
+            <td>Travel Time · EV Boat</td>
+            <td>รายปี / รายเดือน</td>
+          </tr>
+          <tr>
+            <td><strong><span class="src-dot" style="background:#27AE60"></span>BTSC</strong></td>
+            <td>ผู้โดยสาร BTS สายสีเขียว, สายสีทอง</td>
+            <td>Urban Transport</td>
+            <td>รายปี</td>
+          </tr>
+          <tr>
+            <td><strong><span class="src-dot" style="background:#E8960A"></span>รฟม.</strong></td>
+            <td>ผู้โดยสาร MRT สีน้ำเงิน/ม่วง/เหลือง/ชมพู</td>
+            <td>Urban Transport</td>
+            <td>รายปี</td>
+          </tr>
+          <tr>
+            <td><strong><span class="src-dot" style="background:#148F77"></span>ขสมก.</strong></td>
+            <td>ผู้โดยสารรถโดยสาร (ปีงบประมาณ)</td>
+            <td>Urban Transport</td>
+            <td>รายปีงบประมาณ</td>
+          </tr>
+          <tr>
+            <td><strong><span class="src-dot" style="background:#7D3C98"></span>สนข.</strong></td>
+            <td>แบบจำลอง BTDM ปีฐาน 2565 (Modal Share)</td>
+            <td>Urban Transport</td>
+            <td>เป็นครั้งคราว</td>
+          </tr>
+          <tr>
+            <td><strong><span class="src-dot" style="background:#C0392B"></span>TomTom</strong></td>
+            <td>Traffic Index 2025 — Bangkok Congestion 67.9%</td>
+            <td>Travel Time (Benchmark)</td>
+            <td>รายปี</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-left">
+      <strong>กลุ่มงานสถิติและวิจัย · กองนโยบายและแผนงาน</strong><br>
+      สำนักการจราจรและขนส่ง · กรุงเทพมหานคร (สจส. กทม.)
+    </div>
+    <div class="footer-right">
+      <div class="footer-copy">© Prapawadee_W.</div>
+      <div class="footer-ver">BMA Transport Index · v3.0 · ปีงบประมาณ 2568</div>
+      <div id="footerDate" style="font-size:11px;color:var(--text-muted);margin-top:2px"></div>
+    </div>
+  </footer>
+
+</div><!-- /main-wrapper -->
+
+<!-- ══════════════════════════════════════ MODAL -->
+<div class="overlay" id="overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-head">
+      <div class="modal-icon" id="mIcon"></div>
+      <div class="modal-title-area">
+        <div class="modal-tag" id="mTag"></div>
+        <div class="modal-title" id="mTitle"></div>
+      </div>
+      <button class="modal-x" onclick="closeOverlay()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-sec">
+        <div class="modal-sec-title">รายละเอียด</div>
+        <div class="modal-desc" id="mDesc"></div>
+      </div>
+      <div class="modal-sec">
+        <div class="modal-sec-title">ตัวชี้วัดสำคัญ</div>
+        <div class="modal-kpis" id="mKpis"></div>
+      </div>
+      <div class="modal-sec">
+        <div class="modal-sec-title">ฟีเจอร์ใน Dashboard</div>
+        <ul class="modal-feats" id="mFeats"></ul>
+      </div>
+      <div class="modal-sec">
+        <div class="modal-sec-title">แหล่งข้อมูล</div>
+        <div class="modal-src" id="mSrc"></div>
+      </div>
+      <div class="modal-foot">
+        <a class="btn-go" id="mLink" href="#" target="_blank">🔗 เปิด Dashboard</a>
+        <button class="btn-cancel" onclick="closeOverlay()">ปิด</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ SCRIPT -->
+<script>
+// ── วันที่ภาษาไทย
+const MONTHS = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.']
+const d = new Date()
+const thaiDate = `${d.getDate()} ${MONTHS[d.getMonth()]} พ.ศ. ${d.getFullYear()+543}`
+document.getElementById('topDate').textContent    = thaiDate
+document.getElementById('footerDate').textContent = thaiDate
+
+// ── scroll navigation
+function navScroll(id, btn) {
+  document.querySelector(id)?.scrollIntoView({behavior:'smooth', block:'start'})
+  if (btn) {
+    document.querySelectorAll('.tnav-pill').forEach(p => p.classList.remove('active'))
+    btn.classList.add('active')
+  }
+}
+
+// ── filter cards
+function filterCards(type, btn) {
+  document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('on'))
+  btn.classList.add('on')
+  let visible = 0
+  document.querySelectorAll('.dcard').forEach(c => {
+    const cat    = c.dataset.cat    || ''
+    const status = c.dataset.status || ''
+    let show = true
+    if (type === 'live')      show = status === 'live'
+    if (type === 'transport') show = cat === 'transport'
+    if (type === 'traffic')   show = cat === 'traffic'
+    c.dataset.hidden = show ? 'false' : 'true'
+    if (show) visible++
+  })
+  document.getElementById('noResults').style.display = visible ? 'none' : 'block'
+}
+
+// ── search cards
+function searchCards(q) {
+  const query = q.toLowerCase().trim()
+  let visible = 0
+  document.querySelectorAll('.dcard').forEach(c => {
+    const kw = (c.dataset.kw||'') + ' ' + (c.querySelector('.card-title')?.textContent||'')
+    const ok = !query || kw.toLowerCase().includes(query)
+    c.dataset.hidden = ok ? 'false' : 'true'
+    if (ok) visible++
+  })
+  document.getElementById('noResults').style.display = visible ? 'none' : 'block'
+}
+
+// ── modal data
+const MODAL = {
+  transport: {
+    icon:'🚇', tag:'Public Transport · ผู้โดยสารระบบขนส่ง',
+    title:'Bangkok Urban Transport Dashboard',
+    desc:'Dashboard นำเสนอข้อมูลสถิติผู้โดยสารระบบขนส่งสาธารณะกรุงเทพมหานครอย่างครบถ้วน ครอบคลุมตั้งแต่ปี 2556 ถึง 2568 รวมทุกระบบขนส่งหลัก ทั้งรถไฟฟ้า รถโดยสาร และเรือโดยสาร พร้อมวิเคราะห์สัดส่วน Modal Share ตาม BTDM ของ สนข.',
+    kpis:[{v:'13',l:'ปีข้อมูล (2556–2568)'},{v:'11',l:'ระบบขนส่ง'},{v:'5',l:'หัวข้อวิเคราะห์'}],
+    feats:['ภาพรวม KPI ผู้โดยสารทุกระบบปีล่าสุด','กราฟแนวโน้มรายปีแบบ Interactive แยกตามระบบ','สัดส่วน Modal Share ขนส่งสาธารณะ vs รถส่วนบุคคล','ตารางข้อมูลรายสายพร้อมตัวเลขเปรียบเทียบ','วิเคราะห์ผลกระทบ COVID-19 ปี 2563–2564'],
+    src:'<strong>แหล่งข้อมูล:</strong> BTSC, รฟม., รฟท., ขสมก., กรมเจ้าท่า, สนข. (BTDM ปีฐาน 2565)',
+    link:'https://bma-statistics-pw.github.io/Bangkok_urban_Transport/'
+  },
+  travel: {
+    icon:'🚦', tag:'Traffic Speed · ความเร็วและเวลาเดินทาง',
+    title:'Bangkok Travel Time & Speed Analysis Dashboard',
+    desc:'วิเคราะห์ความเร็วเฉลี่ยและเวลาเดินทางบน 50 เส้นทางหลักของกรุงเทพมหานคร แบ่งตาม 3 โซนเมือง ในช่วง Peak เช้าและเย็น ย้อนหลัง 9 ปี พร้อมเปรียบเทียบกับ TomTom Traffic Index 2025 ระดับนานาชาติ',
+    kpis:[{v:'50',l:'เส้นทางสำรวจ'},{v:'9',l:'ปีข้อมูล (2560–2568)'},{v:'15.27',l:'กม./ชม. โซนใน เช้า'}],
+    feats:['KPI ความเร็วเฉลี่ยรายโซน เปรียบกับปีฐาน 2560','กราฟแนวโน้ม 9 ปี ทุกโซนและทิศทาง','เวลาเดินทางต่อ 10 กม. แยกช่วง Peak','Ranking 5 อันดับถนนเร็วสุด/ช้าสุด','Benchmark กับ TomTom Bangkok อันดับ 10 โลก'],
+    src:'<strong>แหล่งข้อมูล:</strong> สจส. กทม. (สำรวจภาคสนาม 2560–2568) และ TomTom Traffic Index 2025',
+    link:'https://bma-statistics-pw.github.io/BMA-travel-time-dashboard-TH/'
+  },
+  boat: {
+    icon:'⛵', tag:'EV Boat · เรือไฟฟ้าคลองผดุงกรุงเกษม',
+    title:'เรือไฟฟ้าคลองผดุงกรุงเกษม Passenger Analytics',
+    desc:'วิเคราะห์ข้อมูลผู้โดยสารเรือไฟฟ้าคลองผดุงกรุงเกษมตั้งแต่เปิดให้บริการ มีนาคม 2566 ถึง กุมภาพันธ์ 2569 ครอบคลุม 35 เดือน แยกช่วงเวลาเช้า-บ่าย พร้อมวิเคราะห์ Seasonal Pattern และความสม่ำเสมอของบริการ',
+    kpis:[{v:'548K',l:'ผู้โดยสารสะสม'},{v:'35',l:'เดือนของข้อมูล'},{v:'62.8%',l:'สัดส่วนช่วงบ่าย'}],
+    feats:['KPI ผู้โดยสารรายเดือน สะสม เฉลี่ย สูงสุด-ต่ำสุด','กราฟเปรียบเทียบเช้า vs บ่าย รายเดือน','Seasonal Pattern วิเคราะห์ช่วงเทศกาล','เปรียบเทียบรายปี (2566, 2567, 2568)','สถิติรอบเรือเฉลี่ย 612 รอบ/เดือน'],
+    src:'<strong>แหล่งข้อมูล:</strong> สำนักงานระบบขนส่ง สจส. กทม. วิเคราะห์โดย กลุ่มงานสถิติและวิจัย',
+    link:'https://bma-statistics-pw.github.io/BMA-EV_Passenger-boat/'
+  }
+}
+
+function openModal(key, evt) {
+  if (evt) { evt.preventDefault(); evt.stopPropagation(); }
+  const data = MODAL[key]; if (!data) return
+  document.getElementById('mIcon').textContent  = data.icon
+  document.getElementById('mTag').textContent   = data.tag
+  document.getElementById('mTitle').textContent = data.title
+  document.getElementById('mDesc').textContent  = data.desc
+  document.getElementById('mSrc').innerHTML     = data.src
+  document.getElementById('mLink').href         = data.link
+  document.getElementById('mKpis').innerHTML = data.kpis.map(k =>
+    `<div class="mkpi"><div class="mkpi-val">${k.v}</div><div class="mkpi-lbl">${k.l}</div></div>`
+  ).join('')
+  document.getElementById('mFeats').innerHTML = data.feats.map(f =>
+    `<li>${f}</li>`
+  ).join('')
+  document.getElementById('overlay').classList.add('open')
+  document.body.style.overflow = 'hidden'
+}
+function closeOverlay() {
+  document.getElementById('overlay').classList.remove('open')
+  document.body.style.overflow = ''
+}
+function closeModal(evt) {
+  if (evt.target === document.getElementById('overlay')) closeOverlay()
+}
+document.addEventListener('keydown', e => { if (e.key==='Escape') closeOverlay() })
+function trackClick(evt, name) { /* analytics hook */ }
+
+// ── active nav on scroll
+window.addEventListener('scroll', () => {
+  const pills = document.querySelectorAll('.tnav-pill')
+  const ids = ['#dashboards','#roadmap','#sources']
+  let cur = 0
+  ids.forEach((id,i) => {
+    const el = document.querySelector(id)
+    if (el && window.scrollY + 100 >= el.offsetTop) cur = i
+  })
+  pills.forEach((p,i) => p.classList.toggle('active', i===cur))
+})
+</script>
+</body>
+</html>

@@ -170,11 +170,47 @@ function renderModalShareChart(canvasId, modalData) {
 }
 
 /* ── 2.0 เปรียบเทียบสัดส่วน Public vs Private (Line) ── */
-function renderPublicPrivateCompareChart(canvasId, modalData) {
+function renderPublicPrivateCompareChart(canvasId, modalData, viewType = 'bar') {
   _destroyChart(canvasId);
   const d = modalData || TRANSIT.modalShare;
+
+  if (viewType === 'pie') {
+    const lastIdx = Math.max(0, (d.labels || []).length - 1);
+    const yearLabel = d.labels?.[lastIdx] || 'ล่าสุด';
+    _charts[canvasId] = new Chart(document.getElementById(canvasId), {
+      type: 'pie',
+      data: {
+        labels: ['ขนส่งสาธารณะ (%)', 'รถส่วนบุคคล (%)'],
+        datasets: [{
+          data: [Number(d.public?.[lastIdx] || 0), Number(d.private?.[lastIdx] || 0)],
+          backgroundColor: [COLORS.blue, COLORS.red],
+          borderColor: '#fff',
+          borderWidth: 2,
+        }],
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'top' },
+          title: {
+            display: true,
+            text: `เปรียบเทียบสัดส่วนปี ${yearLabel}`,
+            color: '#0A2342',
+            font: { size: 12 },
+          },
+          tooltip: {
+            callbacks: {
+              label: ctx => ` ${ctx.label}: ${Number(ctx.parsed || 0).toFixed(2)}%`,
+            },
+          },
+        },
+      },
+    });
+    return;
+  }
+
   _charts[canvasId] = new Chart(document.getElementById(canvasId), {
-    type: 'line',
+    type: 'bar',
     data: {
       labels: d.labels,
       datasets: [
@@ -182,21 +218,15 @@ function renderPublicPrivateCompareChart(canvasId, modalData) {
           label: 'ขนส่งสาธารณะ (%)',
           data: d.public,
           borderColor: COLORS.blue,
-          backgroundColor: 'rgba(46,134,193,0.08)',
-          tension: 0.35,
-          fill: true,
-          pointRadius: 3,
-          borderWidth: 2.25,
+          backgroundColor: 'rgba(46,134,193,0.55)',
+          borderRadius: 4,
         },
         {
           label: 'รถส่วนบุคคล (%)',
           data: d.private,
           borderColor: COLORS.red,
-          backgroundColor: 'rgba(192,57,43,0.08)',
-          tension: 0.35,
-          fill: true,
-          pointRadius: 3,
-          borderWidth: 2.25,
+          backgroundColor: 'rgba(192,57,43,0.55)',
+          borderRadius: 4,
         },
       ],
     },

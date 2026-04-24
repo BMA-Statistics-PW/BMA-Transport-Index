@@ -201,6 +201,10 @@
       <div class="bma-chart-card">
         <div class="bma-chart-title">กราฟเปรียบเทียบสัดส่วน: ขนส่งสาธารณะ vs รถส่วนบุคคล</div>
         <div class="bma-chart-subtitle">เส้นแนวโน้มเปรียบเทียบโดยตรง (% ของการเดินทางทั้งหมด)</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px;align-items:center;">
+          <button id="compareBarBtn" class="bma-tab active" type="button" style="border:1px solid var(--bma-border);background:var(--bma-white);">Bar chart</button>
+          <button id="comparePieBtn" class="bma-tab" type="button" style="border:1px solid var(--bma-border);background:var(--bma-white);">Pie chart</button>
+        </div>
         <div class="bma-chart-container" style="height:300px;">
           <canvas id="publicPrivateCompareChart" aria-label="กราฟเปรียบเทียบสัดส่วนระบบขนส่งสาธารณะกับรถส่วนบุคคล" role="img"></canvas>
         </div>
@@ -267,6 +271,18 @@
   <script>
     let ridershipTrendAll = null;
     let monthlyRidership = null;
+    let modalShareCurrent = TRANSIT.modalShare;
+    let compareChartView = 'bar';
+
+    function renderCompareChartView() {
+      renderPublicPrivateCompareChart('publicPrivateCompareChart', modalShareCurrent, compareChartView);
+      const barBtn = document.getElementById('compareBarBtn');
+      const pieBtn = document.getElementById('comparePieBtn');
+      if (barBtn && pieBtn) {
+        barBtn.classList.toggle('active', compareChartView === 'bar');
+        pieBtn.classList.toggle('active', compareChartView === 'pie');
+      }
+    }
 
     function renderAnnualTrendByFilter() {
       const sel = document.getElementById('annualSystemFilter');
@@ -335,8 +351,23 @@
       initChartDefaults();
       renderAnnualTrendChart('annualTrendChart');
       renderModalShareChart('modalShareChart');
-      renderPublicPrivateCompareChart('publicPrivateCompareChart');
+      renderCompareChartView();
       renderRadarChart('radarChart');
+
+      const compareBarBtn = document.getElementById('compareBarBtn');
+      const comparePieBtn = document.getElementById('comparePieBtn');
+      if (compareBarBtn) {
+        compareBarBtn.addEventListener('click', () => {
+          compareChartView = 'bar';
+          renderCompareChartView();
+        });
+      }
+      if (comparePieBtn) {
+        comparePieBtn.addEventListener('click', () => {
+          compareChartView = 'pie';
+          renderCompareChartView();
+        });
+      }
 
       try {
         const reportRows = await fetchCsv('./data/ridership/transport_report.csv');
@@ -386,8 +417,9 @@
         const shareRows = await fetchCsv('./data/ridership/transport_share.csv');
         const modalData = processModalShareData(shareRows);
         if (modalData.labels.length > 0) {
+          modalShareCurrent = modalData;
           renderModalShareChart('modalShareChart', modalData);
-          renderPublicPrivateCompareChart('publicPrivateCompareChart', modalData);
+          renderCompareChartView();
         }
       } catch (e) {
         console.warn('Modal share CSV unavailable:', e.message);

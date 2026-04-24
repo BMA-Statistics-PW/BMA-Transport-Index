@@ -181,6 +181,9 @@
         <span class="bma-sec-hr" aria-hidden="true"></span>
         <span class="bma-sec-meta">อ้างอิงแบบจำลอง BTDM สนข. ปี 2560–2568</span>
       </div>
+
+      <div id="modalShareCards" class="bma-share-cards" aria-label="สรุปสัดส่วนการเดินทางล่าสุด"></div>
+
       <div class="bma-grid-6040">
         <div class="bma-chart-card">
           <div class="bma-chart-title">สัดส่วน ขนส่งสาธารณะ vs รถส่วนบุคคล</div>
@@ -325,6 +328,51 @@
       renderMonthlyRidershipChart('monthlyRidershipChart', monthlyRidership, system, year);
     }
 
+    function renderModalShareCards(modalData) {
+      const el = document.getElementById('modalShareCards');
+      if (!el || !modalData || !modalData.labels?.length) return;
+
+      const idx = modalData.labels.length - 1;
+      const prevIdx = Math.max(0, idx - 1);
+      const latestYear = modalData.labels[idx];
+      const publicVal = Number(modalData.public?.[idx] || 0);
+      const privateVal = Number(modalData.private?.[idx] || 0);
+      const publicPrev = Number(modalData.public?.[prevIdx] || 0);
+      const privatePrev = Number(modalData.private?.[prevIdx] || 0);
+
+      const publicDelta = publicVal - publicPrev;
+      const privateDelta = privateVal - privatePrev;
+      const gap = Math.abs(privateVal - publicVal);
+
+      el.innerHTML = `
+        <article class="bma-share-card public">
+          <div class="bma-share-label">Public Transport Share</div>
+          <div class="bma-share-value">${publicVal.toFixed(2)}%</div>
+          <div class="bma-share-sub">ปี ${latestYear}</div>
+          <div class="bma-share-trend ${publicDelta >= 0 ? 'up' : 'down'}">${publicDelta >= 0 ? '▲' : '▼'} ${Math.abs(publicDelta).toFixed(2)} จุด จากปีก่อน</div>
+        </article>
+        <article class="bma-share-card private">
+          <div class="bma-share-label">Private Transport Share</div>
+          <div class="bma-share-value">${privateVal.toFixed(2)}%</div>
+          <div class="bma-share-sub">ปี ${latestYear}</div>
+          <div class="bma-share-trend ${privateDelta <= 0 ? 'up' : 'down'}">${privateDelta <= 0 ? '▲' : '▼'} ${Math.abs(privateDelta).toFixed(2)} จุด จากปีก่อน</div>
+        </article>
+        <article class="bma-share-card gap">
+          <div class="bma-share-label">Share Gap</div>
+          <div class="bma-share-value">${gap.toFixed(2)}<span class="bma-kpi-unit"> จุด</span></div>
+          <div class="bma-share-sub">ช่องว่างระหว่าง Private และ Public (ปี ${latestYear})</div>
+          <div class="bma-share-ratio">
+            <div class="bma-share-track" aria-label="สัดส่วน Public ต่อ Private">
+              <span class="bma-share-fill-public" style="width:${Math.max(0, Math.min(100, publicVal)).toFixed(2)}%"></span>
+            </div>
+            <div class="bma-share-metrics">
+              <span>Public <strong>${publicVal.toFixed(2)}%</strong></span>
+              <span>Private <strong>${privateVal.toFixed(2)}%</strong></span>
+            </div>
+          </div>
+        </article>`;
+    }
+
     function renderRidershipInsights(containerId, trendData) {
       const el = document.getElementById(containerId);
       if (!el || !trendData || !trendData.labels?.length || !trendData.datasets?.length) return;
@@ -352,6 +400,7 @@
       renderAnnualTrendChart('annualTrendChart');
       renderModalShareChart('modalShareChart');
       renderCompareChartView();
+      renderModalShareCards(modalShareCurrent);
       renderRadarChart('radarChart');
 
       const compareBarBtn = document.getElementById('compareBarBtn');
@@ -420,6 +469,7 @@
           modalShareCurrent = modalData;
           renderModalShareChart('modalShareChart', modalData);
           renderCompareChartView();
+          renderModalShareCards(modalData);
         }
       } catch (e) {
         console.warn('Modal share CSV unavailable:', e.message);

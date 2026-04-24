@@ -169,6 +169,91 @@
   margin-bottom: 8px;
 }
 
+/* ── Modal share summary cards ── */
+.bma-share-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.bma-share-card {
+  position: relative;
+  overflow: hidden;
+  background: var(--bma-white);
+  border: 1px solid var(--bma-border);
+  border-radius: var(--bma-r);
+  padding: 16px 18px;
+  box-shadow: var(--bma-sh-xs);
+}
+.bma-share-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--card-accent, var(--bma-blue-mid));
+}
+.bma-share-card.public { --card-accent: var(--bma-blue-mid); }
+.bma-share-card.private { --card-accent: var(--bma-red); }
+.bma-share-card.gap { --card-accent: var(--bma-gold-bright); }
+.bma-share-label {
+  font-size: 11px;
+  color: var(--bma-text-muted);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.bma-share-value {
+  font-family: var(--bma-font-display);
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--bma-navy);
+}
+.bma-share-sub {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--bma-text-mid);
+}
+.bma-share-trend {
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.bma-share-trend.up { color: var(--bma-green); }
+.bma-share-trend.down { color: var(--bma-red); }
+.bma-share-ratio {
+  display: grid;
+  gap: 10px;
+}
+.bma-share-track {
+  width: 100%;
+  height: 12px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--bma-bg);
+  border: 1px solid var(--bma-border);
+}
+.bma-share-fill-public {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #2E86C1, #5DADE2);
+}
+.bma-share-metrics {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--bma-text-mid);
+}
+.bma-share-metrics strong {
+  color: var(--bma-navy);
+  font-family: var(--bma-font-display);
+  font-weight: 700;
+}
+
 /* ── Homepage index card ── */
 .bma-index-card {
   background: var(--bma-white);
@@ -216,10 +301,12 @@
   .bma-grid-2, .bma-grid-6040 { grid-template-columns: 1fr; }
   .bma-grid-3 { grid-template-columns: 1fr 1fr; }
   .bma-grid-4 { grid-template-columns: 1fr 1fr; }
+  .bma-share-cards { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 479px) {
   .bma-grid-3 { grid-template-columns: 1fr; }
   .bma-grid-4 { grid-template-columns: 1fr; }
+  .bma-share-cards { grid-template-columns: 1fr; }
   .bma-tabs   { gap: 2px; padding: 3px; }
   .bma-tab    { padding: 6px 12px; font-size: 12px; }
 }

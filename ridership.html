@@ -138,14 +138,29 @@
       </div>
       <div class="bma-grid-2">
         <div class="bma-chart-card">
+          <div class="bma-card-topline">
+            <span class="bma-source-tag">Series View</span>
+            <span class="bma-source-tag">หน่วย: ล้านเที่ยวคน/ปี</span>
+          </div>
           <div class="bma-chart-title">จำนวนผู้โดยสารรายระบบ — แนวโน้มรายปี</div>
           <div class="bma-chart-subtitle">รถไฟฟ้า · รถโดยสาร · เรือโดยสาร (ล้านเที่ยวคน/ปี)</div>
+          <div class="bma-chip-row">
+            <span class="bma-chip">ขสมก.</span>
+            <span class="bma-chip">รฟม.</span>
+            <span class="bma-chip">รฟท.</span>
+            <span class="bma-chip">กรมเจ้าท่า</span>
+          </div>
           <div class="bma-chart-container" style="height:340px;">
             <canvas id="annualTrendChart" aria-label="กราฟแนวโน้มผู้โดยสารรายปี" role="img"></canvas>
           </div>
+          <div class="bma-card-note">กราฟนี้ใช้เพื่อดูทิศทางระยะยาวและผลกระทบช่วง COVID-19 ต่อระบบขนส่งหลักในกรุงเทพมหานคร</div>
         </div>
 
         <div class="bma-chart-card">
+          <div class="bma-card-topline">
+            <span class="bma-source-tag">Interactive Filter</span>
+            <span class="bma-source-tag">เปรียบเทียบรายระบบ</span>
+          </div>
           <div class="bma-chart-title">แนวโน้มผู้โดยสารรายระบบหลัก</div>
           <div class="bma-chart-subtitle">ขสมก. · BTS สีเขียว · MRT สีน้ำเงิน · ARL · MRT สีม่วง (ล้านเที่ยวคน/ปี)</div>
           <div style="display:flex;gap:12px;flex-wrap:wrap;margin:12px 0 4px;align-items:center;">
@@ -157,12 +172,17 @@
           <div class="bma-chart-container" style="height:360px;">
             <canvas id="ridershipSystemTrendChart" aria-label="กราฟแนวโน้มผู้โดยสารรายระบบหลัก" role="img"></canvas>
           </div>
+          <div class="bma-card-note">เลือก “ทุกระบบ” เพื่อดูภาพรวม หรือเลือกระบบเดียวเพื่อเจาะลึกความผันผวนรายปี</div>
         </div>
       </div>
 
       <div id="ridershipInsightCards" class="bma-grid-3"></div>
 
       <div class="bma-chart-card">
+        <div class="bma-card-topline">
+          <span class="bma-source-tag">Monthly Drill-down</span>
+          <span class="bma-source-tag">หน่วย: ล้านเที่ยวคน/เดือน</span>
+        </div>
         <div class="bma-chart-title">กราฟเจาะรายเดือนแยกตามระบบ</div>
         <div class="bma-chart-subtitle">เลือกระบบและปีเพื่อดูรูปแบบรายเดือน (ล้านเที่ยวคน/เดือน)</div>
         <div style="display:flex;gap:12px;flex-wrap:wrap;margin:12px 0 4px;align-items:center;">
@@ -174,6 +194,7 @@
         <div class="bma-chart-container" style="height:330px;">
           <canvas id="monthlyRidershipChart" aria-label="กราฟแนวโน้มผู้โดยสารรายเดือน" role="img"></canvas>
         </div>
+        <div class="bma-card-note">เหมาะสำหรับดู seasonality ของแต่ละระบบ และเดือนที่ demand สูง/ต่ำผิดปกติ</div>
       </div>
 
       <!-- Section 2: Modal Share -->
@@ -458,6 +479,8 @@
       if (!el || !trendData || !trendData.labels?.length || !trendData.datasets?.length) return;
       const lastIdx = trendData.labels.length - 1;
       const prevIdx = Math.max(0, lastIdx - 1);
+      const year = trendData.labels[lastIdx];
+      const prevYear = trendData.labels[prevIdx];
 
       const cards = trendData.datasets.slice(0, 3).map(ds => {
         const curr = Number(ds.data[lastIdx] || 0);
@@ -465,11 +488,13 @@
         const delta = prev > 0 ? ((curr - prev) / prev) * 100 : 0;
         const up = delta >= 0;
         return `
-          <div class="bma-compare-block">
-            <div class="bma-compare-title">${ds.label}</div>
-            <div class="bma-kpi-num" style="font-size:30px;">${Number(curr).toFixed(2)}<span class="bma-kpi-unit"> ล้านเที่ยวคน/ปี</span></div>
-            <div class="bma-kpi-chg ${up ? 'bma-up' : 'bma-down'}">${up ? '▲' : '▼'} ${Math.abs(delta).toFixed(1)}% จากปีก่อน</div>
-          </div>`;
+          <article class="bma-insight-card">
+            <div class="bma-insight-title">${ds.label}</div>
+            <div class="bma-insight-value">${Number(curr).toFixed(2)}<span class="bma-kpi-unit"> ล.</span></div>
+            <div class="bma-insight-sub">ปี ${year} · ล้านเที่ยวคน/ปี</div>
+            <div class="bma-insight-delta ${up ? 'bma-up' : 'bma-down'}">${up ? '▲' : '▼'} ${Math.abs(delta).toFixed(1)}% จากปีก่อน</div>
+            <div class="bma-insight-prev">ปี ${prevYear}: ${Number(prev).toFixed(2)} ล้านเที่ยวคน/ปี</div>
+          </article>`;
       }).join('');
       el.innerHTML = cards;
     }

@@ -146,13 +146,33 @@
 
       <div class="bma-chart-card">
         <div class="bma-chart-title">แนวโน้มผู้โดยสารรายระบบหลัก</div>
-        <div class="bma-chart-subtitle">ขสมก. · BTS สีเขียว · MRT สีน้ำเงิน · ARL · MRT สีม่วง (ปี 2556–2568)</div>
+        <div class="bma-chart-subtitle">ขสมก. · BTS สีเขียว · MRT สีน้ำเงิน · ARL · MRT สีม่วง (ล้านเที่ยวคน/ปี)</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin:12px 0 4px;align-items:center;">
+          <label for="annualSystemFilter" style="font-size:12px;color:var(--bma-text-mid);font-weight:600;">เลือกระบบขนส่ง:</label>
+          <select id="annualSystemFilter" class="bma-tab" style="padding:7px 12px;min-width:240px;background:var(--bma-white);border:1px solid var(--bma-border);">
+            <option value="all">ทุกระบบ</option>
+          </select>
+        </div>
         <div class="bma-chart-container" style="height:360px;">
           <canvas id="ridershipSystemTrendChart" aria-label="กราฟแนวโน้มผู้โดยสารรายระบบหลัก" role="img"></canvas>
         </div>
       </div>
 
       <div id="ridershipInsightCards" class="bma-grid-3"></div>
+
+      <div class="bma-chart-card">
+        <div class="bma-chart-title">กราฟเจาะรายเดือนแยกตามระบบ</div>
+        <div class="bma-chart-subtitle">เลือกระบบและปีเพื่อดูรูปแบบรายเดือน (ล้านเที่ยวคน/เดือน)</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin:12px 0 4px;align-items:center;">
+          <label for="monthlySystemFilter" style="font-size:12px;color:var(--bma-text-mid);font-weight:600;">ระบบ:</label>
+          <select id="monthlySystemFilter" class="bma-tab" style="padding:7px 12px;min-width:240px;background:var(--bma-white);border:1px solid var(--bma-border);"></select>
+          <label for="monthlyYearFilter" style="font-size:12px;color:var(--bma-text-mid);font-weight:600;">ปี:</label>
+          <select id="monthlyYearFilter" class="bma-tab" style="padding:7px 12px;min-width:120px;background:var(--bma-white);border:1px solid var(--bma-border);"></select>
+        </div>
+        <div class="bma-chart-container" style="height:330px;">
+          <canvas id="monthlyRidershipChart" aria-label="กราฟแนวโน้มผู้โดยสารรายเดือน" role="img"></canvas>
+        </div>
+      </div>
 
       <!-- Section 2: Modal Share -->
       <div class="bma-sec-head">
@@ -237,6 +257,50 @@
   <script src="src/js/charts.js"></script>
   <script src="src/js/data-loader.js"></script>
   <script>
+    let ridershipTrendAll = null;
+    let monthlyRidership = null;
+
+    function renderAnnualTrendByFilter() {
+      const sel = document.getElementById('annualSystemFilter');
+      if (!sel || !ridershipTrendAll) return;
+      const selected = sel.value;
+      const filtered = selected === 'all'
+        ? ridershipTrendAll
+        : {
+            labels: ridershipTrendAll.labels,
+            datasets: ridershipTrendAll.datasets.filter(ds => ds.label === selected),
+          };
+      renderRidershipSystemTrendChart('ridershipSystemTrendChart', filtered);
+      renderRidershipInsights('ridershipInsightCards', filtered);
+    }
+
+    function syncMonthlyYearOptions() {
+      const systemSel = document.getElementById('monthlySystemFilter');
+      const yearSel = document.getElementById('monthlyYearFilter');
+      if (!systemSel || !yearSel || !monthlyRidership) return;
+
+      const system = systemSel.value;
+      const years = monthlyRidership.years.filter(y => {
+        const arr = monthlyRidership.bySystem?.[system]?.[y];
+        return Array.isArray(arr) && arr.some(v => v != null);
+      });
+
+      yearSel.innerHTML = years
+        .sort((a, b) => b - a)
+        .map(y => `<option value="${y}">${y}</option>`)
+        .join('');
+    }
+
+    function renderMonthlyByFilter() {
+      const systemSel = document.getElementById('monthlySystemFilter');
+      const yearSel = document.getElementById('monthlyYearFilter');
+      if (!systemSel || !yearSel || !monthlyRidership) return;
+      const system = systemSel.value;
+      const year = Number.parseInt(yearSel.value, 10);
+      if (!system || !Number.isFinite(year)) return;
+      renderMonthlyRidershipChart('monthlyRidershipChart', monthlyRidership, system, year);
+    }
+
     function renderRidershipInsights(containerId, trendData) {
       const el = document.getElementById(containerId);
       if (!el || !trendData || !trendData.labels?.length || !trendData.datasets?.length) return;
@@ -251,7 +315,7 @@
         return `
           <div class="bma-compare-block">
             <div class="bma-compare-title">${ds.label}</div>
-            <div class="bma-kpi-num" style="font-size:30px;">${Math.round(curr / 1000000).toLocaleString()}<span class="bma-kpi-unit"> ล้าน/ปี</span></div>
+            <div class="bma-kpi-num" style="font-size:30px;">${Number(curr).toFixed(2)}<span class="bma-kpi-unit"> ล้านเที่ยวคน/ปี</span></div>
             <div class="bma-kpi-chg ${up ? 'bma-up' : 'bma-down'}">${up ? '▲' : '▼'} ${Math.abs(delta).toFixed(1)}% จากปีก่อน</div>
           </div>`;
       }).join('');
@@ -267,11 +331,46 @@
 
       try {
         const reportRows = await fetchCsv('./data/ridership/transport_report.csv');
-        const trendData = processRidershipSystemTrend(reportRows);
-        renderRidershipSystemTrendChart('ridershipSystemTrendChart', trendData);
-        renderRidershipInsights('ridershipInsightCards', trendData);
+        ridershipTrendAll = processRidershipSystemTrend(reportRows);
+
+        const annualFilter = document.getElementById('annualSystemFilter');
+        if (annualFilter && ridershipTrendAll.datasets?.length) {
+          annualFilter.innerHTML = ['<option value="all">ทุกระบบ</option>']
+            .concat(ridershipTrendAll.datasets.map(ds => `<option value="${ds.label}">${ds.label}</option>`))
+            .join('');
+          annualFilter.addEventListener('change', renderAnnualTrendByFilter);
+        }
+
+        renderAnnualTrendByFilter();
       } catch (e) {
         console.warn('Ridership trend CSV unavailable:', e.message);
+      }
+
+      try {
+        const monthlyRows = await fetchCsv('./data/ridership/transport_monthly_systems.csv');
+        monthlyRidership = processMonthlyRidershipData(monthlyRows);
+
+        const monthlySystemFilter = document.getElementById('monthlySystemFilter');
+        const monthlyYearFilter = document.getElementById('monthlyYearFilter');
+
+        if (monthlySystemFilter && monthlyRidership.systems?.length) {
+          monthlySystemFilter.innerHTML = monthlyRidership.systems
+            .map(s => `<option value="${s}">${s}</option>`)
+            .join('');
+          monthlySystemFilter.addEventListener('change', () => {
+            syncMonthlyYearOptions();
+            renderMonthlyByFilter();
+          });
+        }
+
+        if (monthlyYearFilter) {
+          monthlyYearFilter.addEventListener('change', renderMonthlyByFilter);
+        }
+
+        syncMonthlyYearOptions();
+        renderMonthlyByFilter();
+      } catch (e) {
+        console.warn('Monthly ridership CSV unavailable:', e.message);
       }
 
       try {

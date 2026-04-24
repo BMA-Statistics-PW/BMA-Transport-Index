@@ -104,7 +104,7 @@ function renderAnnualTrendChart(canvasId) {
         legend: { position: 'top' },
         tooltip: {
           callbacks: {
-            label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString()} ล้านเที่ยว`,
+            label: ctx => ` ${ctx.dataset.label}: ${Number(ctx.parsed.y).toFixed(1)} ล้านเที่ยวคน/ปี`,
           },
         },
         ...(covidAnnotation ? { annotation: covidAnnotation } : {}),
@@ -196,7 +196,7 @@ function renderRidershipSystemTrendChart(canvasId, trendData) {
         legend: { position: 'top' },
         tooltip: {
           callbacks: {
-            label: ctx => ` ${ctx.dataset.label}: ${Number(ctx.parsed.y || 0).toLocaleString()} เที่ยวคน/ปี`,
+            label: ctx => ` ${ctx.dataset.label}: ${Number(ctx.parsed.y || 0).toFixed(2)} ล้านเที่ยวคน/ปี`,
           },
         },
       },
@@ -205,9 +205,54 @@ function renderRidershipSystemTrendChart(canvasId, trendData) {
         y: {
           grid: { color: '#F0F4F8' },
           ticks: {
-            callback: v => `${Math.round(Number(v) / 1000000)} ล.`,
+            callback: v => `${Number(v).toFixed(1)} ล.`,
           },
-          title: { display: true, text: 'เที่ยวคน/ปี', font: { size: 11 } },
+          title: { display: true, text: 'ล้านเที่ยวคน/ปี', font: { size: 11 } },
+        },
+      },
+    },
+  });
+}
+
+/* ── 2.2 กราฟเจาะรายเดือนรายระบบ ── */
+function renderMonthlyRidershipChart(canvasId, monthlyData, system, year) {
+  if (!monthlyData || !system || !year) return;
+  const series = monthlyData.bySystem?.[system]?.[year];
+  if (!series) return;
+
+  _destroyChart(canvasId);
+  _charts[canvasId] = new Chart(document.getElementById(canvasId), {
+    type: 'line',
+    data: {
+      labels: monthlyData.months,
+      datasets: [{
+        label: `${system} (${year})`,
+        data: series,
+        borderColor: COLORS.navy,
+        backgroundColor: 'rgba(10,35,66,0.08)',
+        tension: 0.35,
+        fill: true,
+        pointRadius: 3,
+        pointHoverRadius: 4,
+        borderWidth: 2.25,
+      }],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'top' },
+        tooltip: {
+          callbacks: {
+            label: ctx => ` ${ctx.dataset.label}: ${Number(ctx.parsed.y || 0).toFixed(3)} ล้านเที่ยวคน/เดือน`,
+          },
+        },
+      },
+      scales: {
+        x: { grid: { color: '#F0F4F8' } },
+        y: {
+          grid: { color: '#F0F4F8' },
+          ticks: { callback: v => `${Number(v).toFixed(2)} ล.` },
+          title: { display: true, text: 'ล้านเที่ยวคน/เดือน', font: { size: 11 } },
         },
       },
     },
@@ -519,5 +564,6 @@ if (typeof module !== 'undefined' && module.exports) {
     renderSpeedTrendChart,
     renderModalShareChart,
     renderRidershipSystemTrendChart,
+    renderMonthlyRidershipChart,
   };
 }

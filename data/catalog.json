@@ -6,7 +6,7 @@
   "publisher": "สำนักการจราจรและขนส่ง กรุงเทพมหานคร (สจส.)",
   "language": ["th", "en"],
   "license": "https://creativecommons.org/licenses/by/4.0/",
-  "modified": "2025-04-12",
+  "modified": "2026-04-24",
   "datasets": [
     {
       "id": "bma-ridership",
@@ -30,6 +30,11 @@
           "name": "transport_share.csv",
           "path": "data/ridership/transport_share.csv",
           "description": "สัดส่วนรูปแบบการเดินทาง (Modal Share)"
+        },
+        {
+          "name": "transport_monthly_systems.csv",
+          "path": "data/ridership/transport_monthly_systems.csv",
+          "description": "ผู้โดยสารรายเดือนแยกแต่ละระบบ (ล้านเที่ยวคน/เดือน)"
         }
       ],
       "sources": [

@@ -164,7 +164,10 @@ function processRidershipSystemTrend(rows) {
   const nameKey = Object.keys(firstDataRow)[1] || Object.keys(firstDataRow)[0];
 
   const pickRow = (matcher) => rows.find(r => matcher(String(r[nameKey] || '')));
-  const buildSeries = (row) => years.map(y => (row ? _toNumber(row[y]) : null));
+  const buildSeries = (row) => years.map(y => {
+    const v = row ? _toNumber(row[y]) : null;
+    return v == null ? null : v / 1000000;
+  });
 
   const busRow = pickRow(name => name.includes('รถโดยสารประจำทาง'));
   const btsGreenRow = pickRow(name => name.includes('BTS สายสีเขียว'));
@@ -182,6 +185,41 @@ function processRidershipSystemTrend(rows) {
       { label: 'MRT สายสีม่วง', data: buildSeries(mrtPurpleRow) },
     ],
   };
+}
+
+/**
+ * แปลงข้อมูลรายเดือนแยกรายระบบเป็น long format สำหรับ drill-down chart
+ * @param {Array<Object>} rows
+ * @returns {{systems: string[], years: number[], months: string[], bySystem: Object}}
+ */
+function processMonthlyRidershipData(rows) {
+  const monthNames = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+  const out = { systems: [], years: [], months: monthNames, bySystem: {} };
+  if (!rows || rows.length === 0) return out;
+
+  const systems = [...new Set(rows.map(r => String(r.system || '').trim()).filter(Boolean))];
+  const years = [...new Set(rows.map(r => Number.parseInt(r.year, 10)).filter(Number.isFinite))].sort((a, b) => a - b);
+
+  systems.forEach(system => {
+    out.bySystem[system] = {};
+    years.forEach(year => {
+      out.bySystem[system][year] = new Array(12).fill(null);
+    });
+  });
+
+  rows.forEach(r => {
+    const system = String(r.system || '').trim();
+    const year = Number.parseInt(r.year, 10);
+    const month = Number.parseInt(r.month, 10);
+    const value = _toNumber(r.value_million);
+    if (!system || !Number.isFinite(year) || !Number.isFinite(month) || month < 1 || month > 12) return;
+    if (!out.bySystem[system] || !out.bySystem[system][year]) return;
+    out.bySystem[system][year][month - 1] = value;
+  });
+
+  out.systems = systems;
+  out.years = years;
+  return out;
 }
 
 /**
@@ -232,6 +270,7 @@ if (typeof module !== 'undefined' && module.exports) {
     processSpeedDirectionData,
     processRidershipSystemTrend,
     processModalShareData,
+    processMonthlyRidershipData,
     setDataState,
   };
 }

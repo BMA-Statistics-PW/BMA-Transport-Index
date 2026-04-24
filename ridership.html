@@ -198,6 +198,14 @@
         </div>
       </div>
 
+      <div class="bma-chart-card">
+        <div class="bma-chart-title">กราฟเปรียบเทียบสัดส่วน: ขนส่งสาธารณะ vs รถส่วนบุคคล</div>
+        <div class="bma-chart-subtitle">เส้นแนวโน้มเปรียบเทียบโดยตรง (% ของการเดินทางทั้งหมด)</div>
+        <div class="bma-chart-container" style="height:300px;">
+          <canvas id="publicPrivateCompareChart" aria-label="กราฟเปรียบเทียบสัดส่วนระบบขนส่งสาธารณะกับรถส่วนบุคคล" role="img"></canvas>
+        </div>
+      </div>
+
       <!-- Section 3: System Table -->
       <div class="bma-sec-head">
         <span class="bma-sec-num">03</span>
@@ -327,6 +335,7 @@
       initChartDefaults();
       renderAnnualTrendChart('annualTrendChart');
       renderModalShareChart('modalShareChart');
+      renderPublicPrivateCompareChart('publicPrivateCompareChart');
       renderRadarChart('radarChart');
 
       try {
@@ -378,6 +387,7 @@
         const modalData = processModalShareData(shareRows);
         if (modalData.labels.length > 0) {
           renderModalShareChart('modalShareChart', modalData);
+          renderPublicPrivateCompareChart('publicPrivateCompareChart', modalData);
         }
       } catch (e) {
         console.warn('Modal share CSV unavailable:', e.message);

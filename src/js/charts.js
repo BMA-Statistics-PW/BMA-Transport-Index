@@ -169,6 +169,62 @@ function renderModalShareChart(canvasId, modalData) {
   });
 }
 
+/* ── 2.0 เปรียบเทียบสัดส่วน Public vs Private (Line) ── */
+function renderPublicPrivateCompareChart(canvasId, modalData) {
+  _destroyChart(canvasId);
+  const d = modalData || TRANSIT.modalShare;
+  _charts[canvasId] = new Chart(document.getElementById(canvasId), {
+    type: 'line',
+    data: {
+      labels: d.labels,
+      datasets: [
+        {
+          label: 'ขนส่งสาธารณะ (%)',
+          data: d.public,
+          borderColor: COLORS.blue,
+          backgroundColor: 'rgba(46,134,193,0.08)',
+          tension: 0.35,
+          fill: true,
+          pointRadius: 3,
+          borderWidth: 2.25,
+        },
+        {
+          label: 'รถส่วนบุคคล (%)',
+          data: d.private,
+          borderColor: COLORS.red,
+          backgroundColor: 'rgba(192,57,43,0.08)',
+          tension: 0.35,
+          fill: true,
+          pointRadius: 3,
+          borderWidth: 2.25,
+        },
+      ],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { position: 'top' },
+        tooltip: {
+          callbacks: {
+            label: ctx => ` ${ctx.dataset.label}: ${Number(ctx.parsed.y || 0).toFixed(2)}%`,
+          },
+        },
+      },
+      scales: {
+        x: { grid: { color: '#F0F4F8' } },
+        y: {
+          min: 0,
+          max: 100,
+          grid: { color: '#F0F4F8' },
+          ticks: { callback: v => `${v}%` },
+          title: { display: true, text: 'สัดส่วนการเดินทาง (%)', font: { size: 11 } },
+        },
+      },
+    },
+  });
+}
+
 /* ── 2.1 แนวโน้มผู้โดยสารรายระบบหลัก (Line) ── */
 function renderRidershipSystemTrendChart(canvasId, trendData) {
   if (!trendData || !trendData.labels || !trendData.datasets) return;
@@ -563,6 +619,7 @@ if (typeof module !== 'undefined' && module.exports) {
     renderAllCharts,
     renderSpeedTrendChart,
     renderModalShareChart,
+    renderPublicPrivateCompareChart,
     renderRidershipSystemTrendChart,
     renderMonthlyRidershipChart,
   };

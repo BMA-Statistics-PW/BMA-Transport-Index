@@ -357,6 +357,101 @@ function renderSystemShareDoughnut(canvasId) {
   });
 }
 
+/* ── 3.2 แนวโน้มความเร็วรายโซน (2560-2568) — เส้นแยก Inbound/Outbound ── */
+function renderZoneSpeedTrendChart(canvasId) {
+  _destroyChart(canvasId);
+  const d = TRANSIT.speedTrendByZone;
+  const covidAnnotation = _buildCovidAnnotation();
+  _charts[canvasId] = new Chart(document.getElementById(canvasId), {
+    type: 'line',
+    data: {
+      labels: d.labels,
+      datasets: [
+        {
+          label: 'ชั้นใน - ขาเข้า',
+          data: d.Urban.inbound,
+          borderColor: '#C0392B',
+          backgroundColor: 'rgba(192,57,43,0.06)',
+          tension: 0.4, fill: true, pointRadius: 3.5, borderWidth: 2,
+          borderDash: [],
+        },
+        {
+          label: 'ชั้นใน - ขาออก',
+          data: d.Urban.outbound,
+          borderColor: '#E67E22',
+          backgroundColor: 'rgba(230,126,34,0.06)',
+          tension: 0.4, fill: true, pointRadius: 3.5, borderWidth: 2,
+          borderDash: [3, 3],
+        },
+        {
+          label: 'ชั้นกลาง - ขาเข้า',
+          data: d.Suburban.inbound,
+          borderColor: '#2471A3',
+          backgroundColor: 'rgba(36,113,163,0.06)',
+          tension: 0.4, fill: true, pointRadius: 3.5, borderWidth: 2,
+          borderDash: [],
+        },
+        {
+          label: 'ชั้นกลาง - ขาออก',
+          data: d.Suburban.outbound,
+          borderColor: '#16A085',
+          backgroundColor: 'rgba(22,160,133,0.06)',
+          tension: 0.4, fill: true, pointRadius: 3.5, borderWidth: 2,
+          borderDash: [3, 3],
+        },
+        {
+          label: 'ชั้นนอก - ขาเข้า',
+          data: d.Rural.inbound,
+          borderColor: '#8E44AD',
+          backgroundColor: 'rgba(142,68,173,0.06)',
+          tension: 0.4, fill: true, pointRadius: 3.5, borderWidth: 2,
+          borderDash: [],
+        },
+        {
+          label: 'ชั้นนอก - ขาออก',
+          data: d.Rural.outbound,
+          borderColor: '#27AE60',
+          backgroundColor: 'rgba(39,174,96,0.06)',
+          tension: 0.4, fill: true, pointRadius: 3.5, borderWidth: 2,
+          borderDash: [3, 3],
+        },
+      ],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          position: 'top',
+          labels: {
+            usePointStyle: true,
+            font: { size: 11 },
+            padding: 12,
+          },
+        },
+        tooltip: {
+          backgroundColor: 'rgba(0,0,0,0.8)',
+          titleFont: { size: 12 },
+          bodyFont: { size: 11 },
+          padding: 10,
+          callbacks: {
+            label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y.toFixed(1)} km/h`,
+          },
+        },
+        ...(covidAnnotation ? { annotation: covidAnnotation } : {}),
+      },
+      scales: {
+        x: { grid: { color: '#F0F4F8' } },
+        y: {
+          grid: { color: '#F0F4F8' },
+          ticks: { callback: v => v + ' km/h' },
+          title: { display: true, text: 'ความเร็วเฉลี่ย (km/h)', font: { size: 11 } },
+        },
+      },
+    },
+  });
+}
+
 /* ── render ทุกกราฟในหน้าหลัก ── */
 function renderAllCharts() {
   if (typeof Chart === 'undefined') {

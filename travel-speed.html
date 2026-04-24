@@ -186,6 +186,14 @@
       </div>
 
       <div class="bma-chart-card">
+        <div class="bma-chart-title">แนวโน้มความเร็วเฉลี่ยรายโซน (2560–2568) — แยกขาเข้า/ขาออก</div>
+        <div class="bma-chart-subtitle">ข้อมูลทั้ง 9 ปี · 6 เส้น (ชั้นใน/กลาง/นอก × ขาเข้า/ขาออก)</div>
+        <div class="bma-chart-container" style="height:380px;">
+          <canvas id="zoneSpeedTrendChart" aria-label="กราฟแนวโน้มความเร็วแยกโซนและทิศทาง" role="img"></canvas>
+        </div>
+      </div>
+
+      <div class="bma-chart-card">
         <div class="bma-chart-title">ความเร็วเฉลี่ยปีล่าสุด แยกโซน/ทิศทาง/ช่วงเวลา</div>
         <div class="bma-chart-subtitle">พอร์ตจาก BMA-travel-time-dashboard-TH · เช้า/เย็น · ขาเข้า/ขาออก</div>
         <div class="bma-chart-container" style="height:340px;">
@@ -447,6 +455,7 @@
         const rows = await fetchCsv('./data/travel-speed/travel_speed.csv');
         const processed = processSpeedData(rows);
         renderSpeedTrendChart('speedTrendChart', processed);
+        renderZoneSpeedTrendChart('zoneSpeedTrendChart');
 
         try {
           const directional = processSpeedDirectionData(rows);
@@ -457,6 +466,7 @@
       } catch (e) {
         // fall back to static data in transit-data.js
         renderSpeedTrendChart('speedTrendChart');
+        renderZoneSpeedTrendChart('zoneSpeedTrendChart');
         renderZoneDirectionBarChart('zoneDirectionBarChart');
         console.warn('Using static speed data:', e.message);
       }

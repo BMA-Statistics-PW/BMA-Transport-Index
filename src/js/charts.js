@@ -220,6 +220,64 @@ function renderSpeedTrendChart(canvasId, speedData) {
   });
 }
 
+/* ── 3.1 ความเร็วแยกทิศทาง/ช่วงเวลา (Grouped Bar) ── */
+function renderZoneDirectionBarChart(canvasId, directionalData) {
+  _destroyChart(canvasId);
+  const d = directionalData || TRANSIT.speedByZoneDirection;
+  _charts[canvasId] = new Chart(document.getElementById(canvasId), {
+    type: 'bar',
+    data: {
+      labels: d.labels,
+      datasets: [
+        {
+          label: 'เช้า ขาเข้า',
+          data: d.morningInbound,
+          backgroundColor: '#C0392B',
+          borderRadius: 4,
+        },
+        {
+          label: 'เช้า ขาออก',
+          data: d.morningOutbound,
+          backgroundColor: '#E67E22',
+          borderRadius: 4,
+        },
+        {
+          label: 'เย็น ขาเข้า',
+          data: d.eveningInbound,
+          backgroundColor: '#2471A3',
+          borderRadius: 4,
+        },
+        {
+          label: 'เย็น ขาออก',
+          data: d.eveningOutbound,
+          backgroundColor: '#16A085',
+          borderRadius: 4,
+        },
+      ],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { position: 'top' },
+        tooltip: {
+          callbacks: {
+            label: ctx => ` ${ctx.dataset.label}: ${Number(ctx.parsed.y).toFixed(2)} km/h`,
+          },
+        },
+      },
+      scales: {
+        x: { grid: { display: false } },
+        y: {
+          grid: { color: '#F0F4F8' },
+          ticks: { callback: v => `${v} km/h` },
+          title: { display: true, text: 'ความเร็วเฉลี่ย (km/h)', font: { size: 11 } },
+        },
+      },
+    },
+  });
+}
+
 /* ── 4. Radar — ประสิทธิภาพระบบขนส่ง ── */
 function renderRadarChart(canvasId) {
   _destroyChart(canvasId);
@@ -303,6 +361,7 @@ function renderAllCharts() {
   if (document.getElementById('annualTrendChart')) renderAnnualTrendChart('annualTrendChart');
   if (document.getElementById('modalShareChart'))  renderModalShareChart('modalShareChart');
   if (document.getElementById('speedTrendChart'))  renderSpeedTrendChart('speedTrendChart');
+  if (document.getElementById('zoneDirectionBarChart')) renderZoneDirectionBarChart('zoneDirectionBarChart');
   if (document.getElementById('radarChart'))       renderRadarChart('radarChart');
   if (document.getElementById('systemShareChart')) renderSystemShareDoughnut('systemShareChart');
 }

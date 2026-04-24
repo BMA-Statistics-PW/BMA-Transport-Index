@@ -105,6 +105,11 @@ const TRANSIT = {
     congestionLevel:  67.9,
     tomtomSpeed:      20.4,
     bmaInnerSpeed:    15.3,
+    avgTimePer10km:   '22:59',
+    morningRushTime:  '25:45',
+    eveningRushTime:  '31:25',
+    peakCongestion:   126.5,
+    annualLostHours:  115,
     topCities: [
       { rank:1,  city:'London',    country:'GB', congestion:97.0 },
       { rank:2,  city:'Dublin',    country:'IE', congestion:89.8 },
@@ -113,6 +118,15 @@ const TRANSIT = {
       { rank:5,  city:'Tokyo',     country:'JP', congestion:83.3 },
       { rank:10, city:'Bangkok',   country:'TH', congestion:67.9 },
     ],
+  },
+
+  /* ── ความเร็วแยกโซน/ทิศทาง (ปี 2568) ── */
+  speedByZoneDirection: {
+    labels: ['ชั้นใน', 'ชั้นกลาง', 'ชั้นนอก'],
+    morningInbound:   [15.27, 20.90, 25.99],
+    morningOutbound:  [17.16, 27.14, 35.37],
+    eveningInbound:   [14.58, 23.56, 28.21],
+    eveningOutbound:  [14.89, 26.39, 32.89],
   },
 
   /* ── ประสิทธิภาพระบบขนส่ง (Radar chart) ── */

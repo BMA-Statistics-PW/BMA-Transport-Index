@@ -164,6 +164,12 @@
         TomTom ใช้เพื่อ benchmark ระดับสากลเท่านั้น
       </div>
 
+      <div class="bma-note info" role="note">
+        <strong>🌏 TomTom Traffic Index 2025 (อ้างอิงสากล):</strong>
+        อันดับโลกที่ 10 · Congestion 67.9% · เฉลี่ย 22:59 นาที/10 กม. ·
+        เร่งด่วนเช้า 25:45 นาที · เร่งด่วนเย็น 31:25 นาที (Peak Congestion 126.5%)
+      </div>
+
       <!-- Section 1: Speed Trend -->
       <div class="bma-sec-head">
         <span class="bma-sec-num">01</span>
@@ -176,6 +182,14 @@
         <div class="bma-chart-subtitle">ข้อมูลปี 2560–2568 · BMA Field Survey · เส้นแนวโน้มรายปี</div>
         <div class="bma-chart-container" style="height:340px;">
           <canvas id="speedTrendChart" aria-label="กราฟแนวโน้มความเร็วแยกโซน" role="img"></canvas>
+        </div>
+      </div>
+
+      <div class="bma-chart-card">
+        <div class="bma-chart-title">ความเร็วเฉลี่ยปีล่าสุด แยกโซน/ทิศทาง/ช่วงเวลา</div>
+        <div class="bma-chart-subtitle">พอร์ตจาก BMA-travel-time-dashboard-TH · เช้า/เย็น · ขาเข้า/ขาออก</div>
+        <div class="bma-chart-container" style="height:340px;">
+          <canvas id="zoneDirectionBarChart" aria-label="กราฟแท่งความเร็วแยกโซนและทิศทาง" role="img"></canvas>
         </div>
       </div>
 
@@ -245,6 +259,58 @@
           <p style="font-size:11px;color:var(--bma-text-muted);margin-top:10px;">
             Source: <a href="https://www.tomtom.com/traffic-index/" target="_blank" rel="noopener" style="color:var(--bma-blue);">TomTom Traffic Index 2025</a>
           </p>
+        </div>
+      </div>
+
+      <div class="bma-table-wrap" style="margin-top:16px;">
+        <div class="bma-table-head">
+          <div>
+            <div class="bma-table-title">เปรียบเทียบเวลาเดินทาง 10 กม. — BMA กับ TomTom</div>
+            <div class="bma-table-sub">ข้อมูลปี 2568 · หน่วย: นาที/10 กม.</div>
+          </div>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="bma-table" aria-label="ตารางเปรียบเทียบเวลาเดินทาง 10 กิโลเมตร">
+            <thead>
+              <tr>
+                <th>ช่วงเวลา / ทิศทาง</th>
+                <th class="num">ชั้นใน</th>
+                <th class="num">ชั้นกลาง</th>
+                <th class="num">ชั้นนอก</th>
+                <th class="num">TomTom (City)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>เร่งด่วนเช้า · ขาเข้า</td>
+                <td class="num">39.3</td>
+                <td class="num">28.7</td>
+                <td class="num">23.1</td>
+                <td class="num">25:45</td>
+              </tr>
+              <tr>
+                <td>เร่งด่วนเช้า · ขาออก</td>
+                <td class="num">35.0</td>
+                <td class="num">22.1</td>
+                <td class="num">17.0</td>
+                <td class="num">—</td>
+              </tr>
+              <tr>
+                <td>เร่งด่วนเย็น · ขาเข้า</td>
+                <td class="num">41.1</td>
+                <td class="num">25.4</td>
+                <td class="num">21.2</td>
+                <td class="num">31:25</td>
+              </tr>
+              <tr>
+                <td>เร่งด่วนเย็น · ขาออก</td>
+                <td class="num">40.3</td>
+                <td class="num">22.7</td>
+                <td class="num">18.2</td>
+                <td class="num">—</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
@@ -319,10 +385,13 @@
       try {
         const rows = await fetchCsv('./data/travel-speed/travel_speed.csv');
         const processed = processSpeedData(rows);
+        const directional = processSpeedDirectionData(rows);
         renderSpeedTrendChart('speedTrendChart', processed);
+        renderZoneDirectionBarChart('zoneDirectionBarChart', directional);
       } catch (e) {
         // fall back to static data in transit-data.js
         renderSpeedTrendChart('speedTrendChart');
+        renderZoneDirectionBarChart('zoneDirectionBarChart');
         console.warn('Using static speed data:', e.message);
       }
     });

@@ -118,6 +118,30 @@ function processSpeedData(rows) {
 }
 
 /**
+ * แปลงข้อมูล speed CSV เป็นความเร็วปีล่าสุด แยกโซน/ทิศทาง/ช่วงเวลา
+ * @param {Array<Object>} rows
+ * @returns {{labels, morningInbound, morningOutbound, eveningInbound, eveningOutbound}}
+ */
+function processSpeedDirectionData(rows) {
+  const years = [...new Set(rows.map(r => Number(r.year)))].filter(Number.isFinite).sort((a, b) => a - b);
+  const latest = String(years[years.length - 1] || '');
+  const zones = ['Inner', 'Middle', 'Outer'];
+
+  const getValues = (peak, direction) => zones.map(zone => {
+    const row = rows.find(r => r.year === latest && r.zone === zone && r.peak === peak && r.direction === direction);
+    return row ? Number.parseFloat(row.speed_kmh) : null;
+  });
+
+  return {
+    labels: ['ชั้นใน', 'ชั้นกลาง', 'ชั้นนอก'],
+    morningInbound:  getValues('Morning', 'Inbound'),
+    morningOutbound: getValues('Morning', 'Outbound'),
+    eveningInbound:  getValues('Evening', 'Inbound'),
+    eveningOutbound: getValues('Evening', 'Outbound'),
+  };
+}
+
+/**
  * แสดงสถานะ loading/error ใน container
  * @param {string} containerId
  * @param {'loading'|'error'} state
@@ -135,5 +159,13 @@ function setDataState(containerId, state, message = '') {
 
 /* export สำหรับ module-aware environments */
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { fetchCsv, fetchJson, parseCsv, loadAllData, processSpeedData, setDataState };
+  module.exports = {
+    fetchCsv,
+    fetchJson,
+    parseCsv,
+    loadAllData,
+    processSpeedData,
+    processSpeedDirectionData,
+    setDataState,
+  };
 }

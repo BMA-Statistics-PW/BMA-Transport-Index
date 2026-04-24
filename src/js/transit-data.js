@@ -46,14 +46,14 @@ const TRANSIT = {
       trend:  'up',
     },
     speed: {
-      label:  'ความเร็วเฉลี่ย (เช้า-ใน)',
+      label:  'ความเร็วเฉลี่ย (ช่วงเช้า-ชั้นใน)',
       value:  '15.3',
-      unit:   'km/h',
+      unit:   'กม./ชม.',
       change: -5.3,
       trend:  'down',
     },
     share: {
-      label:  'สัดส่วน ขนส่งสาธารณะ',
+      label:  'สัดส่วนการเดินทางด้วยขนส่งสาธารณะ',
       value:  '11.7',
       unit:   '%',
       change: 0,

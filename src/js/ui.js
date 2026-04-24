@@ -45,7 +45,7 @@ function renderKpiStrip(containerId) {
       <div class="bma-kpi-cell ${cfg.color}">
         <div class="bma-kpi-em">${cfg.icon}</div>
         <div class="bma-kpi-lbl">${k.label}</div>
-        <div class="bma-kpi-num">${k.value}<span class="bma-kpi-unit">${k.unit}</span></div>
+        <div class="bma-kpi-num">${k.value}<span class="bma-kpi-unit"> ${k.unit}</span></div>
         <div class="bma-kpi-chg ${chgClass}">${chgText}</div>
       </div>`;
   }).join('');

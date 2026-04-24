@@ -356,21 +356,21 @@ function renderSpeedTrendChart(canvasId, speedData) {
       labels: d.labels,
       datasets: [
         {
-          label: 'ชั้นใน (Inner)',
+          label: 'ชั้นใน',
           data: d.inner,
           borderColor: COLORS.red,
           backgroundColor: ALPHA.red,
           tension: 0.4, fill: true, pointRadius: 4, borderWidth: 2.5,
         },
         {
-          label: 'ชั้นกลาง (Middle)',
+          label: 'ชั้นกลาง',
           data: d.middle,
           borderColor: COLORS.orange,
           backgroundColor: 'rgba(211,84,0,0.07)',
           tension: 0.4, fill: true, pointRadius: 4, borderWidth: 2.5,
         },
         {
-          label: 'ชั้นนอก (Outer)',
+          label: 'ชั้นนอก',
           data: d.outer,
           borderColor: COLORS.green,
           backgroundColor: ALPHA.green,

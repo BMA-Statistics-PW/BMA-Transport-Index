@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="วิเคราะห์ความเร็วเฉลี่ยและเวลาเดินทางบนถนนสายหลัก 50 สาย 3 โซน กรุงเทพมหานคร ปี 2560–2568">
-  <title>ความเร็วและเวลาเดินทาง — BMA Urban Transport Index</title>
+  <title>อัตราเร็วเฉลี่ยและเวลาเดินทาง — BMA Urban Transport Index</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -71,7 +71,7 @@
     <header class="bma-topbar">
       <div class="bma-topbar-left">
         <div>
-          <div class="bma-page-title">ความเร็วและเวลาเดินทาง</div>
+          <div class="bma-page-title">อัตราเร็วเฉลี่ยและเวลาเดินทาง</div>
           <div class="bma-breadcrumb">BMA Transport Index / <span>Travel Speed</span></div>
         </div>
       </div>
@@ -91,11 +91,11 @@
       <div class="bma-hero-inner">
         <div>
           <div class="bma-hero-crumb">Travel Speed / <span>ข้อมูลปี 2560–2568</span></div>
-          <h1 class="bma-hero-h1">ความเร็วและเวลาเดินทาง<br><em>ถนนสายหลักกรุงเทพมหานคร</em></h1>
+          <h1 class="bma-hero-h1">อัตราเร็วเฉลี่ยและเวลาเดินทาง<br><em>บนถนนสายหลักกรุงเทพมหานคร</em></h1>
           <p class="bma-hero-sub">
             วิเคราะห์ความเร็วเฉลี่ยและเวลาเดินทางบนถนนสายหลัก 50 สาย ใน 3 โซน
             ช่วงชั่วโมงเร่งด่วน ปี 2560–2568
-            พร้อมเปรียบเทียบกับ TomTom Global Traffic Index
+            พร้อมข้อมูลอ้างอิงจากดัชนีการจราจร TomTom ในระดับสากล
           </p>
         </div>
         <div class="bma-hero-counters" role="list">
@@ -158,25 +158,25 @@
 
       <!-- Note -->
       <div class="bma-note warning" role="note">
-        <strong>⚠️ ข้อควรระวัง:</strong>
+        <strong>⚠️ ข้อพึงระวังในการตีความ:</strong>
         ข้อมูล BMA เก็บจากการสำรวจภาคสนาม (50 ถนน · ช่วงเร่งด่วน 4 ชม./วัน)
         ไม่สามารถเปรียบเทียบโดยตรงกับ TomTom ที่ใช้ GPS probe data ตลอด 24 ชม.
-        TomTom ใช้เพื่อ benchmark ระดับสากลเท่านั้น
+        ข้อมูล TomTom จึงใช้เพื่อการอ้างอิงเชิงเปรียบเทียบในระดับสากลเท่านั้น
       </div>
 
       <div class="bma-note info" role="note">
         <strong>🌏 TomTom Traffic Index 2025 (อ้างอิงสากล):</strong>
-        อันดับโลกที่ 10 · Congestion 67.9% · เฉลี่ย 22:59 นาที/10 กม. ·
-        เร่งด่วนเช้า 25:45 นาที · เร่งด่วนเย็น 31:25 นาที (Peak Congestion 126.5%)
+        อันดับโลกที่ 10 · ระดับความหนาแน่นการจราจร 67.9% · เฉลี่ย 22:59 นาที/10 กม. ·
+        ช่วงเร่งด่วนเช้า 25:45 นาที · ช่วงเร่งด่วนเย็น 31:25 นาที (ค่าความหนาแน่นสูงสุด 126.5%)
       </div>
 
       <div class="bma-chart-card travel-report-hero-card">
         <div class="bma-card-topline">
-          <span class="bma-source-tag">Executive Summary</span>
-          <span class="bma-source-tag">ปี 2568 · BMA + TomTom 2025</span>
+          <span class="bma-source-tag">สรุปสำหรับผู้บริหาร</span>
+          <span class="bma-source-tag">ปี 2568 · สจส. และ TomTom 2025</span>
         </div>
         <div class="bma-chart-title">รายงานสรุปเวลาและอัตราเร็วเฉลี่ยการเดินทาง</div>
-        <div class="bma-chart-subtitle">สรุปผลเชิงผู้บริหารจาก 50 ถนนสายหลัก 3 โซนพื้นที่ พร้อม benchmark ระดับสากล</div>
+        <div class="bma-chart-subtitle">สรุปผลเชิงผู้บริหารจาก 50 ถนนสายหลัก 3 โซนพื้นที่ พร้อมข้อมูลอ้างอิงเชิงเปรียบเทียบระดับสากล</div>
         <div id="speedExecutiveCards" class="travel-kpi-grid" aria-label="สรุปตัวเลขสำคัญการเดินทาง"></div>
         <div class="bma-card-note">ค่าทั้งหมดอ้างอิงข้อมูลปีล่าสุดจากการสำรวจภาคสนามของ สจส. และข้อมูลอ้างอิง TomTom Traffic Index 2025</div>
       </div>
@@ -186,7 +186,7 @@
         <div>
           <div class="travel-tomtom-title">กรุงเทพมหานครในมุมมองจราจรระดับโลก</div>
           <div id="tomtomStatGrid" class="travel-tomtom-grid" aria-label="ตัวเลขสำคัญจาก TomTom"></div>
-          <div class="travel-tomtom-note">TomTom ใช้ GPS probe data ครอบคลุมตลอด 24 ชั่วโมง จึงเหมาะสำหรับ benchmark ระดับเมือง และไม่ควรเทียบตรงกับผลสำรวจภาคสนามรายถนนแบบหนึ่งต่อหนึ่ง</div>
+          <div class="travel-tomtom-note">TomTom ใช้ข้อมูลตำแหน่งจากระบบ GPS ครอบคลุมตลอด 24 ชั่วโมง จึงเหมาะสำหรับใช้อ้างอิงเปรียบเทียบในระดับเมือง และไม่ควรเทียบตรงกับผลสำรวจภาคสนามรายถนนแบบหนึ่งต่อหนึ่ง</div>
         </div>
       </div>
 
@@ -199,11 +199,11 @@
       </div>
       <div class="bma-chart-card transport-theme-card transport-theme-mix">
         <div class="bma-card-topline">
-          <span class="bma-source-tag">Trend View</span>
+          <span class="bma-source-tag">มุมมองแนวโน้ม</span>
           <span class="bma-source-tag">หน่วย: km/h</span>
         </div>
         <div class="bma-chart-title">ความเร็วเฉลี่ย (km/h) แยก 3 โซน — ช่วงเช้า ขาเข้า (07:00–09:00)</div>
-        <div class="bma-chart-subtitle">ข้อมูลปี 2560–2568 · BMA Field Survey · เส้นแนวโน้มรายปี</div>
+        <div class="bma-chart-subtitle">ข้อมูลปี 2560–2568 · การสำรวจภาคสนามของ สจส. · เส้นแนวโน้มรายปี</div>
         <div class="bma-chart-container" style="height:340px;">
           <canvas id="speedTrendChart" aria-label="กราฟแนวโน้มความเร็วแยกโซน" role="img"></canvas>
         </div>
@@ -212,8 +212,8 @@
 
       <div class="bma-chart-card transport-theme-card transport-theme-mix">
         <div class="bma-card-topline">
-          <span class="bma-source-tag">Directional Trend</span>
-          <span class="bma-source-tag">Morning Inbound / Outbound</span>
+          <span class="bma-source-tag">แนวโน้มแยกตามทิศทาง</span>
+          <span class="bma-source-tag">ช่วงเช้า · ขาเข้า / ขาออก</span>
         </div>
         <div class="bma-chart-title">แนวโน้มความเร็วเฉลี่ยรายโซน (2560–2568) — แยกขาเข้า/ขาออก</div>
         <div class="bma-chart-subtitle">ข้อมูลทั้ง 9 ปี · 6 เส้น (ชั้นใน/กลาง/นอก × ขาเข้า/ขาออก)</div>
@@ -225,11 +225,11 @@
 
       <div class="bma-chart-card transport-theme-card transport-theme-road">
         <div class="bma-card-topline">
-          <span class="bma-source-tag">Latest Snapshot</span>
+          <span class="bma-source-tag">ภาพรวมปีล่าสุด</span>
           <span class="bma-source-tag">ปี 2568 · 4 มิติ</span>
         </div>
         <div class="bma-chart-title">ความเร็วเฉลี่ยปีล่าสุด แยกโซน/ทิศทาง/ช่วงเวลา</div>
-        <div class="bma-chart-subtitle">พอร์ตจาก BMA-travel-time-dashboard-TH · เช้า/เย็น · ขาเข้า/ขาออก</div>
+        <div class="bma-chart-subtitle">สรุปผลเช้า/เย็น และขาเข้า/ขาออก จากข้อมูลสำรวจภาคสนามปีล่าสุด</div>
         <div class="bma-chart-container" style="height:340px;">
           <canvas id="zoneDirectionBarChart" aria-label="กราฟแท่งความเร็วแยกโซนและทิศทาง" role="img"></canvas>
         </div>
@@ -255,7 +255,7 @@
 
         <!-- TomTom benchmark -->
         <div class="bma-compare-block">
-          <div class="bma-compare-title">🌍 TomTom Global Traffic Index 2025 — Top 10</div>
+          <div class="bma-compare-title">🌍 TomTom Traffic Index 2025 — 10 อันดับแรกของโลก</div>
           <div style="overflow-x:auto;">
             <table class="bma-table" aria-label="ตาราง TomTom 2025 อันดับเมืองจราจร">
               <thead>
@@ -269,7 +269,7 @@
             </table>
           </div>
           <p style="font-size:11px;color:var(--bma-text-muted);margin-top:10px;">
-            Source: <a href="https://www.tomtom.com/traffic-index/" target="_blank" rel="noopener" style="color:var(--bma-blue);">TomTom Traffic Index 2025</a>
+            แหล่งอ้างอิง: <a href="https://www.tomtom.com/traffic-index/" target="_blank" rel="noopener" style="color:var(--bma-blue);">TomTom Traffic Index 2025</a>
           </p>
         </div>
       </div>
@@ -371,7 +371,7 @@
       <div class="bma-table-wrap">
         <div class="bma-table-head">
           <div>
-            <div class="bma-table-title">BMA Survey vs TomTom — ความแตกต่างที่ต้องทราบ</div>
+            <div class="bma-table-title">การสำรวจภาคสนามของ สจส. เทียบกับ TomTom — ประเด็นที่ควรทราบ</div>
             <div class="bma-table-sub">ข้อจำกัดเชิงวิธีวิทยาที่ต้องใช้ประกอบการตีความผล</div>
           </div>
         </div>
@@ -380,14 +380,14 @@
             <thead>
               <tr>
                 <th>หัวข้อ</th>
-                <th>BMA Field Survey</th>
+                <th>การสำรวจภาคสนามของ สจส.</th>
                 <th>TomTom Traffic Index</th>
               </tr>
             </thead>
             <tbody>
               <tr><td>ครอบคลุมถนน</td><td>50 ถนนสายหลัก</td><td>ถนนทุกสาย + ทางด่วน</td></tr>
               <tr><td>ช่วงเวลา</td><td>ช่วงเร่งด่วน 4 ชม./วัน</td><td>24 ชม./วัน 365 วัน/ปี</td></tr>
-              <tr><td>วิธีเก็บข้อมูล</td><td>สำรวจภาคสนาม</td><td>GPS probe data</td></tr>
+              <tr><td>วิธีเก็บข้อมูล</td><td>สำรวจภาคสนาม</td><td>ข้อมูลตำแหน่งจากระบบ GPS</td></tr>
               <tr><td>ทิศทาง</td><td>ขาเข้า / ขาออก แยก</td><td>ค่าเฉลี่ยทั้งเมือง</td></tr>
               <tr><td>ปฏิทิน</td><td>ปีงบประมาณไทย (B.E.)</td><td>ปีปฏิทิน (Gregorian)</td></tr>
             </tbody>
@@ -409,13 +409,13 @@
     <footer class="bma-footer">
       <div class="bma-footer-left">
         <strong>BMA Urban Transport Index</strong><br>
-        Primary: Average Speed Survey · BMA 2017–2025 ·
-        International Reference: TomTom Traffic Index 2025 ·
+        ข้อมูลหลัก: การสำรวจอัตราเร็วเฉลี่ยของสำนักการจราจรและขนส่ง ปี 2560–2568 ·
+        ข้อมูลอ้างอิงสากล: TomTom Traffic Index 2025 ·
         © Prapawadee_W. อัปเดตล่าสุด: 12-04-2568
       </div>
       <div class="bma-footer-right">
         <div class="bma-footer-copy">© Prapawadee_W.</div>
-        <div class="bma-footer-ver">v1.0.0 · BMA Urban Transport Index</div>
+        <div class="bma-footer-ver">v1.0.0 · ระบบสารสนเทศ BMA Urban Transport Index</div>
       </div>
     </footer>
   </div><!-- /.bma-main -->
@@ -482,11 +482,11 @@
       const avgEveningIn = snapshot.reduce((sum, zone) => sum + zone.eveningInbound, 0) / snapshot.length;
 
       const cards = [
-        { icon: '🏙️', tone: 'red', value: inner.morningInbound.toFixed(2), unit: 'km/h', label: 'ชั้นใน · เช้า · ขาเข้า', sub: 'ค่าต่ำสุดของเครือข่ายปี 2568' },
-        { icon: '🌳', tone: 'green', value: outer.morningInbound.toFixed(2), unit: 'km/h', label: 'ชั้นนอก · เช้า · ขาเข้า', sub: 'ค่าดีที่สุดของเครือข่ายปี 2568' },
+        { icon: '🏙️', tone: 'red', value: inner.morningInbound.toFixed(2), unit: 'กม./ชม.', label: 'ชั้นใน · ช่วงเช้า · ขาเข้า', sub: 'ค่าต่ำสุดของเครือข่ายในปี 2568' },
+        { icon: '🌳', tone: 'green', value: outer.morningInbound.toFixed(2), unit: 'กม./ชม.', label: 'ชั้นนอก · ช่วงเช้า · ขาเข้า', sub: 'ค่าดีที่สุดของเครือข่ายในปี 2568' },
         { icon: '⏱️', tone: 'orange', value: formatMinutesFromSpeed(inner.eveningInbound), unit: 'นาที/10 กม.', label: 'ชั้นใน · เย็น · ขาเข้า', sub: 'เวลาสูงสุดจากข้อมูลภาคสนาม' },
-        { icon: '🌍', tone: 'blue', value: String(TRANSIT.benchmark.bangkokRank), unit: 'อันดับโลก', label: 'TomTom Traffic Index 2025', sub: `Congestion ${TRANSIT.benchmark.congestionLevel}%` },
-        { icon: '↔️', tone: 'gold', value: (avgEveningIn - avgMorningIn).toFixed(1), unit: 'km/h', label: 'เฉลี่ยเย็น - เช้า (ขาเข้า)', sub: 'ค่าติดลบ = เย็นช้ากว่าเช้า' },
+        { icon: '🌍', tone: 'blue', value: String(TRANSIT.benchmark.bangkokRank), unit: 'อันดับโลก', label: 'TomTom Traffic Index 2025', sub: `ระดับความหนาแน่นการจราจร ${TRANSIT.benchmark.congestionLevel}%` },
+        { icon: '↔️', tone: 'gold', value: (avgEveningIn - avgMorningIn).toFixed(1), unit: 'กม./ชม.', label: 'ค่าเฉลี่ยช่วงเย็น - ช่วงเช้า (ขาเข้า)', sub: 'ค่าติดลบหมายถึงช่วงเย็นเคลื่อนตัวได้ช้ากว่า' },
       ];
 
       el.innerHTML = cards.map(card => `
@@ -504,11 +504,11 @@
       if (!el) return;
       const b = TRANSIT.benchmark;
       const stats = [
-        { value: `${b.bangkokRank}`, unit: 'อันดับโลก', label: 'ด้าน Congestion' },
-        { value: `${b.congestionLevel}%`, unit: 'Congestion Level', label: 'สูงขึ้นจากปีก่อน' },
+        { value: `${b.bangkokRank}`, unit: 'อันดับโลก', label: 'ด้านความหนาแน่นการจราจร' },
+        { value: `${b.congestionLevel}%`, unit: 'ระดับความหนาแน่นการจราจร', label: 'สูงขึ้นจากปีก่อน' },
         { value: b.avgTimePer10km, unit: 'นาที / 10 กม.', label: 'เฉลี่ยตลอดทั้งเมือง' },
-        { value: b.morningRushTime, unit: 'เร่งด่วนเช้า', label: 'ค่าเฉลี่ยช่วงเช้า' },
-        { value: b.eveningRushTime, unit: 'เร่งด่วนเย็น', label: 'ค่าเฉลี่ยช่วงเย็น' },
+        { value: b.morningRushTime, unit: 'ช่วงเร่งด่วนเช้า', label: 'ค่าเฉลี่ยช่วงเช้า' },
+        { value: b.eveningRushTime, unit: 'ช่วงเร่งด่วนเย็น', label: 'ค่าเฉลี่ยช่วงเย็น' },
         { value: `${b.annualLostHours}`, unit: 'ชั่วโมง / ปี', label: 'เวลาสูญเสียจากรถติด' },
       ];
       el.innerHTML = stats.map(stat => `
@@ -529,17 +529,17 @@
             <div class="travel-zone-head">
               <div>
                 <div class="travel-zone-title">${zone.label}</div>
-                <div class="travel-zone-sub">${zone.roads} · Snapshot ปี 2568</div>
+                <div class="travel-zone-sub">${zone.roads} · ข้อมูลปี 2568</div>
               </div>
               <span class="zone-badge ${zone.tone}">${zone.label.replace('พื้นที่', '').trim()}</span>
             </div>
             <div class="travel-zone-metrics">
-              <div class="travel-zone-row"><span>เช้า · ขาเข้า</span><strong>${zone.morningInbound.toFixed(2)} km/h</strong></div>
-              <div class="travel-zone-row"><span>เช้า · ขาออก</span><strong>${zone.morningOutbound.toFixed(2)} km/h</strong></div>
-              <div class="travel-zone-row"><span>เย็น · ขาเข้า</span><strong>${zone.eveningInbound.toFixed(2)} km/h</strong></div>
-              <div class="travel-zone-row"><span>เย็น · ขาออก</span><strong>${zone.eveningOutbound.toFixed(2)} km/h</strong></div>
+              <div class="travel-zone-row"><span>ช่วงเช้า · ขาเข้า</span><strong>${zone.morningInbound.toFixed(2)} กม./ชม.</strong></div>
+              <div class="travel-zone-row"><span>ช่วงเช้า · ขาออก</span><strong>${zone.morningOutbound.toFixed(2)} กม./ชม.</strong></div>
+              <div class="travel-zone-row"><span>ช่วงเย็น · ขาเข้า</span><strong>${zone.eveningInbound.toFixed(2)} กม./ชม.</strong></div>
+              <div class="travel-zone-row"><span>ช่วงเย็น · ขาออก</span><strong>${zone.eveningOutbound.toFixed(2)} กม./ชม.</strong></div>
             </div>
-            <div class="travel-zone-note">ค่าดีที่สุดของโซนนี้คือ ${fastest.toFixed(2)} km/h และใช้เวลาประมาณ ${formatMinutesFromSpeed(zone.eveningInbound)} นาที/10 กม. ในช่วงขาเข้าเย็น</div>
+            <div class="travel-zone-note">ค่าดีที่สุดของโซนนี้คือ ${fastest.toFixed(2)} กม./ชม. และใช้เวลาประมาณ ${formatMinutesFromSpeed(zone.eveningInbound)} นาที/10 กม. ในช่วงขาเข้าเร่งด่วนเย็น</div>
           </article>`;
       }).join('');
     }
@@ -595,22 +595,22 @@
           time: '07:00–09:00 น.',
           inVal: avgMorningIn,
           outVal: avgMorningOut,
-          note: `ขาออกเร็วกว่าขาเข้า ${(avgMorningOut - avgMorningIn).toFixed(1)} km/h`,
+          note: `ขาออกเร็วกว่าขาเข้า ${(avgMorningOut - avgMorningIn).toFixed(1)} กม./ชม.`,
         },
         {
           title: 'เร่งด่วนเย็น',
           time: '16:00–18:00 น.',
           inVal: avgEveningIn,
           outVal: avgEveningOut,
-          note: `ขาออกเร็วกว่าขาเข้า ${(avgEveningOut - avgEveningIn).toFixed(1)} km/h`,
+          note: `ขาออกเร็วกว่าขาเข้า ${(avgEveningOut - avgEveningIn).toFixed(1)} กม./ชม.`,
         },
       ];
       el.innerHTML = cards.map(card => `
         <article class="travel-period-card">
           <div class="travel-period-title">${card.title}</div>
           <div class="travel-period-time">${card.time}</div>
-          <div class="travel-period-row"><span>ขาเข้า</span><strong>${card.inVal.toFixed(1)} km/h</strong></div>
-          <div class="travel-period-row"><span>ขาออก</span><strong>${card.outVal.toFixed(1)} km/h</strong></div>
+          <div class="travel-period-row"><span>ขาเข้า</span><strong>${card.inVal.toFixed(1)} กม./ชม.</strong></div>
+          <div class="travel-period-row"><span>ขาออก</span><strong>${card.outVal.toFixed(1)} กม./ชม.</strong></div>
           <div class="travel-period-note">${card.note}</div>
         </article>`).join('');
     }
@@ -622,9 +622,9 @@
       const outer = snapshot[2];
       const insights = [
         { icon: '⚠️', tone: 'warn', title: 'ชั้นในยังเป็นคอขวดหลัก', text: `ช่วงเย็นขาเข้าใช้เวลาประมาณ ${formatMinutesFromSpeed(inner.eveningInbound)} นาที/10 กม. สูงสุดในทุกโซน` },
-        { icon: '🌍', tone: 'info', title: 'กรุงเทพฯ ยังอยู่ใน Top 10 โลกด้าน congestion', text: `TomTom 2025 ให้ค่า congestion ${TRANSIT.benchmark.congestionLevel}% และเวลาเฉลี่ย ${TRANSIT.benchmark.avgTimePer10km} นาที/10 กม.` },
-        { icon: '🌳', tone: 'ok', title: 'ชั้นนอกยังคล่องตัวที่สุด', text: `ชั้นนอกเช้า-ขาเข้าอยู่ที่ ${outer.morningInbound.toFixed(2)} km/h และขาออกเช้าที่ ${outer.morningOutbound.toFixed(2)} km/h` },
-        { icon: '↔️', tone: 'tip', title: 'ขาออกเร็วกว่าขาเข้าอย่างสม่ำเสมอ', text: 'ทั้งช่วงเช้าและเย็น ค่าความเร็วเฉลี่ยขาออกยังดีกว่าขาเข้าในทุกโซน สะท้อนแรงกดดันฝั่ง inbound มากกว่า' },
+        { icon: '🌍', tone: 'info', title: 'กรุงเทพมหานครยังอยู่ใน 10 อันดับแรกของโลกด้านความหนาแน่นการจราจร', text: `TomTom 2025 ระบุระดับความหนาแน่นการจราจรไว้ที่ ${TRANSIT.benchmark.congestionLevel}% และเวลาเฉลี่ย ${TRANSIT.benchmark.avgTimePer10km} นาที/10 กม.` },
+        { icon: '🌳', tone: 'ok', title: 'พื้นที่ชั้นนอกยังคงคล่องตัวที่สุด', text: `ชั้นนอกช่วงเช้าขาเข้าอยู่ที่ ${outer.morningInbound.toFixed(2)} กม./ชม. และช่วงเช้าขาออกอยู่ที่ ${outer.morningOutbound.toFixed(2)} กม./ชม.` },
+        { icon: '↔️', tone: 'tip', title: 'ขาออกเคลื่อนตัวได้เร็วกว่าขาเข้าอย่างสม่ำเสมอ', text: 'ทั้งช่วงเช้าและช่วงเย็น ค่าความเร็วเฉลี่ยขาออกยังสูงกว่าขาเข้าในทุกโซน สะท้อนแรงกดดันของการเดินทางฝั่งขาเข้าเมืองมากกว่า' },
       ];
       el.innerHTML = insights.map(item => `
         <article class="travel-insight-card ${item.tone}">

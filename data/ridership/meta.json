@@ -1,0 +1,39 @@
+{
+  "title": "ผู้โดยสารระบบขนส่งสาธารณะกรุงเทพมหานคร",
+  "titleEn": "Bangkok Public Transport Ridership",
+  "source": "สำนักการจราจรและขนส่ง กรุงเทพมหานคร (สจส.) และหน่วยงานที่เกี่ยวข้อง",
+  "period": "2556–2568 (2013–2025)",
+  "files": {
+    "transport_report.csv": {
+      "description": "จำนวนผู้โดยสารแยกตามระบบขนส่งรายปี (ล้านเที่ยวคน/ปี)",
+      "googleSheetId": "1OV02tcFrMC6_gNKoHrb3K8mheRallx0cwYsFjZFqNb4",
+      "sheet": "Report"
+    },
+    "transport_share.csv": {
+      "description": "สัดส่วนรูปแบบการเดินทาง (Modal Share) ระหว่างขนส่งสาธารณะและรถส่วนบุคคล (ล้านคน-เที่ยว/ปี อ้างอิง BTDM)",
+      "googleSheetId": "1fOIvRw9bxC1DOWCnTN8hVW2Z8L4n6ICgzD_WxgIDYt0"
+    }
+  },
+  "systems": [
+    { "id": "bmta",      "nameTh": "รถโดยสารประจำทาง (ขสมก.)", "nameEn": "BMTA Bus",        "agency": "ขสมก.", "type": "bus" },
+    { "id": "brt",       "nameTh": "รถโดยสารด่วนพิเศษ BRT",    "nameEn": "BRT",             "agency": "กทม.", "type": "bus" },
+    { "id": "bts_green", "nameTh": "BTS สายสีเขียว",           "nameEn": "BTS Skytrain",    "agency": "BTSC", "type": "rail" },
+    { "id": "bts_gold",  "nameTh": "BTS สายสีทอง",             "nameEn": "BTS Gold Line",   "agency": "BTSC", "type": "rail" },
+    { "id": "mrt_blue",  "nameTh": "MRT สายสีน้ำเงิน",         "nameEn": "MRT Blue Line",   "agency": "BEM",  "type": "rail" },
+    { "id": "mrt_purple","nameTh": "MRT สายสีม่วง",            "nameEn": "MRT Purple Line", "agency": "BEM",  "type": "rail" },
+    { "id": "mrt_yellow","nameTh": "MRT สายสีเหลือง",          "nameEn": "MRT Yellow Line", "agency": "EMH",  "type": "rail" },
+    { "id": "mrt_pink",  "nameTh": "MRT สายสีชมพู",            "nameEn": "MRT Pink Line",   "agency": "NSMR", "type": "rail" },
+    { "id": "arl",       "nameTh": "Airport Rail Link",         "nameEn": "ARL",             "agency": "SRTET","type": "rail" },
+    { "id": "srt_red",   "nameTh": "SRT สายสีแดง",             "nameEn": "SRT Red Line",    "agency": "SRT",  "type": "rail" },
+    { "id": "ferry_crb", "nameTh": "เรือข้ามฟาก",              "nameEn": "Cross-River Ferry","agency": "CRB",  "type": "ferry"},
+    { "id": "ferry_crp", "nameTh": "เรือด่วนเจ้าพระยา",        "nameEn": "Chao Phraya Express","agency": "CRB","type": "ferry"},
+    { "id": "ferry_ssl", "nameTh": "เรือคลองแสนแสบ",           "nameEn": "Saen Saep Canal", "agency": "กทม.", "type": "ferry"},
+    { "id": "ferry_ev",  "nameTh": "เรือไฟฟ้า",                "nameEn": "Electric Boat",   "agency": "กทม.", "type": "ferry"}
+  ],
+  "notes": [
+    "ขสมก. ใช้ปีงบประมาณ (ต.ค.–ก.ย.) ขณะที่ระบบรางใช้ปีปฏิทิน (ม.ค.–ธ.ค.)",
+    "ปี 2563–2564 ได้รับผลกระทบจาก COVID-19",
+    "BRT ปี 2567 ไม่มีข้อมูล",
+    "สัดส่วนปี 2567 (11.7%) ปรับวิธีคำนวณ ไม่ได้หมายความว่าผู้โดยสารลดลง"
+  ]
+}

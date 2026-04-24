@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="สถิติผู้โดยสารระบบขนส่งสาธารณะกรุงเทพมหานคร รถไฟฟ้า รถโดยสาร เรือ ปี 2556–2568">
+  <title>ผู้โดยสารระบบขนส่ง — BMA Urban Transport Index</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=Chakra+Petch:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="src/css/bma-theme.css">
+  <link rel="stylesheet" href="src/css/dashboard.css">
+</head>
+
+<body class="bma-layout">
+
+  <!-- ════════════ SIDEBAR ════════════ -->
+  <nav class="bma-sidebar" aria-label="Sidebar navigation">
+    <div class="bma-sb-brand">
+      <div class="bma-sb-logo-row">
+        <div class="bma-sb-logo" aria-hidden="true">BMA</div>
+        <div>
+          <div class="bma-sb-name">Urban Transport Index</div>
+          <div class="bma-sb-sub">สจส. กรุงเทพมหานคร</div>
+        </div>
+      </div>
+      <div class="bma-sb-org">
+        <strong>Organization</strong>
+        กลุ่มงานสถิติและวิจัย<br>
+        กองนโยบายและแผนงาน<br>
+        สำนักการจราจรและขนส่ง กทม.
+      </div>
+    </div>
+
+    <div class="bma-sb-nav">
+      <span class="bma-sb-label">Navigation</span>
+      <a href="index.html" class="bma-sb-item">
+        <span class="bma-sb-icon" aria-hidden="true">🏠</span> หน้าหลัก
+      </a>
+      <a href="overview.html" class="bma-sb-item">
+        <span class="bma-sb-icon" aria-hidden="true">📊</span> ภาพรวม
+        <span class="bma-sb-badge active">INDEX</span>
+      </a>
+      <a href="ridership.html" class="bma-sb-item active" aria-current="page">
+        <span class="bma-sb-icon" aria-hidden="true">🚇</span> ผู้โดยสาร
+      </a>
+      <a href="travel-speed.html" class="bma-sb-item">
+        <span class="bma-sb-icon" aria-hidden="true">🚗</span> ความเร็ว/จราจร
+      </a>
+      <div class="bma-sb-divider"></div>
+      <span class="bma-sb-label">ข้อมูล</span>
+      <a href="data/catalog.json" class="bma-sb-item" target="_blank" rel="noopener">
+        <span class="bma-sb-icon" aria-hidden="true">📂</span> Open Data
+        <span class="bma-sb-badge soon">↗</span>
+      </a>
+    </div>
+
+    <div class="bma-sb-footer">
+      © Prapawadee_W.<br>
+      <strong>BMA Urban Transport Index</strong><br>
+      v1.0.0 · 2568
+    </div>
+  </nav>
+
+  <!-- ════════════ MAIN ════════════ -->
+  <div class="bma-main">
+
+    <!-- Topbar -->
+    <header class="bma-topbar">
+      <div class="bma-topbar-left">
+        <div>
+          <div class="bma-page-title">ผู้โดยสารระบบขนส่งสาธารณะ</div>
+          <div class="bma-breadcrumb">BMA Transport Index / <span>Ridership</span></div>
+        </div>
+      </div>
+      <div class="bma-topbar-right">
+        <div class="bma-active-chip">
+          <span class="bma-active-dot" aria-hidden="true"></span> อัปเดตอัตโนมัติ
+        </div>
+        <div class="bma-date-badge" data-thai-date aria-label="วันที่ปัจจุบัน">—</div>
+        <a href="index.html" class="bma-back-link">← หน้าหลัก</a>
+      </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <div class="bma-hero" role="region" aria-label="ข้อมูลสรุปผู้โดยสาร">
+      <div class="bma-hero-stripe" aria-hidden="true"></div>
+      <div class="bma-hero-deco" aria-hidden="true"></div>
+      <div class="bma-hero-deco2" aria-hidden="true"></div>
+      <div class="bma-hero-inner">
+        <div>
+          <div class="bma-hero-crumb">Ridership Dashboard / <span>ข้อมูลปี 2556–2568</span></div>
+          <h1 class="bma-hero-h1">สถิติผู้โดยสาร<br><em>ระบบขนส่งสาธารณะ กทม.</em></h1>
+          <p class="bma-hero-sub">
+            รวบรวมข้อมูลผู้โดยสารรถไฟฟ้า รถโดยสาร และเรือโดยสาร
+            จากทุกหน่วยงานที่เกี่ยวข้อง พร้อมสัดส่วนรูปแบบการเดินทาง (Modal Share)
+          </p>
+        </div>
+        <div class="bma-hero-counters" role="list">
+          <div role="listitem">
+            <div class="bma-hcnt-val">13</div>
+            <div class="bma-hcnt-lbl">ปีข้อมูล</div>
+          </div>
+          <div role="listitem">
+            <div class="bma-hcnt-val">14+</div>
+            <div class="bma-hcnt-lbl">ระบบขนส่ง</div>
+          </div>
+          <div role="listitem">
+            <div class="bma-hcnt-val">861 ล.</div>
+            <div class="bma-hcnt-lbl">เที่ยวคน/ปี 2568</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPI Strip -->
+    <div class="bma-kpi-strip" id="kpiStrip" role="region" aria-label="ตัวชี้วัดสำคัญ"></div>
+
+    <!-- Content -->
+    <main class="bma-content">
+
+      <!-- Note -->
+      <div class="bma-note info" role="note">
+        <strong>หมายเหตุ:</strong>
+        ขสมก. ใช้ปีงบประมาณ (ต.ค.–ก.ย.) ขณะที่ระบบรางใช้ปีปฏิทิน (ม.ค.–ธ.ค.) ·
+        ปี 2563–2564 ได้รับผลกระทบจาก COVID-19 ·
+        BRT ปี 2567 ไม่มีข้อมูลเนื่องจากอยู่ระหว่างปรับเปลี่ยนระบบ
+      </div>
+
+      <!-- Section 1: Annual Trend -->
+      <div class="bma-sec-head">
+        <span class="bma-sec-num">01</span>
+        <span class="bma-sec-title">แนวโน้มผู้โดยสารรายปี (ทุกระบบ)</span>
+        <span class="bma-sec-hr" aria-hidden="true"></span>
+        <span class="bma-sec-meta">ปี 2556–2568 · ล้านเที่ยวคน/ปี</span>
+      </div>
+      <div class="bma-chart-card">
+        <div class="bma-chart-title">จำนวนผู้โดยสารรายระบบ — แนวโน้มรายปี</div>
+        <div class="bma-chart-subtitle">รถไฟฟ้า · รถโดยสาร · เรือโดยสาร (ล้านเที่ยวคน/ปี)</div>
+        <div class="bma-chart-container" style="height:340px;">
+          <canvas id="annualTrendChart" aria-label="กราฟแนวโน้มผู้โดยสารรายปี" role="img"></canvas>
+        </div>
+      </div>
+
+      <!-- Section 2: Modal Share -->
+      <div class="bma-sec-head">
+        <span class="bma-sec-num">02</span>
+        <span class="bma-sec-title">สัดส่วนรูปแบบการเดินทาง (Modal Share)</span>
+        <span class="bma-sec-hr" aria-hidden="true"></span>
+        <span class="bma-sec-meta">อ้างอิงแบบจำลอง BTDM สนข. ปี 2560–2568</span>
+      </div>
+      <div class="bma-grid-6040">
+        <div class="bma-chart-card">
+          <div class="bma-chart-title">สัดส่วน ขนส่งสาธารณะ vs รถส่วนบุคคล</div>
+          <div class="bma-chart-subtitle">% ของการเดินทางทั้งหมดในเขตกรุงเทพฯ และปริมณฑล</div>
+          <div class="bma-chart-container" style="height:280px;">
+            <canvas id="modalShareChart" aria-label="กราฟสัดส่วนรูปแบบการเดินทาง" role="img"></canvas>
+          </div>
+        </div>
+        <div class="bma-chart-card">
+          <div class="bma-chart-title">ประสิทธิภาพระบบขนส่ง (ปี 2567 vs 2568)</div>
+          <div class="bma-chart-subtitle">คะแนน 0–100 ใน 6 มิติ</div>
+          <div class="bma-chart-container" style="height:280px;">
+            <canvas id="radarChart" aria-label="Radar chart ประสิทธิภาพระบบขนส่ง" role="img"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: System Table -->
+      <div class="bma-sec-head">
+        <span class="bma-sec-num">03</span>
+        <span class="bma-sec-title">ผู้โดยสารรายระบบ ปี 2568</span>
+        <span class="bma-sec-hr" aria-hidden="true"></span>
+        <span class="bma-sec-meta">เฉลี่ย/วัน (พันคน) · YTD (ล้านเที่ยว)</span>
+      </div>
+      <div class="bma-table-wrap">
+        <div class="bma-table-head">
+          <div>
+            <div class="bma-table-title">ตารางสรุปผู้โดยสารรายระบบ</div>
+            <div class="bma-table-sub">ข้อมูลปี พ.ศ. 2568 | เปรียบเทียบกับปีก่อนหน้า</div>
+          </div>
+          <span class="bma-source-tag">สจส. กทม. / หน่วยงานที่เกี่ยวข้อง</span>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="bma-table" aria-label="ตารางผู้โดยสารรายระบบ">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>ระบบขนส่ง</th>
+                <th>หน่วยงาน</th>
+                <th class="num">เฉลี่ย/วัน (พัน)</th>
+                <th class="num">เปลี่ยนแปลง</th>
+                <th class="num">YTD (ล้าน)</th>
+                <th>ระดับ</th>
+              </tr>
+            </thead>
+            <tbody id="systemTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bma-footer">
+      <div class="bma-footer-left">
+        <strong>BMA Urban Transport Index</strong><br>
+        กลุ่มงานสถิติและวิจัย · กองนโยบายและแผนงาน · สำนักการจราจรและขนส่ง กรุงเทพมหานคร
+      </div>
+      <div class="bma-footer-right">
+        <div class="bma-footer-copy">© Prapawadee_W.</div>
+        <div class="bma-footer-ver">v1.0.0 · อัปเดตอัตโนมัติทุกสัปดาห์</div>
+      </div>
+    </footer>
+  </div><!-- /.bma-main -->
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"
+          crossorigin="anonymous"
+          integrity="sha384-aBHDmHQGjNEt6BLVS/rBBrLMdmJr37Kf7EaJpJHN87IfijV6edkBh5i3CKYVQ6z"></script>
+
+  <!-- BMA scripts -->
+  <script src="src/js/transit-data.js"></script>
+  <script src="src/js/ui.js"></script>
+  <script src="src/js/charts.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initUI();
+      renderAllCharts();
+    });
+  </script>
+</body>
+</html>

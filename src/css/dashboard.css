@@ -1,0 +1,225 @@
+/* ─────────────────────────────────────────────────────────────────────
+   BMA Urban Transport Index — Dashboard-specific styles
+   กลุ่มงานสถิติและวิจัย สจส. กทม.
+   © Prapawadee_W.
+───────────────────────────────────────────────────────────────────── */
+
+/* ── Transport type color bands ── */
+.mode-rail   { --mode-color: var(--bma-blue-mid); }
+.mode-bus    { --mode-color: var(--bma-gold-bright); }
+.mode-ferry  { --mode-color: var(--bma-teal); }
+.mode-road   { --mode-color: var(--bma-red); }
+
+/* ── Section tabs (for multi-panel dashboards) ── */
+.bma-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--bma-bg);
+  border: 1px solid var(--bma-border);
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.bma-tab {
+  padding: 7px 18px;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--bma-text-mid);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  font-family: var(--bma-font-body);
+  transition: all 0.18s;
+  white-space: nowrap;
+}
+.bma-tab:hover  { background: var(--bma-white); color: var(--bma-navy); }
+.bma-tab.active {
+  background: var(--bma-white);
+  color: var(--bma-navy);
+  font-weight: 700;
+  box-shadow: var(--bma-sh-xs);
+}
+
+/* ── Panel visibility ── */
+.bma-panel { display: none; }
+.bma-panel.active { display: block; }
+
+/* ── Grid layouts ── */
+.bma-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+.bma-grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-bottom: 24px; }
+.bma-grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; margin-bottom: 24px; }
+.bma-grid-6040 { display: grid; grid-template-columns: 3fr 2fr; gap: 20px; margin-bottom: 24px; }
+
+/* ── Info box / note ── */
+.bma-note {
+  background: var(--bma-gold-light);
+  border: 1px solid rgba(212,137,10,0.25);
+  border-left: 3px solid var(--bma-gold-bright);
+  border-radius: var(--bma-r-sm);
+  padding: 12px 16px;
+  font-size: 12.5px;
+  color: #6B4800;
+  line-height: 1.65;
+  margin-bottom: 20px;
+}
+.bma-note.info {
+  background: var(--bma-blue-light);
+  border-color: var(--bma-blue-mid);
+  border-left-color: var(--bma-blue);
+  color: #1A3A5C;
+}
+.bma-note.warning {
+  background: var(--bma-red-light);
+  border-color: rgba(192,57,43,0.25);
+  border-left-color: var(--bma-red);
+  color: #7B241C;
+}
+
+/* ── Speed zone color bars ── */
+.zone-inner  { --zone-color: #C0392B; }
+.zone-middle { --zone-color: #E67E22; }
+.zone-outer  { --zone-color: #27AE60; }
+
+.zone-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11.5px;
+  font-weight: 700;
+  font-family: var(--bma-font-display);
+}
+.zone-badge::before {
+  content: '';
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--zone-color);
+  display: inline-block;
+  flex-shrink: 0;
+}
+.zone-badge.inner  { background: rgba(192,57,43,0.08);  color: #C0392B; }
+.zone-badge.middle { background: rgba(230,126,34,0.08);  color: #D35400; }
+.zone-badge.outer  { background: rgba(39,174,96,0.08);   color: #1E8449; }
+
+/* ── Comparison metric row ── */
+.bma-metric-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--bma-bg);
+  gap: 12px;
+}
+.bma-metric-row:last-child { border-bottom: none; }
+.bma-metric-label { font-size: 13px; color: var(--bma-text-mid); }
+.bma-metric-val   {
+  font-size: 15px; font-weight: 800;
+  font-family: var(--bma-font-display);
+  color: var(--bma-navy);
+  white-space: nowrap;
+}
+
+/* ── Data source tag ── */
+.bma-source-tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 10.5px;
+  color: var(--bma-text-muted);
+  font-family: var(--bma-font-display);
+  background: var(--bma-bg);
+  border: 1px solid var(--bma-border);
+  border-radius: 4px;
+  padding: 2px 8px;
+}
+
+/* ── Loading skeleton ── */
+.bma-skeleton {
+  background: linear-gradient(90deg, var(--bma-bg) 25%, var(--bma-border) 50%, var(--bma-bg) 75%);
+  background-size: 200% 100%;
+  animation: bma-shimmer 1.5s infinite;
+  border-radius: var(--bma-r-sm);
+}
+@keyframes bma-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Benchmark comparison table ── */
+.bma-compare-block {
+  background: var(--bma-white);
+  border: 1px solid var(--bma-border);
+  border-radius: var(--bma-r);
+  padding: 20px 24px;
+  box-shadow: var(--bma-sh-xs);
+  margin-bottom: 24px;
+}
+.bma-compare-title {
+  font-size: 14px; font-weight: 700;
+  color: var(--bma-navy); margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.bma-compare-body { display: flex; gap: 32px; align-items: flex-start; flex-wrap: wrap; }
+.bma-compare-col  { flex: 1; min-width: 160px; }
+.bma-compare-col-head {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1.2px; color: var(--bma-text-muted);
+  font-family: var(--bma-font-display);
+  margin-bottom: 8px;
+}
+
+/* ── Homepage index card ── */
+.bma-index-card {
+  background: var(--bma-white);
+  border: 1px solid var(--bma-border);
+  border-radius: var(--bma-r);
+  padding: 24px;
+  box-shadow: var(--bma-sh-xs);
+  cursor: pointer;
+  text-decoration: none;
+  display: block;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.bma-index-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: var(--card-accent, var(--bma-blue-mid));
+}
+.bma-index-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--bma-sh-lg);
+  border-color: var(--card-accent, var(--bma-blue-mid));
+}
+.bma-ic-icon   { font-size: 32px; margin-bottom: 14px; }
+.bma-ic-title  { font-size: 17px; font-weight: 800; color: var(--bma-navy); margin-bottom: 6px; }
+.bma-ic-sub    { font-size: 13px; color: var(--bma-text-mid); line-height: 1.65; }
+.bma-ic-arrow  {
+  position: absolute; right: 20px; bottom: 20px;
+  font-size: 18px; color: var(--bma-text-muted);
+  transition: transform 0.2s, color 0.2s;
+}
+.bma-index-card:hover .bma-ic-arrow {
+  transform: translateX(4px);
+  color: var(--card-accent, var(--bma-blue-mid));
+}
+.bma-ic-meta   {
+  margin-top: 12px;
+  font-size: 11px; color: var(--bma-text-muted);
+  font-family: var(--bma-font-display);
+}
+
+/* ── Responsive overrides ── */
+@media (max-width: 899px) {
+  .bma-grid-2, .bma-grid-6040 { grid-template-columns: 1fr; }
+  .bma-grid-3 { grid-template-columns: 1fr 1fr; }
+  .bma-grid-4 { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 479px) {
+  .bma-grid-3 { grid-template-columns: 1fr; }
+  .bma-grid-4 { grid-template-columns: 1fr; }
+  .bma-tabs   { gap: 2px; padding: 3px; }
+  .bma-tab    { padding: 6px 12px; font-size: 12px; }
+}

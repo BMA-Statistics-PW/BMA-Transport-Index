@@ -1,0 +1,49 @@
+name: Data Sanity Check
+
+on:
+  push:
+    paths:
+      - 'data/**'
+      - 'scripts/**'
+  pull_request:
+    paths:
+      - 'data/**'
+
+jobs:
+  sanity-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run sanity checks
+        run: node scripts/sanity_check.mjs
+
+      - name: Validate catalog.json
+        run: |
+          python3 -c "
+          import json, sys
+          with open('data/catalog.json') as f:
+              catalog = json.load(f)
+          assert 'datasets' in catalog, 'catalog.json missing datasets'
+          assert len(catalog['datasets']) >= 2, 'catalog.json needs at least 2 datasets'
+          print('catalog.json OK —', len(catalog['datasets']), 'datasets found')
+          "
+
+      - name: Check CSV files exist and are non-empty
+        run: |
+          for f in \
+            data/ridership/transport_report.csv \
+            data/ridership/transport_share.csv \
+            data/travel-speed/travel_speed.csv; do
+            if [ ! -s "$f" ]; then
+              echo "FAIL: $f is missing or empty"
+              exit 1
+            fi
+            echo "OK: $f"
+          done

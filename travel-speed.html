@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="วิเคราะห์ความเร็วเฉลี่ยและเวลาเดินทางบนถนนสายหลัก 50 สาย 3 โซน กรุงเทพมหานคร ปี 2560–2568">
+  <title>ความเร็วและเวลาเดินทาง — BMA Urban Transport Index</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=Chakra+Petch:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="src/css/bma-theme.css">
+  <link rel="stylesheet" href="src/css/dashboard.css">
+</head>
+
+<body class="bma-layout">
+
+  <!-- ════════════ SIDEBAR ════════════ -->
+  <nav class="bma-sidebar" aria-label="Sidebar navigation">
+    <div class="bma-sb-brand">
+      <div class="bma-sb-logo-row">
+        <div class="bma-sb-logo" aria-hidden="true">BMA</div>
+        <div>
+          <div class="bma-sb-name">Urban Transport Index</div>
+          <div class="bma-sb-sub">สจส. กรุงเทพมหานคร</div>
+        </div>
+      </div>
+      <div class="bma-sb-org">
+        <strong>Organization</strong>
+        กลุ่มงานสถิติและวิจัย<br>
+        กองนโยบายและแผนงาน<br>
+        สำนักการจราจรและขนส่ง กทม.
+      </div>
+    </div>
+
+    <div class="bma-sb-nav">
+      <span class="bma-sb-label">Navigation</span>
+      <a href="index.html" class="bma-sb-item">
+        <span class="bma-sb-icon" aria-hidden="true">🏠</span> หน้าหลัก
+      </a>
+      <a href="overview.html" class="bma-sb-item">
+        <span class="bma-sb-icon" aria-hidden="true">📊</span> ภาพรวม
+        <span class="bma-sb-badge active">INDEX</span>
+      </a>
+      <a href="ridership.html" class="bma-sb-item">
+        <span class="bma-sb-icon" aria-hidden="true">🚇</span> ผู้โดยสาร
+      </a>
+      <a href="travel-speed.html" class="bma-sb-item active" aria-current="page">
+        <span class="bma-sb-icon" aria-hidden="true">🚗</span> ความเร็ว/จราจร
+      </a>
+      <div class="bma-sb-divider"></div>
+      <span class="bma-sb-label">ข้อมูล</span>
+      <a href="data/catalog.json" class="bma-sb-item" target="_blank" rel="noopener">
+        <span class="bma-sb-icon" aria-hidden="true">📂</span> Open Data
+        <span class="bma-sb-badge soon">↗</span>
+      </a>
+    </div>
+
+    <div class="bma-sb-footer">
+      © Prapawadee_W.<br>
+      <strong>BMA Urban Transport Index</strong><br>
+      v1.0.0 · 2568
+    </div>
+  </nav>
+
+  <!-- ════════════ MAIN ════════════ -->
+  <div class="bma-main">
+
+    <!-- Topbar -->
+    <header class="bma-topbar">
+      <div class="bma-topbar-left">
+        <div>
+          <div class="bma-page-title">ความเร็วและเวลาเดินทาง</div>
+          <div class="bma-breadcrumb">BMA Transport Index / <span>Travel Speed</span></div>
+        </div>
+      </div>
+      <div class="bma-topbar-right">
+        <div class="bma-active-chip">
+          <span class="bma-active-dot" aria-hidden="true"></span> ข้อมูลล่าสุด 2568
+        </div>
+        <div class="bma-date-badge" data-thai-date aria-label="วันที่ปัจจุบัน">—</div>
+        <a href="index.html" class="bma-back-link">← หน้าหลัก</a>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <div class="bma-hero" role="region" aria-label="ข้อมูลสรุปความเร็วและเวลาเดินทาง">
+      <div class="bma-hero-stripe" aria-hidden="true"></div>
+      <div class="bma-hero-deco" aria-hidden="true"></div>
+      <div class="bma-hero-inner">
+        <div>
+          <div class="bma-hero-crumb">Travel Speed / <span>ข้อมูลปี 2560–2568</span></div>
+          <h1 class="bma-hero-h1">ความเร็วและเวลาเดินทาง<br><em>ถนนสายหลักกรุงเทพมหานคร</em></h1>
+          <p class="bma-hero-sub">
+            วิเคราะห์ความเร็วเฉลี่ยและเวลาเดินทางบนถนนสายหลัก 50 สาย ใน 3 โซน
+            ช่วงชั่วโมงเร่งด่วน ปี 2560–2568
+            พร้อมเปรียบเทียบกับ TomTom Global Traffic Index
+          </p>
+        </div>
+        <div class="bma-hero-counters" role="list">
+          <div role="listitem">
+            <div class="bma-hcnt-val">50</div>
+            <div class="bma-hcnt-lbl">ถนนที่สำรวจ</div>
+          </div>
+          <div role="listitem">
+            <div class="bma-hcnt-val">3</div>
+            <div class="bma-hcnt-lbl">โซนพื้นที่</div>
+          </div>
+          <div role="listitem">
+            <div class="bma-hcnt-val">15.3</div>
+            <div class="bma-hcnt-lbl">km/h (ชั้นใน เช้า 2568)</div>
+          </div>
+          <div role="listitem">
+            <div class="bma-hcnt-val">อันดับ 10</div>
+            <div class="bma-hcnt-lbl">TomTom 2025</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPI strip — Speed zones -->
+    <div class="bma-kpi-strip" role="region" aria-label="KPI ความเร็วเฉลี่ยแยกโซน">
+      <div class="bma-kpi-cell bma-kc-red">
+        <div class="bma-kpi-em" aria-hidden="true">🔴</div>
+        <div class="bma-kpi-lbl">ชั้นใน — เช้า ขาเข้า</div>
+        <div class="bma-kpi-num">15.3<span class="bma-kpi-unit">km/h</span></div>
+        <div class="bma-kpi-chg bma-down" aria-label="ลดลง 5.3%">▼ 5.3% จาก 2567</div>
+      </div>
+      <div class="bma-kpi-cell bma-kc-red">
+        <div class="bma-kpi-em" aria-hidden="true">🔴</div>
+        <div class="bma-kpi-lbl">ชั้นใน — เย็น ขาเข้า</div>
+        <div class="bma-kpi-num">14.1<span class="bma-kpi-unit">km/h</span></div>
+        <div class="bma-kpi-chg bma-down" aria-label="ลดลง 3.4%">▼ 3.4% จาก 2567</div>
+      </div>
+      <div class="bma-kpi-cell bma-kc-gold">
+        <div class="bma-kpi-em" aria-hidden="true">🟡</div>
+        <div class="bma-kpi-lbl">ชั้นกลาง — เช้า ขาเข้า</div>
+        <div class="bma-kpi-num">20.9<span class="bma-kpi-unit">km/h</span></div>
+        <div class="bma-kpi-chg bma-down" aria-label="ลดลง 1.4%">▼ 1.4% จาก 2567</div>
+      </div>
+      <div class="bma-kpi-cell bma-kc-green">
+        <div class="bma-kpi-em" aria-hidden="true">🟢</div>
+        <div class="bma-kpi-lbl">ชั้นนอก — เช้า ขาเข้า</div>
+        <div class="bma-kpi-num">26.0<span class="bma-kpi-unit">km/h</span></div>
+        <div class="bma-kpi-chg bma-down" aria-label="ลดลง 1.5%">▼ 1.5% จาก 2567</div>
+      </div>
+      <div class="bma-kpi-cell bma-kc-blue">
+        <div class="bma-kpi-em" aria-hidden="true">🌍</div>
+        <div class="bma-kpi-lbl">TomTom Global Rank (2025)</div>
+        <div class="bma-kpi-num">อันดับ 10<span class="bma-kpi-unit"> / 500+</span></div>
+        <div class="bma-kpi-chg bma-flat">Congestion 67.9%</div>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <main class="bma-content">
+
+      <!-- Note -->
+      <div class="bma-note warning" role="note">
+        <strong>⚠️ ข้อควรระวัง:</strong>
+        ข้อมูล BMA เก็บจากการสำรวจภาคสนาม (50 ถนน · ช่วงเร่งด่วน 4 ชม./วัน)
+        ไม่สามารถเปรียบเทียบโดยตรงกับ TomTom ที่ใช้ GPS probe data ตลอด 24 ชม.
+        TomTom ใช้เพื่อ benchmark ระดับสากลเท่านั้น
+      </div>
+
+      <!-- Section 1: Speed Trend -->
+      <div class="bma-sec-head">
+        <span class="bma-sec-num">01</span>
+        <span class="bma-sec-title">แนวโน้มความเร็วเฉลี่ยรายโซน</span>
+        <span class="bma-sec-hr" aria-hidden="true"></span>
+        <span class="bma-sec-meta">ช่วงเช้า · ขาเข้า · ปี 2560–2568</span>
+      </div>
+      <div class="bma-chart-card">
+        <div class="bma-chart-title">ความเร็วเฉลี่ย (km/h) แยก 3 โซน — ช่วงเช้า ขาเข้า (07:00–09:00)</div>
+        <div class="bma-chart-subtitle">ข้อมูลปี 2560–2568 · BMA Field Survey · เส้นแนวโน้มรายปี</div>
+        <div class="bma-chart-container" style="height:340px;">
+          <canvas id="speedTrendChart" aria-label="กราฟแนวโน้มความเร็วแยกโซน" role="img"></canvas>
+        </div>
+      </div>
+
+      <!-- Section 2: Travel Time & Benchmark -->
+      <div class="bma-sec-head">
+        <span class="bma-sec-num">02</span>
+        <span class="bma-sec-title">เวลาเดินทางและเปรียบเทียบสากล</span>
+        <span class="bma-sec-hr" aria-hidden="true"></span>
+        <span class="bma-sec-meta">นาที/10 กม. · TomTom 2025</span>
+      </div>
+      <div class="bma-grid-6040">
+        <!-- Travel time card -->
+        <div class="bma-compare-block">
+          <div class="bma-compare-title">⏱️ เวลาเดินทางต่อ 10 กม. (ปี 2568 · เช้า ขาเข้า)</div>
+          <div role="list">
+            <div class="bma-metric-row" role="listitem">
+              <span class="bma-metric-label">
+                <span class="zone-badge inner" aria-label="โซนชั้นใน">ชั้นใน</span>
+                (28 ถนน) — เช้า
+              </span>
+              <span class="bma-metric-val">39.3 นาที</span>
+            </div>
+            <div class="bma-metric-row" role="listitem">
+              <span class="bma-metric-label">
+                <span class="zone-badge inner">ชั้นใน</span>
+                (28 ถนน) — เย็น
+              </span>
+              <span class="bma-metric-val">42.6 นาที</span>
+            </div>
+            <div class="bma-metric-row" role="listitem">
+              <span class="bma-metric-label">
+                <span class="zone-badge middle" aria-label="โซนชั้นกลาง">ชั้นกลาง</span>
+                (20 ถนน) — เช้า
+              </span>
+              <span class="bma-metric-val">28.7 นาที</span>
+            </div>
+            <div class="bma-metric-row" role="listitem">
+              <span class="bma-metric-label">
+                <span class="zone-badge outer" aria-label="โซนชั้นนอก">ชั้นนอก</span>
+                (7 ถนน) — เช้า
+              </span>
+              <span class="bma-metric-val">23.1 นาที</span>
+            </div>
+            <div class="bma-metric-row" role="listitem" style="margin-top:8px;padding-top:12px;border-top:1px solid var(--bma-border);">
+              <span class="bma-metric-label" style="font-size:12px;color:var(--bma-text-muted);">
+                📐 คำนวณจาก (10 ÷ ความเร็ว) × 60
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- TomTom benchmark -->
+        <div class="bma-compare-block">
+          <div class="bma-compare-title">🌍 TomTom Global Traffic Index 2025 — Top 10</div>
+          <div style="overflow-x:auto;">
+            <table class="bma-table" aria-label="ตาราง TomTom 2025 อันดับเมืองจราจร">
+              <thead>
+                <tr>
+                  <th>อันดับ</th>
+                  <th>เมือง</th>
+                  <th class="num">Congestion</th>
+                </tr>
+              </thead>
+              <tbody id="benchmarkTableBody"></tbody>
+            </table>
+          </div>
+          <p style="font-size:11px;color:var(--bma-text-muted);margin-top:10px;">
+            Source: <a href="https://www.tomtom.com/traffic-index/" target="_blank" rel="noopener" style="color:var(--bma-blue);">TomTom Traffic Index 2025</a>
+          </p>
+        </div>
+      </div>
+
+      <!-- Section 3: Data overview table -->
+      <div class="bma-sec-head">
+        <span class="bma-sec-num">03</span>
+        <span class="bma-sec-title">ข้อมูลเปรียบเทียบวิธีการสำรวจ</span>
+        <span class="bma-sec-hr" aria-hidden="true"></span>
+      </div>
+      <div class="bma-table-wrap">
+        <div class="bma-table-head">
+          <div>
+            <div class="bma-table-title">BMA Survey vs TomTom — ความแตกต่างที่ต้องทราบ</div>
+          </div>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="bma-table" aria-label="ตารางเปรียบเทียบวิธีการสำรวจ">
+            <thead>
+              <tr>
+                <th>หัวข้อ</th>
+                <th>BMA Field Survey</th>
+                <th>TomTom Traffic Index</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>ครอบคลุมถนน</td><td>50 ถนนสายหลัก</td><td>ถนนทุกสาย + ทางด่วน</td></tr>
+              <tr><td>ช่วงเวลา</td><td>ช่วงเร่งด่วน 4 ชม./วัน</td><td>24 ชม./วัน 365 วัน/ปี</td></tr>
+              <tr><td>วิธีเก็บข้อมูล</td><td>สำรวจภาคสนาม</td><td>GPS probe data</td></tr>
+              <tr><td>ทิศทาง</td><td>ขาเข้า / ขาออก แยก</td><td>ค่าเฉลี่ยทั้งเมือง</td></tr>
+              <tr><td>ปฏิทิน</td><td>ปีงบประมาณไทย (B.E.)</td><td>ปีปฏิทิน (Gregorian)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bma-footer">
+      <div class="bma-footer-left">
+        <strong>BMA Urban Transport Index</strong><br>
+        Primary: Average Speed Survey · BMA 2017–2025 ·
+        International Reference: TomTom Traffic Index 2025 ·
+        © Prapawadee_W. อัปเดตล่าสุด: 12-04-2568
+      </div>
+      <div class="bma-footer-right">
+        <div class="bma-footer-copy">© Prapawadee_W.</div>
+        <div class="bma-footer-ver">v1.0.0 · BMA Urban Transport Index</div>
+      </div>
+    </footer>
+  </div><!-- /.bma-main -->
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"
+          crossorigin="anonymous"
+          integrity="sha384-aBHDmHQGjNEt6BLVS/rBBrLMdmJr37Kf7EaJpJHN87IfijV6edkBh5i3CKYVQ6z"></script>
+
+  <!-- BMA scripts -->
+  <script src="src/js/transit-data.js"></script>
+  <script src="src/js/ui.js"></script>
+  <script src="src/js/charts.js"></script>
+  <script src="src/js/data-loader.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      // UI elements that don't need CSV
+      setDateElements();
+      renderBenchmarkTable('benchmarkTableBody');
+      initSidebar();
+
+      // Render speed chart — try loading live CSV first, fall back to static data
+      initChartDefaults();
+      try {
+        const rows = await fetchCsv('./data/travel-speed/travel_speed.csv');
+        const processed = processSpeedData(rows);
+        renderSpeedTrendChart('speedTrendChart', processed);
+      } catch (e) {
+        // fall back to static data in transit-data.js
+        renderSpeedTrendChart('speedTrendChart');
+        console.warn('Using static speed data:', e.message);
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="BMA Urban Transport Index — ระบบวิเคราะห์ข้อมูลการขนส่งสาธารณะและการจราจรกรุงเทพมหานคร ครอบคลุมผู้โดยสาร ความเร็ว และสัดส่วนรูปแบบการเดินทาง ปี 2556–2568">
+  <meta name="author" content="กลุ่มงานสถิติและวิจัย สำนักการจราจรและขนส่ง กรุงเทพมหานคร">
+  <meta property="og:title" content="BMA Urban Transport Index">
+  <meta property="og:description" content="Dashboard สถิติการขนส่งและจราจรกรุงเทพมหานคร">
+  <meta property="og:type" content="website">
+
+  <title>BMA Urban Transport Index</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=Chakra+Petch:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- BMA Design System -->
+  <link rel="stylesheet" href="src/css/bma-theme.css">
+  <link rel="stylesheet" href="src/css/dashboard.css">
+
+  <style>
+    /* ── Homepage hero override ── */
+    .bma-home-hero {
+      background: linear-gradient(135deg, var(--bma-navy) 0%, #0D2B4E 60%, #1A3A5C 100%);
+      color: #fff;
+      padding: 48px 40px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .bma-home-hero::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, var(--bma-gold-bright), #F4C430, var(--bma-gold-bright));
+    }
+    .bma-home-hero-deco {
+      position: absolute; right: -80px; top: -80px;
+      width: 400px; height: 400px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(46,134,193,0.12) 0%, transparent 70%);
+    }
+    .bma-home-hero-deco2 {
+      position: absolute; right: 120px; bottom: -100px;
+      width: 250px; height: 250px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(232,150,10,0.1) 0%, transparent 70%);
+    }
+    .bma-home-hero-inner { position: relative; z-index: 1; max-width: 720px; }
+    .bma-home-org  { font-size: 11px; font-family: var(--bma-font-display); letter-spacing: 1.5px; text-transform: uppercase; color: var(--bma-gold-bright); margin-bottom: 12px; }
+    .bma-home-h1   { font-size: clamp(28px, 4vw, 40px); font-weight: 800; line-height: 1.15; letter-spacing: -0.5px; margin-bottom: 16px; }
+    .bma-home-h1 em { color: var(--bma-gold-bright); font-style: normal; }
+    .bma-home-sub  { font-size: clamp(13px, 1.2vw, 15px); color: rgba(255,255,255,0.72); line-height: 1.8; max-width: 580px; }
+    .bma-home-stats {
+      display: flex; gap: 28px; margin-top: 28px; flex-wrap: wrap;
+    }
+    .bma-home-stat-val {
+      font-size: 26px; font-weight: 800;
+      font-family: var(--bma-font-display);
+      color: #fff; line-height: 1;
+    }
+    .bma-home-stat-lbl { font-size: 11px; color: rgba(255,255,255,0.55); margin-top: 4px; }
+    .bma-home-stat-div { width: 1px; background: rgba(255,255,255,0.15); align-self: stretch; }
+
+    /* ── Card grid ── */
+    .bma-card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      padding: 32px 40px;
+    }
+
+    /* ── About section ── */
+    .bma-about-section {
+      background: var(--bma-white);
+      border-top: 1px solid var(--bma-border);
+      padding: 32px 40px;
+    }
+    .bma-about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 28px;
+      margin-top: 20px;
+    }
+    .bma-about-item h4 { font-size: 14px; font-weight: 700; color: var(--bma-navy); margin-bottom: 8px; }
+    .bma-about-item p  { font-size: 13px; color: var(--bma-text-mid); line-height: 1.75; }
+    .bma-about-item ul { margin: 0; padding-left: 16px; }
+    .bma-about-item li { font-size: 13px; color: var(--bma-text-mid); line-height: 1.9; }
+
+    /* ── Global footer ── */
+    .bma-global-footer {
+      background: var(--bma-navy);
+      color: rgba(255,255,255,0.55);
+      text-align: center;
+      padding: 18px 40px;
+      font-size: 12px;
+      line-height: 1.8;
+    }
+    .bma-global-footer strong { color: rgba(255,255,255,0.85); }
+    .bma-global-footer a { color: var(--bma-gold-bright); text-decoration: none; }
+
+    /* ── Responsive ── */
+    @media (max-width: 767px) {
+      .bma-home-hero  { padding: 32px 20px 28px; }
+      .bma-card-grid  { padding: 20px 16px; gap: 14px; }
+      .bma-about-grid { grid-template-columns: 1fr; gap: 20px; }
+      .bma-about-section { padding: 24px 16px; }
+      .bma-global-footer { padding: 16px; }
+    }
+  </style>
+</head>
+
+<body style="font-family:var(--bma-font-body);background:var(--bma-bg);min-height:100vh;display:flex;flex-direction:column;">
+
+  <!-- ════════════════════════════ HERO ════════════════════════════ -->
+  <div class="bma-home-hero" role="banner">
+    <div class="bma-home-hero-deco" aria-hidden="true"></div>
+    <div class="bma-home-hero-deco2" aria-hidden="true"></div>
+    <div class="bma-home-hero-inner">
+      <div class="bma-home-org">BMA — สำนักการจราจรและขนส่ง กรุงเทพมหานคร</div>
+      <h1 class="bma-home-h1">
+        BMA <em>Urban Transport</em><br>Index Dashboard
+      </h1>
+      <p class="bma-home-sub">
+        ระบบวิเคราะห์ข้อมูลการขนส่งสาธารณะและการจราจรกรุงเทพมหานคร
+        รวบรวมจากแหล่งข้อมูลราชการทั้งหมด เพื่อสนับสนุนการตัดสินใจเชิงนโยบาย
+        และการวางแผนระบบขนส่งเมืองอย่างยั่งยืน
+      </p>
+      <div class="bma-home-stats" role="list">
+        <div role="listitem">
+          <div class="bma-home-stat-val">13 ปี</div>
+          <div class="bma-home-stat-lbl">ชุดข้อมูลย้อนหลัง (2556–2568)</div>
+        </div>
+        <div class="bma-home-stat-div" aria-hidden="true"></div>
+        <div role="listitem">
+          <div class="bma-home-stat-val">14+</div>
+          <div class="bma-home-stat-lbl">ระบบขนส่งที่ครอบคลุม</div>
+        </div>
+        <div class="bma-home-stat-div" aria-hidden="true"></div>
+        <div role="listitem">
+          <div class="bma-home-stat-val">50</div>
+          <div class="bma-home-stat-lbl">ถนนสายหลักที่สำรวจ</div>
+        </div>
+        <div class="bma-home-stat-div" aria-hidden="true"></div>
+        <div role="listitem">
+          <div class="bma-home-stat-val">อันดับ 10</div>
+          <div class="bma-home-stat-lbl">เมืองจราจรหนาแน่น (TomTom 2025)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════ DASHBOARD CARDS ════════════════ -->
+  <main>
+    <div class="bma-card-grid" role="navigation" aria-label="เลือก Dashboard">
+
+      <!-- Card 1: Ridership -->
+      <a href="ridership.html" class="bma-index-card bma-animate"
+         style="--card-accent: var(--bma-blue-mid);" aria-label="ผู้โดยสารระบบขนส่ง">
+        <div class="bma-ic-icon" aria-hidden="true">🚇</div>
+        <div class="bma-ic-title">ผู้โดยสารระบบขนส่ง</div>
+        <div class="bma-ic-sub">
+          สถิติผู้โดยสารรถไฟฟ้า รถโดยสาร และเรือโดยสาร
+          แนวโน้มรายปี 2556–2568 และสัดส่วนแต่ละระบบ
+        </div>
+        <div class="bma-ic-meta">
+          <span class="bma-source-tag">ขสมก. · รฟม. · BTSC · รฟท.</span>
+        </div>
+        <span class="bma-ic-arrow" aria-hidden="true">→</span>
+      </a>
+
+      <!-- Card 2: Travel Speed -->
+      <a href="travel-speed.html" class="bma-index-card bma-animate"
+         style="--card-accent: var(--bma-red);" aria-label="ความเร็วและเวลาเดินทาง">
+        <div class="bma-ic-icon" aria-hidden="true">🚗</div>
+        <div class="bma-ic-title">ความเร็วและเวลาเดินทาง</div>
+        <div class="bma-ic-sub">
+          วิเคราะห์ความเร็วเฉลี่ยบนถนนสายหลัก 50 สาย 3 โซน
+          ช่วงชั่วโมงเร่งด่วน ปี 2560–2568
+          พร้อมเปรียบเทียบ TomTom Global Index
+        </div>
+        <div class="bma-ic-meta">
+          <span class="bma-source-tag">BMA Field Survey · TomTom 2025</span>
+        </div>
+        <span class="bma-ic-arrow" aria-hidden="true">→</span>
+      </a>
+
+      <!-- Card 3: Overview / Index -->
+      <a href="overview.html" class="bma-index-card bma-animate"
+         style="--card-accent: var(--bma-green);" aria-label="ภาพรวม Transport Index">
+        <div class="bma-ic-icon" aria-hidden="true">📊</div>
+        <div class="bma-ic-title">ภาพรวม Transport Index</div>
+        <div class="bma-ic-sub">
+          KPI สำคัญ · สัดส่วนรูปแบบการเดินทาง (Modal Share)
+          ประสิทธิภาพระบบขนส่ง และตารางสรุปรายระบบ
+        </div>
+        <div class="bma-ic-meta">
+          <span class="bma-source-tag">Multi-source · BTDM Model</span>
+        </div>
+        <span class="bma-ic-arrow" aria-hidden="true">→</span>
+      </a>
+
+      <!-- Card 4: Open Data -->
+      <a href="data/catalog.json" class="bma-index-card bma-animate"
+         style="--card-accent: var(--bma-teal);" target="_blank" rel="noopener"
+         aria-label="Open Data Catalog">
+        <div class="bma-ic-icon" aria-hidden="true">📂</div>
+        <div class="bma-ic-title">Open Data Catalog</div>
+        <div class="bma-ic-sub">
+          ชุดข้อมูลในรูปแบบ CSV และ JSON พร้อม Metadata มาตรฐาน DCAT
+          เปิดให้ดาวน์โหลดและนำไปใช้ต่อภายใต้สัญญาอนุญาต CC BY 4.0
+        </div>
+        <div class="bma-ic-meta">
+          <span class="bma-source-tag">CC BY 4.0 · DCAT</span>
+        </div>
+        <span class="bma-ic-arrow" aria-hidden="true">↗</span>
+      </a>
+
+    </div>
+
+    <!-- ════════════ ABOUT ════════════ -->
+    <div class="bma-about-section">
+      <h2 style="font-size:16px;font-weight:800;color:var(--bma-navy);margin-bottom:4px;">
+        เกี่ยวกับโครงการ
+      </h2>
+      <p style="font-size:13px;color:var(--bma-text-muted);">
+        BMA Urban Transport Index จัดทำโดยกลุ่มงานสถิติและวิจัย กองนโยบายและแผนงาน สำนักการจราจรและขนส่ง กรุงเทพมหานคร
+      </p>
+      <div class="bma-about-grid">
+        <div class="bma-about-item">
+          <h4>📋 แหล่งข้อมูลหลัก</h4>
+          <ul>
+            <li>สำนักการจราจรและขนส่ง (สจส.)</li>
+            <li>องค์การขนส่งมวลชนกรุงเทพ (ขสมก.)</li>
+            <li>การรถไฟฟ้าขนส่งมวลชนแห่งประเทศไทย (รฟม.)</li>
+            <li>การรถไฟแห่งประเทศไทย (รฟท.) / รฟฟท.</li>
+            <li>สำนักงานนโยบายและแผนการขนส่ง (สนข.) — BTDM</li>
+            <li>TomTom Traffic Index 2025</li>
+          </ul>
+        </div>
+        <div class="bma-about-item">
+          <h4>🛠️ เทคโนโลยี</h4>
+          <ul>
+            <li>HTML5 · CSS3 (CSS Custom Properties)</li>
+            <li>JavaScript (Vanilla ES2020)</li>
+            <li>Chart.js 4.4.1</li>
+            <li>Google Fonts: Sarabun + Chakra Petch</li>
+            <li>GitHub Pages + GitHub Actions CI/CD</li>
+            <li>Data: CSV + JSON (DCAT standard)</li>
+          </ul>
+        </div>
+        <div class="bma-about-item">
+          <h4>⚠️ ข้อควรทราบ</h4>
+          <ul>
+            <li>ขสมก. ใช้ปีงบประมาณ (ต.ค.–ก.ย.)</li>
+            <li>ระบบรางใช้ปีปฏิทิน (ม.ค.–ธ.ค.)</li>
+            <li>ปี 2563–2564 ได้รับผลกระทบจาก COVID-19</li>
+            <li>ข้อมูลความเร็วเก็บจากสำรวจภาคสนาม ไม่ใช่ GPS</li>
+            <li>TomTom ใช้เพื่อ benchmark เท่านั้น</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ════════════════════════════ FOOTER ════════════════════════ -->
+  <footer class="bma-global-footer">
+    <strong>BMA Urban Transport Index</strong> — กลุ่มงานสถิติและวิจัย · กองนโยบายและแผนงาน · สำนักการจราจรและขนส่ง กรุงเทพมหานคร<br>
+    © Prapawadee_W. · ข้อมูลเผยแพร่ภายใต้
+    <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener license">CC BY 4.0</a> ·
+    <a href="https://github.com/BMA-Statistics-PW/BMA-Transport-Index" target="_blank" rel="noopener">GitHub Repository</a> ·
+    อัปเดตอัตโนมัติทุกสัปดาห์
+  </footer>
+
+</body>
+</html>

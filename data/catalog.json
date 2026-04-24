@@ -1,0 +1,85 @@
+{
+  "@context": "https://www.w3.org/ns/dcat#",
+  "@type": "Catalog",
+  "title": "BMA Urban Transport Index — Data Catalog",
+  "description": "ชุดข้อมูลด้านการขนส่งสาธารณะกรุงเทพมหานคร รวบรวมโดยกลุ่มงานสถิติและวิจัย กองนโยบายและแผนงาน สำนักการจราจรและขนส่ง กทม.",
+  "publisher": "สำนักการจราจรและขนส่ง กรุงเทพมหานคร (สจส.)",
+  "language": ["th", "en"],
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "modified": "2025-04-12",
+  "datasets": [
+    {
+      "id": "bma-ridership",
+      "title": "ผู้โดยสารระบบขนส่งสาธารณะกรุงเทพมหานคร",
+      "titleEn": "Bangkok Public Transport Ridership",
+      "description": "จำนวนผู้โดยสารแต่ละระบบขนส่งสาธารณะในกรุงเทพมหานคร แยกรายสาย รายปี พ.ศ. 2556–2568",
+      "period": {
+        "start": "2013",
+        "end": "2025",
+        "thaiEra": "2556–2568"
+      },
+      "unit": "ล้านเที่ยวคน/ปี",
+      "unitEn": "million trips/year",
+      "files": [
+        {
+          "name": "transport_report.csv",
+          "path": "data/ridership/transport_report.csv",
+          "description": "ผู้โดยสารแยกตามระบบขนส่ง (รถโดยสาร, รถไฟฟ้า, เรือ)"
+        },
+        {
+          "name": "transport_share.csv",
+          "path": "data/ridership/transport_share.csv",
+          "description": "สัดส่วนรูปแบบการเดินทาง (Modal Share)"
+        }
+      ],
+      "sources": [
+        "สำนักการจราจรและขนส่ง กรุงเทพมหานคร (สจส.)",
+        "สำนักงานนโยบายและแผนการขนส่งและจราจร (สนข.) — แบบจำลอง BTDM ปีฐาน 2565",
+        "องค์การขนส่งมวลชนกรุงเทพ (ขสมก.)",
+        "การรถไฟฟ้าขนส่งมวลชนแห่งประเทศไทย (รฟม.)",
+        "การรถไฟแห่งประเทศไทย (รฟท.)"
+      ],
+      "notes": [
+        "ขสมก. ใช้ปีงบประมาณ (ต.ค.–ก.ย.) ขณะที่ระบบรางใช้ปีปฏิทิน (ม.ค.–ธ.ค.)",
+        "ปี 2563–2564 ได้รับผลกระทบจาก COVID-19",
+        "BRT ปี 2567 ไม่มีข้อมูลเนื่องจากอยู่ระหว่างปรับเปลี่ยนระบบ"
+      ]
+    },
+    {
+      "id": "bma-travel-speed",
+      "title": "ความเร็วเฉลี่ยบนถนนสายหลักกรุงเทพมหานคร",
+      "titleEn": "Bangkok Road Travel Speed Survey",
+      "description": "ความเร็วเฉลี่ยและเวลาเดินทางบนถนนสายหลัก 50 สายใน 3 โซน ช่วงชั่วโมงเร่งด่วน ปี พ.ศ. 2560–2568",
+      "period": {
+        "start": "2017",
+        "end": "2025",
+        "thaiEra": "2560–2568"
+      },
+      "unit": "km/h (ความเร็วเฉลี่ย)",
+      "unitEn": "km/h (average travel speed)",
+      "files": [
+        {
+          "name": "travel_speed.csv",
+          "path": "data/travel-speed/travel_speed.csv",
+          "description": "ความเร็วเฉลี่ยแยกตามโซนและช่วงเวลา"
+        }
+      ],
+      "sources": [
+        "การสำรวจความเร็วเฉลี่ยบนถนนสายหลัก สำนักการจราจรและขนส่ง กทม. ปี 2560–2568",
+        "TomTom Traffic Index 2025 (เพื่อเปรียบเทียบระดับสากล)"
+      ],
+      "coverage": {
+        "roads": 50,
+        "zones": ["Inner (28 roads)", "Middle (20 roads)", "Outer (7 roads)"],
+        "peakHours": {
+          "morning": "07:00–09:00",
+          "evening": "16:00–18:00"
+        }
+      },
+      "notes": [
+        "ข้อมูลเก็บจากการสำรวจภาคสนาม ไม่ใช่ GPS probe data",
+        "TomTom ใช้เพื่อ international benchmark เท่านั้น ไม่สามารถเปรียบเทียบโดยตรง"
+      ]
+    }
+  ]
+}

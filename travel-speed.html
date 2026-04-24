@@ -446,9 +446,14 @@
       try {
         const rows = await fetchCsv('./data/travel-speed/travel_speed.csv');
         const processed = processSpeedData(rows);
-        const directional = processSpeedDirectionData(rows);
         renderSpeedTrendChart('speedTrendChart', processed);
-        renderZoneDirectionBarChart('zoneDirectionBarChart', directional);
+
+        try {
+          const directional = processSpeedDirectionData(rows);
+          renderZoneDirectionBarChart('zoneDirectionBarChart', directional);
+        } catch (_directionalError) {
+          renderZoneDirectionBarChart('zoneDirectionBarChart');
+        }
       } catch (e) {
         // fall back to static data in transit-data.js
         renderSpeedTrendChart('speedTrendChart');

@@ -32,6 +32,28 @@ function _destroyChart(id) {
   if (_charts[id]) { _charts[id].destroy(); delete _charts[id]; }
 }
 
+function _hasAnnotationPlugin() {
+  try {
+    return Boolean(Chart?.registry?.plugins?.get('annotation'));
+  } catch (_e) {
+    return false;
+  }
+}
+
+function _buildCovidAnnotation() {
+  if (!_hasAnnotationPlugin()) return undefined;
+  return {
+    annotations: {
+      covid: {
+        type: 'box', xMin: '2563', xMax: '2564',
+        backgroundColor: 'rgba(192,57,43,0.05)',
+        borderColor: 'rgba(192,57,43,0.2)', borderWidth: 1,
+        label: { display: true, content: 'COVID-19', font: { size: 10 }, color: '#C0392B' },
+      },
+    },
+  };
+}
+
 /* ── Chart.js global defaults ── */
 function initChartDefaults() {
   Chart.defaults.font.family = "'Sarabun', sans-serif";
@@ -46,6 +68,7 @@ function initChartDefaults() {
 function renderAnnualTrendChart(canvasId) {
   _destroyChart(canvasId);
   const d = TRANSIT.annualTotal;
+  const covidAnnotation = _buildCovidAnnotation();
   _charts[canvasId] = new Chart(document.getElementById(canvasId), {
     type: 'line',
     data: {
@@ -84,16 +107,7 @@ function renderAnnualTrendChart(canvasId) {
             label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString()} ล้านเที่ยว`,
           },
         },
-        annotation: {
-          annotations: {
-            covid: {
-              type: 'box', xMin: '2563', xMax: '2564',
-              backgroundColor: 'rgba(192,57,43,0.05)',
-              borderColor: 'rgba(192,57,43,0.2)', borderWidth: 1,
-              label: { display: true, content: 'COVID-19', font: { size: 10 }, color: '#C0392B' },
-            },
-          },
-        },
+        ...(covidAnnotation ? { annotation: covidAnnotation } : {}),
       },
       scales: {
         x: { grid: { color: '#F0F4F8' } },
@@ -159,6 +173,7 @@ function renderModalShareChart(canvasId) {
 function renderSpeedTrendChart(canvasId, speedData) {
   _destroyChart(canvasId);
   const d = speedData || TRANSIT.travelSpeed;
+  const covidAnnotation = _buildCovidAnnotation();
   _charts[canvasId] = new Chart(document.getElementById(canvasId), {
     type: 'line',
     data: {
@@ -197,16 +212,7 @@ function renderSpeedTrendChart(canvasId, speedData) {
             label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y} km/h`,
           },
         },
-        annotation: {
-          annotations: {
-            covid: {
-              type: 'box', xMin: '2563', xMax: '2564',
-              backgroundColor: 'rgba(192,57,43,0.05)',
-              borderColor: 'rgba(192,57,43,0.2)', borderWidth: 1,
-              label: { display: true, content: 'COVID-19', font: { size: 10 }, color: '#C0392B' },
-            },
-          },
-        },
+        ...(covidAnnotation ? { annotation: covidAnnotation } : {}),
       },
       scales: {
         x: { grid: { color: '#F0F4F8' } },

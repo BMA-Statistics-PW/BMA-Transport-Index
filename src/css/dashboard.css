@@ -163,6 +163,83 @@
   font-family: var(--bma-font-display);
 }
 
+.bma-chip-rail {
+  background: #eaf4fb;
+  border-color: #b9d9ee;
+  color: #1f5f90;
+}
+
+.bma-chip-bus {
+  background: #fef6e8;
+  border-color: #f3d9a8;
+  color: #9a5f0a;
+}
+
+.bma-chip-ferry {
+  background: #e9f8f5;
+  border-color: #b6e7dd;
+  color: #0f6f5e;
+}
+
+.transport-theme-rail {
+  --transport-accent: #2e86c1;
+  --transport-soft: #eaf4fb;
+  --transport-border: #bedcf0;
+  --transport-ink: #1c527b;
+}
+
+.transport-theme-bus {
+  --transport-accent: #e8960a;
+  --transport-soft: #fef6e8;
+  --transport-border: #f1d8a6;
+  --transport-ink: #8f5608;
+}
+
+.transport-theme-ferry {
+  --transport-accent: #148f77;
+  --transport-soft: #e9f8f5;
+  --transport-border: #b9e6dd;
+  --transport-ink: #0f6a59;
+}
+
+.transport-theme-mix {
+  --transport-accent: #0d2b4e;
+  --transport-soft: #f3f7fc;
+  --transport-border: #cddfed;
+  --transport-ink: #163f63;
+}
+
+.bma-chart-card.transport-theme-card {
+  position: relative;
+  overflow: hidden;
+  border-color: var(--transport-border, var(--bma-border));
+  background: linear-gradient(180deg, var(--transport-soft, var(--bma-blue-pale)) 0%, var(--bma-white) 26%);
+}
+
+.bma-chart-card.transport-theme-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--transport-accent, var(--bma-blue-mid)), var(--transport-ink, var(--bma-navy)));
+}
+
+.bma-chart-card.transport-theme-card .bma-chart-title {
+  color: var(--transport-ink, var(--bma-navy));
+}
+
+.bma-chart-card.transport-theme-card .bma-source-tag {
+  background: var(--transport-soft, var(--bma-bg));
+  border-color: var(--transport-border, var(--bma-border));
+  color: var(--transport-ink, var(--bma-text-mid));
+}
+
+.bma-chart-card.transport-theme-card .bma-card-note {
+  border-top-color: var(--transport-border, var(--bma-border));
+}
+
 .bma-card-note {
   margin-top: 10px;
   font-size: 11px;
@@ -190,6 +267,31 @@
   bottom: 0;
   width: 4px;
   background: var(--bma-blue-mid);
+}
+
+.bma-insight-card.transport-theme-rail::before { background: #2e86c1; }
+.bma-insight-card.transport-theme-bus::before { background: #e8960a; }
+.bma-insight-card.transport-theme-ferry::before { background: #148f77; }
+.bma-insight-card.transport-theme-mix::before { background: #0d2b4e; }
+
+.bma-insight-card.transport-theme-rail {
+  background: linear-gradient(180deg, #eef7fd 0%, var(--bma-white) 40%);
+  border-color: #bedcf0;
+}
+
+.bma-insight-card.transport-theme-bus {
+  background: linear-gradient(180deg, #fff8ec 0%, var(--bma-white) 40%);
+  border-color: #f1d8a6;
+}
+
+.bma-insight-card.transport-theme-ferry {
+  background: linear-gradient(180deg, #eefbf8 0%, var(--bma-white) 40%);
+  border-color: #b9e6dd;
+}
+
+.bma-insight-card.transport-theme-mix {
+  background: linear-gradient(180deg, #f5f9fd 0%, var(--bma-white) 40%);
+  border-color: #cddfed;
 }
 
 .bma-insight-title {

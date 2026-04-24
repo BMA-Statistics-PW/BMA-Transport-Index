@@ -137,7 +137,7 @@
         <span class="bma-sec-meta">ปี 2556–2568 · ล้านเที่ยวคน/ปี</span>
       </div>
       <div class="bma-grid-2">
-        <div class="bma-chart-card">
+        <div class="bma-chart-card transport-theme-card transport-theme-mix" id="annualOverviewCard">
           <div class="bma-card-topline">
             <span class="bma-source-tag">Series View</span>
             <span class="bma-source-tag">หน่วย: ล้านเที่ยวคน/ปี</span>
@@ -145,10 +145,10 @@
           <div class="bma-chart-title">จำนวนผู้โดยสารรายระบบ — แนวโน้มรายปี</div>
           <div class="bma-chart-subtitle">รถไฟฟ้า · รถโดยสาร · เรือโดยสาร (ล้านเที่ยวคน/ปี)</div>
           <div class="bma-chip-row">
-            <span class="bma-chip">ขสมก.</span>
-            <span class="bma-chip">รฟม.</span>
-            <span class="bma-chip">รฟท.</span>
-            <span class="bma-chip">กรมเจ้าท่า</span>
+            <span class="bma-chip bma-chip-bus">ขสมก.</span>
+            <span class="bma-chip bma-chip-rail">รฟม.</span>
+            <span class="bma-chip bma-chip-rail">รฟท.</span>
+            <span class="bma-chip bma-chip-ferry">กรมเจ้าท่า</span>
           </div>
           <div class="bma-chart-container" style="height:340px;">
             <canvas id="annualTrendChart" aria-label="กราฟแนวโน้มผู้โดยสารรายปี" role="img"></canvas>
@@ -156,7 +156,7 @@
           <div class="bma-card-note">กราฟนี้ใช้เพื่อดูทิศทางระยะยาวและผลกระทบช่วง COVID-19 ต่อระบบขนส่งหลักในกรุงเทพมหานคร</div>
         </div>
 
-        <div class="bma-chart-card">
+        <div class="bma-chart-card transport-theme-card transport-theme-rail" id="annualFilterCard">
           <div class="bma-card-topline">
             <span class="bma-source-tag">Interactive Filter</span>
             <span class="bma-source-tag">เปรียบเทียบรายระบบ</span>
@@ -178,7 +178,7 @@
 
       <div id="ridershipInsightCards" class="bma-grid-3"></div>
 
-      <div class="bma-chart-card">
+      <div class="bma-chart-card transport-theme-card transport-theme-rail" id="monthlyDrilldownCard">
         <div class="bma-card-topline">
           <span class="bma-source-tag">Monthly Drill-down</span>
           <span class="bma-source-tag">หน่วย: ล้านเที่ยวคน/เดือน</span>
@@ -310,6 +310,35 @@
       return m ? m[0] : String(label || '');
     }
 
+    function detectTransportMode(label) {
+      const txt = String(label || '').toLowerCase();
+      if (!txt) return 'mix';
+
+      if (txt.includes('เรือ') || txt.includes('boat') || txt.includes('ferry') || txt.includes('คลอง') || txt.includes('ท่าเรือ')) {
+        return 'ferry';
+      }
+
+      if (txt.includes('ขสมก') || txt.includes('bmta') || txt.includes('bus') || txt.includes('รถโดยสาร') || txt.includes('brt')) {
+        return 'bus';
+      }
+
+      if (
+        txt.includes('รถไฟ') || txt.includes('rail') || txt.includes('bts') || txt.includes('mrt') ||
+        txt.includes('arl') || txt.includes('รฟม') || txt.includes('รฟท') || txt.includes('สายสี')
+      ) {
+        return 'rail';
+      }
+
+      return 'mix';
+    }
+
+    function applyTransportTheme(elementId, mode) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+      el.classList.remove('transport-theme-rail', 'transport-theme-bus', 'transport-theme-ferry', 'transport-theme-mix');
+      el.classList.add(`transport-theme-${mode || 'mix'}`);
+    }
+
     function normalizeModalShareData(data) {
       const base = TRANSIT.modalShare || { labels: [], public: [], private: [] };
       const src = data || { labels: [], public: [], private: [] };
@@ -384,6 +413,7 @@
       const sel = document.getElementById('annualSystemFilter');
       if (!sel || !ridershipTrendAll) return;
       const selected = sel.value;
+      const mode = selected === 'all' ? 'mix' : detectTransportMode(selected);
       const filtered = selected === 'all'
         ? ridershipTrendAll
         : {
@@ -392,6 +422,7 @@
           };
       renderRidershipSystemTrendChart('ridershipSystemTrendChart', filtered);
       renderRidershipInsights('ridershipInsightCards', filtered);
+      applyTransportTheme('annualFilterCard', mode);
     }
 
     function syncMonthlyYearOptions() {
@@ -419,6 +450,7 @@
       const year = Number.parseInt(yearSel.value, 10);
       if (!system || !Number.isFinite(year)) return;
       renderMonthlyRidershipChart('monthlyRidershipChart', monthlyRidership, system, year);
+      applyTransportTheme('monthlyDrilldownCard', detectTransportMode(system));
     }
 
     function renderModalShareCards(modalData, year) {
@@ -487,8 +519,9 @@
         const prev = Number(ds.data[prevIdx] || 0);
         const delta = prev > 0 ? ((curr - prev) / prev) * 100 : 0;
         const up = delta >= 0;
+        const mode = detectTransportMode(ds.label);
         return `
-          <article class="bma-insight-card">
+          <article class="bma-insight-card transport-theme-${mode}">
             <div class="bma-insight-title">${ds.label}</div>
             <div class="bma-insight-value">${Number(curr).toFixed(2)}<span class="bma-kpi-unit"> ล.</span></div>
             <div class="bma-insight-sub">ปี ${year} · ล้านเที่ยวคน/ปี</div>

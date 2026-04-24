@@ -170,6 +170,26 @@
         เร่งด่วนเช้า 25:45 นาที · เร่งด่วนเย็น 31:25 นาที (Peak Congestion 126.5%)
       </div>
 
+      <div class="bma-chart-card travel-report-hero-card">
+        <div class="bma-card-topline">
+          <span class="bma-source-tag">Executive Summary</span>
+          <span class="bma-source-tag">ปี 2568 · BMA + TomTom 2025</span>
+        </div>
+        <div class="bma-chart-title">รายงานสรุปเวลาและอัตราเร็วเฉลี่ยการเดินทาง</div>
+        <div class="bma-chart-subtitle">สรุปผลเชิงผู้บริหารจาก 50 ถนนสายหลัก 3 โซนพื้นที่ พร้อม benchmark ระดับสากล</div>
+        <div id="speedExecutiveCards" class="travel-kpi-grid" aria-label="สรุปตัวเลขสำคัญการเดินทาง"></div>
+        <div class="bma-card-note">ค่าทั้งหมดอ้างอิงข้อมูลปีล่าสุดจากการสำรวจภาคสนามของ สจส. และข้อมูลอ้างอิง TomTom Traffic Index 2025</div>
+      </div>
+
+      <div class="travel-tomtom-banner" role="region" aria-label="สรุป TomTom Traffic Index 2025">
+        <div class="travel-tomtom-mark">TOM<br>TOM<br><span>TRAFFIC INDEX</span></div>
+        <div>
+          <div class="travel-tomtom-title">กรุงเทพมหานครในมุมมองจราจรระดับโลก</div>
+          <div id="tomtomStatGrid" class="travel-tomtom-grid" aria-label="ตัวเลขสำคัญจาก TomTom"></div>
+          <div class="travel-tomtom-note">TomTom ใช้ GPS probe data ครอบคลุมตลอด 24 ชั่วโมง จึงเหมาะสำหรับ benchmark ระดับเมือง และไม่ควรเทียบตรงกับผลสำรวจภาคสนามรายถนนแบบหนึ่งต่อหนึ่ง</div>
+        </div>
+      </div>
+
       <!-- Section 1: Speed Trend -->
       <div class="bma-sec-head">
         <span class="bma-sec-num">01</span>
@@ -177,29 +197,46 @@
         <span class="bma-sec-hr" aria-hidden="true"></span>
         <span class="bma-sec-meta">ช่วงเช้า · ขาเข้า · ปี 2560–2568</span>
       </div>
-      <div class="bma-chart-card">
+      <div class="bma-chart-card transport-theme-card transport-theme-mix">
+        <div class="bma-card-topline">
+          <span class="bma-source-tag">Trend View</span>
+          <span class="bma-source-tag">หน่วย: km/h</span>
+        </div>
         <div class="bma-chart-title">ความเร็วเฉลี่ย (km/h) แยก 3 โซน — ช่วงเช้า ขาเข้า (07:00–09:00)</div>
         <div class="bma-chart-subtitle">ข้อมูลปี 2560–2568 · BMA Field Survey · เส้นแนวโน้มรายปี</div>
         <div class="bma-chart-container" style="height:340px;">
           <canvas id="speedTrendChart" aria-label="กราฟแนวโน้มความเร็วแยกโซน" role="img"></canvas>
         </div>
+        <div class="bma-card-note">ปี 2564 เป็นจุดสูงสุดของความเร็วในทุกโซนจากผลกระทบ COVID-19 ก่อนชะลอลงต่อเนื่องจนปี 2568</div>
       </div>
 
-      <div class="bma-chart-card">
+      <div class="bma-chart-card transport-theme-card transport-theme-mix">
+        <div class="bma-card-topline">
+          <span class="bma-source-tag">Directional Trend</span>
+          <span class="bma-source-tag">Morning Inbound / Outbound</span>
+        </div>
         <div class="bma-chart-title">แนวโน้มความเร็วเฉลี่ยรายโซน (2560–2568) — แยกขาเข้า/ขาออก</div>
         <div class="bma-chart-subtitle">ข้อมูลทั้ง 9 ปี · 6 เส้น (ชั้นใน/กลาง/นอก × ขาเข้า/ขาออก)</div>
         <div class="bma-chart-container" style="height:380px;">
           <canvas id="zoneSpeedTrendChart" aria-label="กราฟแนวโน้มความเร็วแยกโซนและทิศทาง" role="img"></canvas>
         </div>
+        <div class="bma-card-note">เส้นทึบแทนขาเข้า และเส้นประแทนขาออก เพื่อให้เห็นทิศทางการเคลื่อนตัวของความเร็วในแต่ละโซนชัดเจนขึ้น</div>
       </div>
 
-      <div class="bma-chart-card">
+      <div class="bma-chart-card transport-theme-card transport-theme-road">
+        <div class="bma-card-topline">
+          <span class="bma-source-tag">Latest Snapshot</span>
+          <span class="bma-source-tag">ปี 2568 · 4 มิติ</span>
+        </div>
         <div class="bma-chart-title">ความเร็วเฉลี่ยปีล่าสุด แยกโซน/ทิศทาง/ช่วงเวลา</div>
         <div class="bma-chart-subtitle">พอร์ตจาก BMA-travel-time-dashboard-TH · เช้า/เย็น · ขาเข้า/ขาออก</div>
         <div class="bma-chart-container" style="height:340px;">
           <canvas id="zoneDirectionBarChart" aria-label="กราฟแท่งความเร็วแยกโซนและทิศทาง" role="img"></canvas>
         </div>
+        <div class="bma-card-note">ใช้ดูความต่างระหว่างขาเข้าและขาออกของแต่ละโซนในปีล่าสุด โดยเฉพาะช่วงเร่งด่วนเย็นที่ชั้นในยังติดขัดสูงสุด</div>
       </div>
+
+      <div id="zoneSpeedCards" class="travel-zone-grid" aria-label="รายละเอียดความเร็วแยกโซน"></div>
 
       <!-- Section 2: Travel Time & Benchmark -->
       <div class="bma-sec-head">
@@ -210,43 +247,10 @@
       </div>
       <div class="bma-grid-6040">
         <!-- Travel time card -->
-        <div class="bma-compare-block">
-          <div class="bma-compare-title">⏱️ เวลาเดินทางต่อ 10 กม. (ปี 2568 · เช้า ขาเข้า)</div>
-          <div role="list">
-            <div class="bma-metric-row" role="listitem">
-              <span class="bma-metric-label">
-                <span class="zone-badge inner" aria-label="โซนชั้นใน">ชั้นใน</span>
-                (28 ถนน) — เช้า
-              </span>
-              <span class="bma-metric-val">39.3 นาที</span>
-            </div>
-            <div class="bma-metric-row" role="listitem">
-              <span class="bma-metric-label">
-                <span class="zone-badge inner">ชั้นใน</span>
-                (28 ถนน) — เย็น
-              </span>
-              <span class="bma-metric-val">42.6 นาที</span>
-            </div>
-            <div class="bma-metric-row" role="listitem">
-              <span class="bma-metric-label">
-                <span class="zone-badge middle" aria-label="โซนชั้นกลาง">ชั้นกลาง</span>
-                (20 ถนน) — เช้า
-              </span>
-              <span class="bma-metric-val">28.7 นาที</span>
-            </div>
-            <div class="bma-metric-row" role="listitem">
-              <span class="bma-metric-label">
-                <span class="zone-badge outer" aria-label="โซนชั้นนอก">ชั้นนอก</span>
-                (7 ถนน) — เช้า
-              </span>
-              <span class="bma-metric-val">23.1 นาที</span>
-            </div>
-            <div class="bma-metric-row" role="listitem" style="margin-top:8px;padding-top:12px;border-top:1px solid var(--bma-border);">
-              <span class="bma-metric-label" style="font-size:12px;color:var(--bma-text-muted);">
-                📐 คำนวณจาก (10 ÷ ความเร็ว) × 60
-              </span>
-            </div>
-          </div>
+        <div class="bma-compare-block travel-time-block">
+          <div class="bma-compare-title">⏱️ เวลาเดินทางต่อ 10 กม. (ปี 2568)</div>
+          <div class="travel-time-grid" id="travelTimeSummaryGrid" role="list"></div>
+          <div class="travel-formula-note">📐 สูตรคำนวณ: (10 ÷ ความเร็วเฉลี่ย) × 60 นาที</div>
         </div>
 
         <!-- TomTom benchmark -->
@@ -288,39 +292,12 @@
                 <th class="num">TomTom (City)</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>เร่งด่วนเช้า · ขาเข้า</td>
-                <td class="num">39.3</td>
-                <td class="num">28.7</td>
-                <td class="num">23.1</td>
-                <td class="num">25:45</td>
-              </tr>
-              <tr>
-                <td>เร่งด่วนเช้า · ขาออก</td>
-                <td class="num">35.0</td>
-                <td class="num">22.1</td>
-                <td class="num">17.0</td>
-                <td class="num">—</td>
-              </tr>
-              <tr>
-                <td>เร่งด่วนเย็น · ขาเข้า</td>
-                <td class="num">41.1</td>
-                <td class="num">25.4</td>
-                <td class="num">21.2</td>
-                <td class="num">31:25</td>
-              </tr>
-              <tr>
-                <td>เร่งด่วนเย็น · ขาออก</td>
-                <td class="num">40.3</td>
-                <td class="num">22.7</td>
-                <td class="num">18.2</td>
-                <td class="num">—</td>
-              </tr>
-            </tbody>
+            <tbody id="travelTimeCompareBody"></tbody>
           </table>
         </div>
       </div>
+
+      <div id="periodComparisonGrid" class="travel-period-grid" aria-label="เปรียบเทียบช่วงเวลาเร่งด่วน"></div>
 
       <div class="bma-sec-head">
         <span class="bma-sec-num">03</span>
@@ -333,6 +310,7 @@
           <div class="bma-table-head">
             <div>
               <div class="bma-table-title">🏆 ถนนเร็วสุด 5 อันดับ (ปี 2568)</div>
+              <div class="bma-table-sub">โฟกัสช่วงเร่งด่วนเช้า เทียบค่าช่วงเย็นประกอบ</div>
             </div>
           </div>
           <div style="overflow-x:auto;">
@@ -359,6 +337,7 @@
           <div class="bma-table-head">
             <div>
               <div class="bma-table-title">🐢 ถนนช้าสุด 5 อันดับ (ปี 2568)</div>
+              <div class="bma-table-sub">สะท้อน bottleneck หลักของเครือข่ายถนนสายหลัก</div>
             </div>
           </div>
           <div style="overflow-x:auto;">
@@ -393,6 +372,7 @@
         <div class="bma-table-head">
           <div>
             <div class="bma-table-title">BMA Survey vs TomTom — ความแตกต่างที่ต้องทราบ</div>
+            <div class="bma-table-sub">ข้อจำกัดเชิงวิธีวิทยาที่ต้องใช้ประกอบการตีความผล</div>
           </div>
         </div>
         <div style="overflow-x:auto;">
@@ -414,6 +394,14 @@
           </table>
         </div>
       </div>
+
+      <div class="bma-sec-head">
+        <span class="bma-sec-num">05</span>
+        <span class="bma-sec-title">ข้อสรุปและข้อสังเกต</span>
+        <span class="bma-sec-hr" aria-hidden="true"></span>
+        <span class="bma-sec-meta">ภาพรวมเชิงนโยบายจากข้อมูลปี 2568 และแนวโน้ม 9 ปี</span>
+      </div>
+      <div id="speedInsightGrid" class="travel-insight-grid" aria-label="ข้อสรุปสำคัญ"></div>
 
     </main>
 
@@ -443,19 +431,241 @@
   <script src="src/js/charts.js"></script>
   <script src="src/js/data-loader.js"></script>
   <script>
+    function formatMinutesFromSpeed(speed) {
+      if (!Number.isFinite(speed) || speed <= 0) return '—';
+      return (10 / speed * 60).toFixed(1);
+    }
+
+    function buildLatestSpeedSnapshot(directionData) {
+      const base = directionData || TRANSIT.speedByZoneDirection;
+      return [
+        {
+          key: 'inner',
+          label: 'พื้นที่ชั้นใน',
+          roads: '28 ถนน',
+          tone: 'inner',
+          morningInbound: Number(base.morningInbound?.[0]),
+          morningOutbound: Number(base.morningOutbound?.[0]),
+          eveningInbound: Number(base.eveningInbound?.[0]),
+          eveningOutbound: Number(base.eveningOutbound?.[0]),
+        },
+        {
+          key: 'middle',
+          label: 'พื้นที่ชั้นกลาง',
+          roads: '20 ถนน',
+          tone: 'middle',
+          morningInbound: Number(base.morningInbound?.[1]),
+          morningOutbound: Number(base.morningOutbound?.[1]),
+          eveningInbound: Number(base.eveningInbound?.[1]),
+          eveningOutbound: Number(base.eveningOutbound?.[1]),
+        },
+        {
+          key: 'outer',
+          label: 'พื้นที่ชั้นนอก',
+          roads: '7 ถนน',
+          tone: 'outer',
+          morningInbound: Number(base.morningInbound?.[2]),
+          morningOutbound: Number(base.morningOutbound?.[2]),
+          eveningInbound: Number(base.eveningInbound?.[2]),
+          eveningOutbound: Number(base.eveningOutbound?.[2]),
+        },
+      ];
+    }
+
+    function renderExecutiveCards(snapshot) {
+      const el = document.getElementById('speedExecutiveCards');
+      if (!el) return;
+
+      const inner = snapshot[0];
+      const outer = snapshot[2];
+      const avgMorningIn = snapshot.reduce((sum, zone) => sum + zone.morningInbound, 0) / snapshot.length;
+      const avgEveningIn = snapshot.reduce((sum, zone) => sum + zone.eveningInbound, 0) / snapshot.length;
+
+      const cards = [
+        { icon: '🏙️', tone: 'red', value: inner.morningInbound.toFixed(2), unit: 'km/h', label: 'ชั้นใน · เช้า · ขาเข้า', sub: 'ค่าต่ำสุดของเครือข่ายปี 2568' },
+        { icon: '🌳', tone: 'green', value: outer.morningInbound.toFixed(2), unit: 'km/h', label: 'ชั้นนอก · เช้า · ขาเข้า', sub: 'ค่าดีที่สุดของเครือข่ายปี 2568' },
+        { icon: '⏱️', tone: 'orange', value: formatMinutesFromSpeed(inner.eveningInbound), unit: 'นาที/10 กม.', label: 'ชั้นใน · เย็น · ขาเข้า', sub: 'เวลาสูงสุดจากข้อมูลภาคสนาม' },
+        { icon: '🌍', tone: 'blue', value: String(TRANSIT.benchmark.bangkokRank), unit: 'อันดับโลก', label: 'TomTom Traffic Index 2025', sub: `Congestion ${TRANSIT.benchmark.congestionLevel}%` },
+        { icon: '↔️', tone: 'gold', value: (avgEveningIn - avgMorningIn).toFixed(1), unit: 'km/h', label: 'เฉลี่ยเย็น - เช้า (ขาเข้า)', sub: 'ค่าติดลบ = เย็นช้ากว่าเช้า' },
+      ];
+
+      el.innerHTML = cards.map(card => `
+        <article class="travel-kpi-card ${card.tone}">
+          <div class="travel-kpi-icon">${card.icon}</div>
+          <div class="travel-kpi-value">${card.value}</div>
+          <div class="travel-kpi-unit">${card.unit}</div>
+          <div class="travel-kpi-label">${card.label}</div>
+          <div class="travel-kpi-sub">${card.sub}</div>
+        </article>`).join('');
+    }
+
+    function renderTomTomStats() {
+      const el = document.getElementById('tomtomStatGrid');
+      if (!el) return;
+      const b = TRANSIT.benchmark;
+      const stats = [
+        { value: `${b.bangkokRank}`, unit: 'อันดับโลก', label: 'ด้าน Congestion' },
+        { value: `${b.congestionLevel}%`, unit: 'Congestion Level', label: 'สูงขึ้นจากปีก่อน' },
+        { value: b.avgTimePer10km, unit: 'นาที / 10 กม.', label: 'เฉลี่ยตลอดทั้งเมือง' },
+        { value: b.morningRushTime, unit: 'เร่งด่วนเช้า', label: 'ค่าเฉลี่ยช่วงเช้า' },
+        { value: b.eveningRushTime, unit: 'เร่งด่วนเย็น', label: 'ค่าเฉลี่ยช่วงเย็น' },
+        { value: `${b.annualLostHours}`, unit: 'ชั่วโมง / ปี', label: 'เวลาสูญเสียจากรถติด' },
+      ];
+      el.innerHTML = stats.map(stat => `
+        <article class="travel-tomtom-stat">
+          <div class="travel-tomtom-val">${stat.value}</div>
+          <div class="travel-tomtom-unit">${stat.unit}</div>
+          <div class="travel-tomtom-label">${stat.label}</div>
+        </article>`).join('');
+    }
+
+    function renderZoneCards(snapshot) {
+      const el = document.getElementById('zoneSpeedCards');
+      if (!el) return;
+      el.innerHTML = snapshot.map(zone => {
+        const fastest = Math.max(zone.morningInbound, zone.morningOutbound, zone.eveningInbound, zone.eveningOutbound);
+        return `
+          <article class="travel-zone-card ${zone.tone}">
+            <div class="travel-zone-head">
+              <div>
+                <div class="travel-zone-title">${zone.label}</div>
+                <div class="travel-zone-sub">${zone.roads} · Snapshot ปี 2568</div>
+              </div>
+              <span class="zone-badge ${zone.tone}">${zone.label.replace('พื้นที่', '').trim()}</span>
+            </div>
+            <div class="travel-zone-metrics">
+              <div class="travel-zone-row"><span>เช้า · ขาเข้า</span><strong>${zone.morningInbound.toFixed(2)} km/h</strong></div>
+              <div class="travel-zone-row"><span>เช้า · ขาออก</span><strong>${zone.morningOutbound.toFixed(2)} km/h</strong></div>
+              <div class="travel-zone-row"><span>เย็น · ขาเข้า</span><strong>${zone.eveningInbound.toFixed(2)} km/h</strong></div>
+              <div class="travel-zone-row"><span>เย็น · ขาออก</span><strong>${zone.eveningOutbound.toFixed(2)} km/h</strong></div>
+            </div>
+            <div class="travel-zone-note">ค่าดีที่สุดของโซนนี้คือ ${fastest.toFixed(2)} km/h และใช้เวลาประมาณ ${formatMinutesFromSpeed(zone.eveningInbound)} นาที/10 กม. ในช่วงขาเข้าเย็น</div>
+          </article>`;
+      }).join('');
+    }
+
+    function renderTravelTimeSummary(snapshot) {
+      const el = document.getElementById('travelTimeSummaryGrid');
+      if (!el) return;
+      const items = [
+        { label: 'ชั้นใน · เช้า · ขาเข้า', tone: 'inner', value: formatMinutesFromSpeed(snapshot[0].morningInbound) },
+        { label: 'ชั้นใน · เย็น · ขาเข้า', tone: 'inner', value: formatMinutesFromSpeed(snapshot[0].eveningInbound) },
+        { label: 'ชั้นกลาง · เช้า · ขาเข้า', tone: 'middle', value: formatMinutesFromSpeed(snapshot[1].morningInbound) },
+        { label: 'ชั้นกลาง · เย็น · ขาเข้า', tone: 'middle', value: formatMinutesFromSpeed(snapshot[1].eveningInbound) },
+        { label: 'ชั้นนอก · เช้า · ขาเข้า', tone: 'outer', value: formatMinutesFromSpeed(snapshot[2].morningInbound) },
+        { label: 'ชั้นนอก · เย็น · ขาเข้า', tone: 'outer', value: formatMinutesFromSpeed(snapshot[2].eveningInbound) },
+      ];
+      el.innerHTML = items.map(item => `
+        <div class="travel-time-item ${item.tone}" role="listitem">
+          <div class="travel-time-label">${item.label}</div>
+          <div class="travel-time-value">${item.value}</div>
+          <div class="travel-time-unit">นาที / 10 กม.</div>
+        </div>`).join('');
+    }
+
+    function renderTravelTimeCompare(snapshot) {
+      const el = document.getElementById('travelTimeCompareBody');
+      if (!el) return;
+      const rows = [
+        ['เร่งด่วนเช้า · ขาเข้า', formatMinutesFromSpeed(snapshot[0].morningInbound), formatMinutesFromSpeed(snapshot[1].morningInbound), formatMinutesFromSpeed(snapshot[2].morningInbound), TRANSIT.benchmark.morningRushTime],
+        ['เร่งด่วนเช้า · ขาออก', formatMinutesFromSpeed(snapshot[0].morningOutbound), formatMinutesFromSpeed(snapshot[1].morningOutbound), formatMinutesFromSpeed(snapshot[2].morningOutbound), '—'],
+        ['เร่งด่วนเย็น · ขาเข้า', formatMinutesFromSpeed(snapshot[0].eveningInbound), formatMinutesFromSpeed(snapshot[1].eveningInbound), formatMinutesFromSpeed(snapshot[2].eveningInbound), TRANSIT.benchmark.eveningRushTime],
+        ['เร่งด่วนเย็น · ขาออก', formatMinutesFromSpeed(snapshot[0].eveningOutbound), formatMinutesFromSpeed(snapshot[1].eveningOutbound), formatMinutesFromSpeed(snapshot[2].eveningOutbound), '—'],
+      ];
+      el.innerHTML = rows.map(row => `
+        <tr>
+          <td>${row[0]}</td>
+          <td class="num">${row[1]}</td>
+          <td class="num">${row[2]}</td>
+          <td class="num">${row[3]}</td>
+          <td class="num">${row[4]}</td>
+        </tr>`).join('');
+    }
+
+    function renderPeriodComparison(snapshot) {
+      const el = document.getElementById('periodComparisonGrid');
+      if (!el) return;
+      const avgMorningIn = snapshot.reduce((sum, zone) => sum + zone.morningInbound, 0) / snapshot.length;
+      const avgMorningOut = snapshot.reduce((sum, zone) => sum + zone.morningOutbound, 0) / snapshot.length;
+      const avgEveningIn = snapshot.reduce((sum, zone) => sum + zone.eveningInbound, 0) / snapshot.length;
+      const avgEveningOut = snapshot.reduce((sum, zone) => sum + zone.eveningOutbound, 0) / snapshot.length;
+      const cards = [
+        {
+          title: 'เร่งด่วนเช้า',
+          time: '07:00–09:00 น.',
+          inVal: avgMorningIn,
+          outVal: avgMorningOut,
+          note: `ขาออกเร็วกว่าขาเข้า ${(avgMorningOut - avgMorningIn).toFixed(1)} km/h`,
+        },
+        {
+          title: 'เร่งด่วนเย็น',
+          time: '16:00–18:00 น.',
+          inVal: avgEveningIn,
+          outVal: avgEveningOut,
+          note: `ขาออกเร็วกว่าขาเข้า ${(avgEveningOut - avgEveningIn).toFixed(1)} km/h`,
+        },
+      ];
+      el.innerHTML = cards.map(card => `
+        <article class="travel-period-card">
+          <div class="travel-period-title">${card.title}</div>
+          <div class="travel-period-time">${card.time}</div>
+          <div class="travel-period-row"><span>ขาเข้า</span><strong>${card.inVal.toFixed(1)} km/h</strong></div>
+          <div class="travel-period-row"><span>ขาออก</span><strong>${card.outVal.toFixed(1)} km/h</strong></div>
+          <div class="travel-period-note">${card.note}</div>
+        </article>`).join('');
+    }
+
+    function renderSpeedInsights(snapshot) {
+      const el = document.getElementById('speedInsightGrid');
+      if (!el) return;
+      const inner = snapshot[0];
+      const outer = snapshot[2];
+      const insights = [
+        { icon: '⚠️', tone: 'warn', title: 'ชั้นในยังเป็นคอขวดหลัก', text: `ช่วงเย็นขาเข้าใช้เวลาประมาณ ${formatMinutesFromSpeed(inner.eveningInbound)} นาที/10 กม. สูงสุดในทุกโซน` },
+        { icon: '🌍', tone: 'info', title: 'กรุงเทพฯ ยังอยู่ใน Top 10 โลกด้าน congestion', text: `TomTom 2025 ให้ค่า congestion ${TRANSIT.benchmark.congestionLevel}% และเวลาเฉลี่ย ${TRANSIT.benchmark.avgTimePer10km} นาที/10 กม.` },
+        { icon: '🌳', tone: 'ok', title: 'ชั้นนอกยังคล่องตัวที่สุด', text: `ชั้นนอกเช้า-ขาเข้าอยู่ที่ ${outer.morningInbound.toFixed(2)} km/h และขาออกเช้าที่ ${outer.morningOutbound.toFixed(2)} km/h` },
+        { icon: '↔️', tone: 'tip', title: 'ขาออกเร็วกว่าขาเข้าอย่างสม่ำเสมอ', text: 'ทั้งช่วงเช้าและเย็น ค่าความเร็วเฉลี่ยขาออกยังดีกว่าขาเข้าในทุกโซน สะท้อนแรงกดดันฝั่ง inbound มากกว่า' },
+      ];
+      el.innerHTML = insights.map(item => `
+        <article class="travel-insight-card ${item.tone}">
+          <div class="travel-insight-icon">${item.icon}</div>
+          <div>
+            <div class="travel-insight-title">${item.title}</div>
+            <div class="travel-insight-text">${item.text}</div>
+          </div>
+        </article>`).join('');
+    }
+
     document.addEventListener('DOMContentLoaded', async () => {
       // UI elements that don't need CSV
       setDateElements();
       renderBenchmarkTable('benchmarkTableBody');
       initSidebar();
+      renderTomTomStats();
+
+      let latestSnapshot = buildLatestSpeedSnapshot();
+      renderExecutiveCards(latestSnapshot);
+      renderZoneCards(latestSnapshot);
+      renderTravelTimeSummary(latestSnapshot);
+      renderTravelTimeCompare(latestSnapshot);
+      renderPeriodComparison(latestSnapshot);
+      renderSpeedInsights(latestSnapshot);
 
       // Render speed chart — try loading live CSV first, fall back to static data
       initChartDefaults();
       try {
         const rows = await fetchCsv('./data/travel-speed/travel_speed.csv');
         const processed = processSpeedData(rows);
+        const trendByZone = processZoneSpeedTrendData(rows);
+        latestSnapshot = buildLatestSpeedSnapshot(processSpeedDirectionData(rows));
+        renderExecutiveCards(latestSnapshot);
+        renderZoneCards(latestSnapshot);
+        renderTravelTimeSummary(latestSnapshot);
+        renderTravelTimeCompare(latestSnapshot);
+        renderPeriodComparison(latestSnapshot);
+        renderSpeedInsights(latestSnapshot);
         renderSpeedTrendChart('speedTrendChart', processed);
-        renderZoneSpeedTrendChart('zoneSpeedTrendChart');
+        renderZoneSpeedTrendChart('zoneSpeedTrendChart', trendByZone);
 
         try {
           const directional = processSpeedDirectionData(rows);

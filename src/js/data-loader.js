@@ -141,6 +141,35 @@ function processSpeedDirectionData(rows) {
   };
 }
 
+/**
+ * แปลงข้อมูล speed CSV เป็นแนวโน้มรายปีแยกโซน/ทิศทาง (ช่วงเช้า)
+ * @param {Array<Object>} rows
+ * @returns {{labels: string[], Urban: {inbound:number[], outbound:number[]}, Suburban: {inbound:number[], outbound:number[]}, Rural: {inbound:number[], outbound:number[]}}}
+ */
+function processZoneSpeedTrendData(rows) {
+  const years = [...new Set(rows.map(r => Number(r.year)))].filter(Number.isFinite).sort((a, b) => a - b);
+  const getSeries = (zone, direction) => years.map(year => {
+    const row = rows.find(r => Number(r.year) === year && r.zone === zone && r.peak === 'Morning' && r.direction === direction);
+    return row ? Number.parseFloat(row.speed_kmh) : null;
+  });
+
+  return {
+    labels: years.map(year => String(year + 543)),
+    Urban: {
+      inbound: getSeries('Inner', 'Inbound'),
+      outbound: getSeries('Inner', 'Outbound'),
+    },
+    Suburban: {
+      inbound: getSeries('Middle', 'Inbound'),
+      outbound: getSeries('Middle', 'Outbound'),
+    },
+    Rural: {
+      inbound: getSeries('Outer', 'Inbound'),
+      outbound: getSeries('Outer', 'Outbound'),
+    },
+  };
+}
+
 function _toNumber(value) {
   const clean = String(value ?? '').replace(/,/g, '').replace(/%/g, '').trim();
   if (!clean || clean === '-' || clean.toLowerCase() === 'na') return null;
@@ -268,6 +297,7 @@ if (typeof module !== 'undefined' && module.exports) {
     loadAllData,
     processSpeedData,
     processSpeedDirectionData,
+    processZoneSpeedTrendData,
     processRidershipSystemTrend,
     processModalShareData,
     processMonthlyRidershipData,

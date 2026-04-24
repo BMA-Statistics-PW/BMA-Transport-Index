@@ -534,9 +534,9 @@ function renderSystemShareDoughnut(canvasId) {
 }
 
 /* ── 3.2 แนวโน้มความเร็วรายโซน (2560-2568) — เส้นแยก Inbound/Outbound ── */
-function renderZoneSpeedTrendChart(canvasId) {
+function renderZoneSpeedTrendChart(canvasId, trendData) {
   _destroyChart(canvasId);
-  const d = TRANSIT.speedTrendByZone;
+  const d = trendData || TRANSIT.speedTrendByZone;
   const covidAnnotation = _buildCovidAnnotation();
   _charts[canvasId] = new Chart(document.getElementById(canvasId), {
     type: 'line',

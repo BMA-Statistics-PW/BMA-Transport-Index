@@ -144,6 +144,16 @@
         </div>
       </div>
 
+      <div class="bma-chart-card">
+        <div class="bma-chart-title">แนวโน้มผู้โดยสารรายระบบหลัก</div>
+        <div class="bma-chart-subtitle">ขสมก. · BTS สีเขียว · MRT สีน้ำเงิน · ARL · MRT สีม่วง (ปี 2556–2568)</div>
+        <div class="bma-chart-container" style="height:360px;">
+          <canvas id="ridershipSystemTrendChart" aria-label="กราฟแนวโน้มผู้โดยสารรายระบบหลัก" role="img"></canvas>
+        </div>
+      </div>
+
+      <div id="ridershipInsightCards" class="bma-grid-3"></div>
+
       <!-- Section 2: Modal Share -->
       <div class="bma-sec-head">
         <span class="bma-sec-num">02</span>
@@ -225,10 +235,54 @@
   <script src="src/js/transit-data.js"></script>
   <script src="src/js/ui.js"></script>
   <script src="src/js/charts.js"></script>
+  <script src="src/js/data-loader.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    function renderRidershipInsights(containerId, trendData) {
+      const el = document.getElementById(containerId);
+      if (!el || !trendData || !trendData.labels?.length || !trendData.datasets?.length) return;
+      const lastIdx = trendData.labels.length - 1;
+      const prevIdx = Math.max(0, lastIdx - 1);
+
+      const cards = trendData.datasets.slice(0, 3).map(ds => {
+        const curr = Number(ds.data[lastIdx] || 0);
+        const prev = Number(ds.data[prevIdx] || 0);
+        const delta = prev > 0 ? ((curr - prev) / prev) * 100 : 0;
+        const up = delta >= 0;
+        return `
+          <div class="bma-compare-block">
+            <div class="bma-compare-title">${ds.label}</div>
+            <div class="bma-kpi-num" style="font-size:30px;">${Math.round(curr / 1000000).toLocaleString()}<span class="bma-kpi-unit"> ล้าน/ปี</span></div>
+            <div class="bma-kpi-chg ${up ? 'bma-up' : 'bma-down'}">${up ? '▲' : '▼'} ${Math.abs(delta).toFixed(1)}% จากปีก่อน</div>
+          </div>`;
+      }).join('');
+      el.innerHTML = cards;
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
       initUI();
-      renderAllCharts();
+      initChartDefaults();
+      renderAnnualTrendChart('annualTrendChart');
+      renderModalShareChart('modalShareChart');
+      renderRadarChart('radarChart');
+
+      try {
+        const reportRows = await fetchCsv('./data/ridership/transport_report.csv');
+        const trendData = processRidershipSystemTrend(reportRows);
+        renderRidershipSystemTrendChart('ridershipSystemTrendChart', trendData);
+        renderRidershipInsights('ridershipInsightCards', trendData);
+      } catch (e) {
+        console.warn('Ridership trend CSV unavailable:', e.message);
+      }
+
+      try {
+        const shareRows = await fetchCsv('./data/ridership/transport_share.csv');
+        const modalData = processModalShareData(shareRows);
+        if (modalData.labels.length > 0) {
+          renderModalShareChart('modalShareChart', modalData);
+        }
+      } catch (e) {
+        console.warn('Modal share CSV unavailable:', e.message);
+      }
     });
   </script>
 </body>

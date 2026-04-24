@@ -141,6 +141,70 @@ function processSpeedDirectionData(rows) {
   };
 }
 
+function _toNumber(value) {
+  const clean = String(value ?? '').replace(/,/g, '').replace(/%/g, '').trim();
+  if (!clean || clean === '-' || clean.toLowerCase() === 'na') return null;
+  const n = Number.parseFloat(clean);
+  return Number.isFinite(n) ? n : null;
+}
+
+function _getYearHeaders(row) {
+  return Object.keys(row).filter(k => /^ปี\s*\d{4}$/.test(String(k).trim()));
+}
+
+/**
+ * แปลงข้อมูลผู้โดยสารรายระบบจาก transport_report.csv
+ * @param {Array<Object>} rows
+ * @returns {{labels: string[], datasets: Array<{label: string, data: Array<number|null>}>}}
+ */
+function processRidershipSystemTrend(rows) {
+  if (!rows || rows.length === 0) return { labels: [], datasets: [] };
+  const firstDataRow = rows.find(r => _getYearHeaders(r).length > 0) || rows[0];
+  const years = _getYearHeaders(firstDataRow).sort((a, b) => Number(a.replace(/\D/g, '')) - Number(b.replace(/\D/g, '')));
+  const nameKey = Object.keys(firstDataRow)[1] || Object.keys(firstDataRow)[0];
+
+  const pickRow = (matcher) => rows.find(r => matcher(String(r[nameKey] || '')));
+  const buildSeries = (row) => years.map(y => (row ? _toNumber(row[y]) : null));
+
+  const busRow = pickRow(name => name.includes('รถโดยสารประจำทาง'));
+  const btsGreenRow = pickRow(name => name.includes('BTS สายสีเขียว'));
+  const mrtBlueRow = pickRow(name => name.includes('MRT สายสีน้ำเงิน'));
+  const arlRow = pickRow(name => name.includes('Airport Rail Link'));
+  const mrtPurpleRow = pickRow(name => name.includes('MRT สายสีม่วง'));
+
+  return {
+    labels: years.map(y => y.replace(/^ปี\s*/, '')),
+    datasets: [
+      { label: 'รถประจำทาง (ขสมก.)', data: buildSeries(busRow) },
+      { label: 'BTS สายสีเขียว', data: buildSeries(btsGreenRow) },
+      { label: 'MRT สายสีน้ำเงิน', data: buildSeries(mrtBlueRow) },
+      { label: 'Airport Rail Link', data: buildSeries(arlRow) },
+      { label: 'MRT สายสีม่วง', data: buildSeries(mrtPurpleRow) },
+    ],
+  };
+}
+
+/**
+ * แปลงข้อมูล modal share จาก transport_share.csv
+ * @param {Array<Object>} rows
+ * @returns {{labels: string[], public: number[], private: number[]}}
+ */
+function processModalShareData(rows) {
+  if (!rows || rows.length === 0) return { labels: [], public: [], private: [] };
+  const firstDataRow = rows.find(r => _getYearHeaders(r).length > 0) || rows[0];
+  const years = _getYearHeaders(firstDataRow).sort((a, b) => Number(a.replace(/\D/g, '')) - Number(b.replace(/\D/g, '')));
+  const nameKey = Object.keys(firstDataRow)[0];
+
+  const publicRow = rows.find(r => String(r[nameKey] || '').includes('สัดส่วนสาธารณะ'));
+  const privateRow = rows.find(r => String(r[nameKey] || '').includes('สัดส่วนระบบรถส่วนบุคคล'));
+
+  return {
+    labels: years.map(y => y.replace(/^ปี\s*/, '')),
+    public: years.map(y => _toNumber(publicRow ? publicRow[y] : null)),
+    private: years.map(y => _toNumber(privateRow ? privateRow[y] : null)),
+  };
+}
+
 /**
  * แสดงสถานะ loading/error ใน container
  * @param {string} containerId
@@ -166,6 +230,8 @@ if (typeof module !== 'undefined' && module.exports) {
     loadAllData,
     processSpeedData,
     processSpeedDirectionData,
+    processRidershipSystemTrend,
+    processModalShareData,
     setDataState,
   };
 }

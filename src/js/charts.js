@@ -122,9 +122,9 @@ function renderAnnualTrendChart(canvasId) {
 }
 
 /* ── 2. สัดส่วน Modal Share (Stacked Area) ── */
-function renderModalShareChart(canvasId) {
+function renderModalShareChart(canvasId, modalData) {
   _destroyChart(canvasId);
-  const d = TRANSIT.modalShare;
+  const d = modalData || TRANSIT.modalShare;
   _charts[canvasId] = new Chart(document.getElementById(canvasId), {
     type: 'bar',
     data: {
@@ -163,6 +163,51 @@ function renderModalShareChart(canvasId) {
           stacked: true, max: 100,
           ticks: { callback: v => v + '%' },
           grid: { color: '#F0F4F8' },
+        },
+      },
+    },
+  });
+}
+
+/* ── 2.1 แนวโน้มผู้โดยสารรายระบบหลัก (Line) ── */
+function renderRidershipSystemTrendChart(canvasId, trendData) {
+  if (!trendData || !trendData.labels || !trendData.datasets) return;
+  _destroyChart(canvasId);
+  const palette = [COLORS.gold, COLORS.green, COLORS.blue, COLORS.teal, COLORS.purple];
+  _charts[canvasId] = new Chart(document.getElementById(canvasId), {
+    type: 'line',
+    data: {
+      labels: trendData.labels,
+      datasets: trendData.datasets.map((ds, idx) => ({
+        label: ds.label,
+        data: ds.data,
+        borderColor: palette[idx % palette.length],
+        backgroundColor: 'rgba(0,0,0,0)',
+        tension: 0.35,
+        pointRadius: 3,
+        pointHoverRadius: 4,
+        borderWidth: 2.25,
+      })),
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { position: 'top' },
+        tooltip: {
+          callbacks: {
+            label: ctx => ` ${ctx.dataset.label}: ${Number(ctx.parsed.y || 0).toLocaleString()} เที่ยวคน/ปี`,
+          },
+        },
+      },
+      scales: {
+        x: { grid: { color: '#F0F4F8' } },
+        y: {
+          grid: { color: '#F0F4F8' },
+          ticks: {
+            callback: v => `${Math.round(Number(v) / 1000000)} ล.`,
+          },
+          title: { display: true, text: 'เที่ยวคน/ปี', font: { size: 11 } },
         },
       },
     },
@@ -468,5 +513,11 @@ function renderAllCharts() {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { initChartDefaults, renderAllCharts, renderSpeedTrendChart };
+  module.exports = {
+    initChartDefaults,
+    renderAllCharts,
+    renderSpeedTrendChart,
+    renderModalShareChart,
+    renderRidershipSystemTrendChart,
+  };
 }

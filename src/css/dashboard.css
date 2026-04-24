@@ -176,6 +176,23 @@
   gap: 16px;
   margin-bottom: 16px;
 }
+.bma-share-year-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 12px;
+}
+.bma-share-year-tabs .bma-tab {
+  padding: 6px 10px;
+  border: 1px solid var(--bma-border);
+  background: var(--bma-white);
+  min-width: 62px;
+  text-align: center;
+}
+.bma-share-year-tabs .bma-tab:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
 .bma-share-card {
   position: relative;
   overflow: hidden;

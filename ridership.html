@@ -182,6 +182,8 @@
         <span class="bma-sec-meta">อ้างอิงแบบจำลอง BTDM สนข. ปี 2560–2568</span>
       </div>
 
+      <div id="modalShareYearButtons" class="bma-share-year-tabs" aria-label="เลือกปีข้อมูลสัดส่วน"></div>
+
       <div id="modalShareCards" class="bma-share-cards" aria-label="สรุปสัดส่วนการเดินทางล่าสุด"></div>
 
       <div class="bma-grid-6040">
@@ -276,6 +278,74 @@
     let monthlyRidership = null;
     let modalShareCurrent = TRANSIT.modalShare;
     let compareChartView = 'bar';
+    let selectedModalYear = '2568';
+
+    const SHARE_YEARS = ['2560', '2561', '2562', '2563', '2564', '2565', '2566', '2567', '2568'];
+
+    function _extractYearLabel(label) {
+      const m = String(label || '').match(/\d{4}/);
+      return m ? m[0] : String(label || '');
+    }
+
+    function normalizeModalShareData(data) {
+      const base = TRANSIT.modalShare || { labels: [], public: [], private: [] };
+      const src = data || { labels: [], public: [], private: [] };
+      const map = {};
+
+      base.labels.forEach((label, i) => {
+        const y = _extractYearLabel(label);
+        map[y] = {
+          public: Number(base.public?.[i]),
+          private: Number(base.private?.[i]),
+        };
+      });
+
+      src.labels.forEach((label, i) => {
+        const y = _extractYearLabel(label);
+        const p = Number(src.public?.[i]);
+        const pr = Number(src.private?.[i]);
+        map[y] = {
+          public: Number.isFinite(p) ? p : (map[y]?.public ?? null),
+          private: Number.isFinite(pr) ? pr : (map[y]?.private ?? null),
+        };
+      });
+
+      return {
+        labels: SHARE_YEARS,
+        public: SHARE_YEARS.map(y => (map[y] && Number.isFinite(map[y].public) ? map[y].public : null)),
+        private: SHARE_YEARS.map(y => (map[y] && Number.isFinite(map[y].private) ? map[y].private : null)),
+      };
+    }
+
+    function renderModalYearButtons(modalData) {
+      const el = document.getElementById('modalShareYearButtons');
+      if (!el || !modalData) return;
+
+      const hasYear = y => {
+        const idx = modalData.labels.findIndex(label => _extractYearLabel(label) === y);
+        if (idx < 0) return false;
+        return modalData.public[idx] != null && modalData.private[idx] != null;
+      };
+
+      if (!hasYear(selectedModalYear)) {
+        const fallback = SHARE_YEARS.slice().reverse().find(hasYear);
+        selectedModalYear = fallback || '2568';
+      }
+
+      el.innerHTML = SHARE_YEARS.map(y => {
+        const available = hasYear(y);
+        const active = y === selectedModalYear;
+        return `<button type="button" class="bma-tab${active ? ' active' : ''}" data-share-year="${y}"${available ? '' : ' disabled'}>${y}</button>`;
+      }).join('');
+
+      el.querySelectorAll('[data-share-year]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          selectedModalYear = btn.getAttribute('data-share-year');
+          renderModalYearButtons(modalData);
+          renderModalShareCards(modalData, selectedModalYear);
+        });
+      });
+    }
 
     function renderCompareChartView() {
       renderPublicPrivateCompareChart('publicPrivateCompareChart', modalShareCurrent, compareChartView);
@@ -328,13 +398,21 @@
       renderMonthlyRidershipChart('monthlyRidershipChart', monthlyRidership, system, year);
     }
 
-    function renderModalShareCards(modalData) {
+    function renderModalShareCards(modalData, year) {
       const el = document.getElementById('modalShareCards');
       if (!el || !modalData || !modalData.labels?.length) return;
 
-      const idx = modalData.labels.length - 1;
-      const prevIdx = Math.max(0, idx - 1);
-      const latestYear = modalData.labels[idx];
+      const wantedYear = String(year || selectedModalYear || '');
+      let idx = modalData.labels.findIndex(label => _extractYearLabel(label) === wantedYear);
+      if (idx < 0 || modalData.public[idx] == null || modalData.private[idx] == null) {
+        idx = modalData.labels.length - 1;
+      }
+      let prevIdx = Math.max(0, idx - 1);
+      while (prevIdx > 0 && (modalData.public[prevIdx] == null || modalData.private[prevIdx] == null)) {
+        prevIdx -= 1;
+      }
+
+      const latestYear = _extractYearLabel(modalData.labels[idx]);
       const publicVal = Number(modalData.public?.[idx] || 0);
       const privateVal = Number(modalData.private?.[idx] || 0);
       const publicPrev = Number(modalData.public?.[prevIdx] || 0);
@@ -400,7 +478,9 @@
       renderAnnualTrendChart('annualTrendChart');
       renderModalShareChart('modalShareChart');
       renderCompareChartView();
-      renderModalShareCards(modalShareCurrent);
+      modalShareCurrent = normalizeModalShareData(modalShareCurrent);
+      renderModalYearButtons(modalShareCurrent);
+      renderModalShareCards(modalShareCurrent, selectedModalYear);
       renderRadarChart('radarChart');
 
       const compareBarBtn = document.getElementById('compareBarBtn');
@@ -466,10 +546,11 @@
         const shareRows = await fetchCsv('./data/ridership/transport_share.csv');
         const modalData = processModalShareData(shareRows);
         if (modalData.labels.length > 0) {
-          modalShareCurrent = modalData;
-          renderModalShareChart('modalShareChart', modalData);
+          modalShareCurrent = normalizeModalShareData(modalData);
+          renderModalShareChart('modalShareChart', modalShareCurrent);
           renderCompareChartView();
-          renderModalShareCards(modalData);
+          renderModalYearButtons(modalShareCurrent);
+          renderModalShareCards(modalShareCurrent, selectedModalYear);
         }
       } catch (e) {
         console.warn('Modal share CSV unavailable:', e.message);

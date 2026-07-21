@@ -22,6 +22,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
       - name: Refresh CSV data files
         run: |
           set -euo pipefail
@@ -40,7 +45,7 @@ jobs:
           if git diff --quiet -- \
             data/ridership/transport_share.csv \
             data/ridership/transport_report.csv \
-            data/ridership/meta.json; then
+            data/ridership/transport_metadata.json; then
             echo "No data changes detected. Skipping commit."
             exit 0
           fi
@@ -51,7 +56,7 @@ jobs:
           git add \
             data/ridership/transport_share.csv \
             data/ridership/transport_report.csv \
-            data/ridership/meta.json
+            data/ridership/transport_metadata.json
 
           git commit -m "chore(data): weekly update transport CSV files"
           git pull --rebase origin "${GITHUB_REF_NAME}"

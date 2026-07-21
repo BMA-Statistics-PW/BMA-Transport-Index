@@ -88,13 +88,15 @@ function renderAnnualTrendChart(canvasId) {
           backgroundColor: ALPHA.gold,
           tension: 0.4, fill: true, pointRadius: 4, borderWidth: 2.5,
         },
-        {
+        /* เรือโดยสาร: transport_report.csv ยังไม่มีข้อมูลผู้โดยสารเรือรายปี
+           จะแสดงชุดข้อมูลนี้ก็ต่อเมื่อมีค่าใน TRANSIT.annualTotal.ferry */
+        ...(Array.isArray(d.ferry) ? [{
           label: 'เรือโดยสาร',
           data: d.ferry,
           borderColor: COLORS.teal,
           backgroundColor: ALPHA.teal,
           tension: 0.4, fill: true, pointRadius: 4, borderWidth: 2.5,
-        },
+        }] : []),
       ],
     },
     options: {
@@ -464,6 +466,13 @@ function renderZoneDirectionBarChart(canvasId, directionalData) {
 function renderRadarChart(canvasId) {
   _destroyChart(canvasId);
   const d = TRANSIT.performance;
+  /* ดัชนีประสิทธิภาพยังไม่ได้เผยแพร่อย่างเป็นทางการ — ซ่อนการ์ดแทนการแสดงค่าที่ไม่มีแหล่งอ้างอิง */
+  if (!d) {
+    const canvas = document.getElementById(canvasId);
+    const card = canvas && canvas.closest('.bma-card, .bma-chart-card, section');
+    if (card) card.style.display = 'none';
+    return;
+  }
   _charts[canvasId] = new Chart(document.getElementById(canvasId), {
     type: 'radar',
     data: {

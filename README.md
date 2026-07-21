@@ -28,7 +28,7 @@
 | ชุดข้อมูล | รายละเอียด | ช่วงเวลา |
 |---|---|---|
 | **Ridership** | ผู้โดยสารระบบขนส่งสาธารณะ 11 ระบบ | ปี 2556–2568 |
-| **Travel Speed** | ความเร็วเฉลี่ย 50 ถนน 3 โซน ช่วงเร่งด่วน | ปี 2560–2568 |
+| **Travel Speed** | ความเร็วเฉลี่ย 51 ช่วงถนน 3 โซน ช่วงเร่งด่วน | ปี 2560–2568 |
 
 ---
 
@@ -41,7 +41,7 @@
 - อัปเดตอัตโนมัติทุกวันจันทร์ผ่าน GitHub Actions
 
 ### Travel Speed
-- **BMA Field Survey** — สำรวจภาคสนาม 50 ถนนสายหลัก กรุงเทพมหานคร
+- **BMA Field Survey** — สำรวจภาคสนาม 51 ช่วงถนนสายหลัก กรุงเทพมหานคร (ปี 2568)
 - **TomTom Traffic Index 2025** (international benchmark reference): <https://www.tomtom.com/traffic-index/>
 
 ---
@@ -72,7 +72,6 @@ BMA_urban_transport_index/
 ├── src/
 │   ├── css/
 │   │   ├── bma-theme.css        # BMA Design System (CSS Custom Properties)
-│   │   ├── sidebar.css          # Sidebar component styles
 │   │   └── dashboard.css        # Dashboard-specific additions
 │   └── js/
 │       ├── transit-data.js      # Static TRANSIT data object
@@ -84,16 +83,24 @@ BMA_urban_transport_index/
 │   ├── catalog.json             # W3C DCAT data catalog
 │   ├── ridership/
 │   │   ├── transport_report.csv # Ridership by system 2556–2568
-│   │   ├── transport_share.csv  # Modal share 2560–2568
+│   │   ├── transport_share.csv  # Modal share 2560–2567
 │   │   ├── meta.json            # Human-readable metadata
 │   │   └── transport_metadata.json  # Auto-generated (CI/CD)
 │   └── travel-speed/
-│       ├── travel_speed.csv     # Speed data 2560–2568
-│       └── meta.json            # Column definitions & notes
+│       ├── travel_speed.csv     # Speed data 2560–2568 (derived — do not edit)
+│       ├── meta.json            # Column definitions & notes
+│       └── source/              # ไฟล์สำรวจต้นฉบับ (read-only)
+│           ├── road_speeds_2568.csv
+│           ├── road_traveltime_2568.csv
+│           └── zone_{urban,suburban,rural}_trend_2560-2568.csv
 │
 ├── scripts/
 │   ├── update_transport_csv.sh  # Download CSVs from Google Sheets
-│   └── sanity_check.mjs         # Validate CSV files (Node.js)
+│   └── sanity_check.mjs         # Validate CSV + transit-data.js (Node.js)
+│
+├── tools/                       # สคริปต์เตรียมข้อมูล (ไม่ใช่ส่วนของเว็บ)
+│   ├── build_travel_speed.py    # สร้าง travel_speed.csv จาก source/
+│   └── *.ps1, zone_trends_*.csv # สคริปต์/ผลลัพธ์ชั่วคราวจากการสกัดข้อมูล
 │
 ├── .github/
 │   └── workflows/
@@ -105,6 +112,40 @@ BMA_urban_transport_index/
 ├── LICENSE                      # CC BY 4.0
 └── CHANGELOG.md
 ```
+
+---
+
+## ความถูกต้องของข้อมูล (Data Integrity)
+
+ตัวเลขทุกค่าที่แสดงบน dashboard ต้องสืบกลับไปยังไฟล์ใน `data/` ได้เสมอ
+
+| ไฟล์ | สถานะ | วิธีแก้ไข |
+|---|---|---|
+| `data/ridership/transport_report.csv` | ต้นฉบับ | ดึงอัตโนมัติจาก Google Sheets |
+| `data/ridership/transport_share.csv` | ต้นฉบับ | ดึงอัตโนมัติจาก Google Sheets |
+| `data/travel-speed/source/*.csv` | ต้นฉบับ | แทนที่ด้วยไฟล์สำรวจใหม่ |
+| `data/travel-speed/travel_speed.csv` | **สร้างอัตโนมัติ** | `python tools/build_travel_speed.py` |
+| `src/js/transit-data.js` | ค่าสรุป | คำนวณจากไฟล์ข้างต้น — ห้ามแก้ตัวเลขด้วยมือ |
+
+ตรวจความสอดคล้องก่อน commit:
+
+```bash
+node scripts/sanity_check.mjs
+```
+
+### ข้อจำกัดของข้อมูลที่ทราบแล้ว (Known Gaps)
+
+- **เรือโดยสาร** — ยังไม่มีข้อมูลรายระบบใน `transport_report.csv`
+  มีเพียงยอดรวมเรือใน `transport_share.csv` ถึงปี 2567
+  KPI และกราฟที่เกี่ยวกับเรือจึงถูกถอดออกจนกว่าจะได้ข้อมูลจากกรมเจ้าท่า
+- **Modal Share** — มีถึงปี 2567 เท่านั้น ยังไม่เผยแพร่ปี 2568
+- **ความเร็วช่วงเย็น** — มีเฉพาะปี 2568 อนุกรม 2560–2567 มีเฉพาะช่วงเช้า
+- **ช่วงถนน** — ปี 2568 ปรับใหม่เหลือ 51 ช่วง (เดิม 55 ช่วง)
+  ถนนที่พาดผ่านหลายโซนถูกนับในทุกโซนที่พาดผ่าน
+- **BRT ปี 2567** — มีข้อมูลไม่เต็มปี ทำให้ %YoY ปี 2568 (+457%) ไม่สะท้อนการเติบโตจริง
+- **ดัชนีประสิทธิภาพระบบขนส่ง (radar)** — ยังไม่มีผลสำรวจรองรับ การ์ดจะถูกซ่อนอัตโนมัติ
+- **ผู้โดยสารรายเดือน** — `transport_monthly_systems.csv` ครอบคลุม 8 ระบบ
+  ไม่ครบเท่า `transport_report.csv` (11 ระบบ)
 
 ---
 

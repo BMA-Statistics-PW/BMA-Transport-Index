@@ -5,9 +5,13 @@ on:
     paths:
       - 'data/**'
       - 'scripts/**'
+      - 'src/js/transit-data.js'
   pull_request:
     paths:
       - 'data/**'
+      - 'scripts/**'
+      - 'src/js/transit-data.js'
+  workflow_dispatch:
 
 jobs:
   sanity-check:
@@ -40,7 +44,9 @@ jobs:
           for f in \
             data/ridership/transport_report.csv \
             data/ridership/transport_share.csv \
-            data/travel-speed/travel_speed.csv; do
+            data/travel-speed/travel_speed.csv \
+            data/travel-speed/source/road_speeds_2568.csv \
+            data/travel-speed/source/zone_urban_trend_2560-2568.csv; do
             if [ ! -s "$f" ]; then
               echo "FAIL: $f is missing or empty"
               exit 1

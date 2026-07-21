@@ -48,14 +48,22 @@ function readCsv(filePath) {
   return { headers, rows };
 }
 
-function extractYears(headers) {
+function extractYears(headers, skip = 1) {
   return headers
+    .slice(skip)
     .map(h => {
-      const m = String(h).match(/(25\d{2})/);
+      const m = String(h).trim().match(/(25\d{2})\s*$/);
       return m ? Number(m[1]) : NaN;
     })
     .filter(Number.isFinite)
     .sort((a, b) => a - b);
+}
+
+/* ปีที่ต้องมีครบในแต่ละชุดข้อมูล — กันกรณีคอลัมน์ถูกข้ามแบบเงียบ ๆ */
+function assertContiguousYears(years, from, to, label) {
+  for (let y = from; y <= to; y += 1) {
+    assert(years.includes(y), `${label}: ขาดคอลัมน์ปี ${y} (อาจเกิดจากหัวคอลัมน์ต้นทางมีข้อความปนมา)`);
+  }
 }
 
 const catalog = JSON.parse(fs.readFileSync(catalogPath, 'utf8'));
@@ -64,8 +72,11 @@ assert(Array.isArray(catalog.datasets) && catalog.datasets.length >= 2, 'catalog
 const share = readCsv(sharePath);
 const report = readCsv(reportPath);
 
-const shareYears = extractYears(share.headers);
-const reportYears = extractYears(report.headers);
+const shareYears = extractYears(share.headers, 1);
+const reportYears = extractYears(report.headers, 2);
+
+assertContiguousYears(shareYears, 2560, 2567, 'transport_share.csv');
+assertContiguousYears(reportYears, 2556, 2568, 'transport_report.csv');
 
 assert(shareYears[0] <= 2560, 'share dataset should include year 2560 or earlier');
 assert(shareYears[shareYears.length - 1] >= 2567, 'share dataset should include year 2567 or later');
@@ -95,5 +106,28 @@ const zones = [...new Set(speed.rows.map(r => r.zone))];
 assert(zones.includes('Inner'),  'travel_speed.csv must have Inner zone');
 assert(zones.includes('Middle'), 'travel_speed.csv must have Middle zone');
 assert(zones.includes('Outer'),  'travel_speed.csv must have Outer zone');
+
+/* travel_time_per10km ต้องสอดคล้องกับ speed_kmh เสมอ (600 / speed) */
+speed.rows.forEach(r => {
+  const kmh = Number.parseFloat(r.speed_kmh);
+  const min = Number.parseFloat(r.travel_time_per10km);
+  assert(Number.isFinite(kmh) && kmh > 0, `travel_speed.csv: speed_kmh ไม่ถูกต้อง (${r.year} ${r.zone} ${r.direction} ${r.peak})`);
+  assert(Math.abs(min - 600 / kmh) < 0.15,
+    `travel_speed.csv: travel_time_per10km ไม่ตรงกับ speed_kmh ที่ ${r.year} ${r.zone} ${r.direction} ${r.peak}`);
+});
+
+/* ทุกแถวต้องระบุไฟล์ต้นฉบับ — กันการเติมตัวเลขด้วยมือ */
+assert(speed.headers.includes('source'), 'travel_speed.csv must have "source" column');
+speed.rows.forEach(r => {
+  assert(String(r.source || '').trim() !== '',
+    `travel_speed.csv: ไม่ระบุ source ที่ ${r.year} ${r.zone} ${r.direction} ${r.peak}`);
+});
+
+/* transit-data.js ต้องไม่มีค่าที่ไม่มีแหล่งอ้างอิงหลงเหลือ */
+const transitJs = fs.readFileSync(path.join(root, 'src/js/transit-data.js'), 'utf8');
+assert(!/\bferry\s*:/.test(transitJs),
+  'transit-data.js: ยังมี KPI เรือโดยสาร แต่ไม่มีข้อมูลเรือใน data/ridership/');
+assert(!/\bperformance\s*:/.test(transitJs),
+  'transit-data.js: ยังมีดัชนีประสิทธิภาพที่ไม่มีไฟล์ต้นฉบับรองรับ');
 
 console.log('\u2705 All sanity checks passed.');

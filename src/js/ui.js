@@ -23,6 +23,7 @@ function setDateElements() {
 }
 
 /* ── KPI Strip render ── */
+/* คีย์ที่ไม่มีใน TRANSIT.kpi จะถูกข้ามอัตโนมัติ (เช่น ferry ที่ยังไม่มีข้อมูลต้นฉบับ) */
 const KPI_ORDER = [
   { key: 'rail',  icon: '🚇', color: 'bma-kc-blue'  },
   { key: 'bus',   icon: '🚌', color: 'bma-kc-gold'  },
@@ -35,7 +36,7 @@ function renderKpiStrip(containerId) {
   const el = document.getElementById(containerId);
   if (!el || !TRANSIT.kpi) return;
 
-  el.innerHTML = KPI_ORDER.map(cfg => {
+  el.innerHTML = KPI_ORDER.filter(cfg => TRANSIT.kpi[cfg.key]).map(cfg => {
     const k = TRANSIT.kpi[cfg.key];
     const chgClass = k.trend === 'up' ? 'bma-up' : k.trend === 'down' ? 'bma-down' : 'bma-flat';
     const chgText  = k.trend === 'up'   ? `▲ ${k.change}%`
@@ -68,7 +69,7 @@ function renderSystemTable(tbodyId) {
         <td>${s.agency}</td>
         <td class="num">${s.daily.toLocaleString()}</td>
         <td class="num" style="color:${chgColor}">${chgSign}${s.change}%</td>
-        <td class="num">${typeof s.ytd === 'number' ? s.ytd.toFixed(1) : s.ytd}</td>
+        <td class="num">${typeof s.annual === 'number' ? s.annual.toFixed(1) : (s.annual ?? '—')}</td>
         <td><span class="bma-badge ${lClass}">${lText}</span></td>
       </tr>`;
   }).join('');

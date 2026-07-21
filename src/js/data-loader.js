@@ -177,8 +177,37 @@ function _toNumber(value) {
   return Number.isFinite(n) ? n : null;
 }
 
-function _getYearHeaders(row) {
-  return Object.keys(row).filter(k => /^ปี\s*\d{4}$/.test(String(k).trim()));
+/**
+ * ดึงชื่อคอลัมน์ที่เป็น "ปี พ.ศ." ออกจากแถวข้อมูล
+ *
+ * เดิมใช้ /^ปี\s*\d{4}$/ ซึ่งเป็นการจับแบบตรงตัวทั้งสตริง ทำให้คอลัมน์ที่ต้นทาง
+ * Google Sheets ใส่ข้อความหน่วยปนมา เช่น "หน่วย: ล้านคน-เที่ยวต่อปี ปี 2566"
+ * ไม่ถูกนับเป็นปี → ข้อมูลปี 2566 หายจากกราฟ Modal Share โดยไม่มี error
+ *
+ * ปรับใหม่: จับ "ปี พ.ศ." ที่ท้ายชื่อคอลัมน์ และข้ามคอลัมน์ชื่อรายการ (skip)
+ * ซึ่งอาจมีเลขปีอยู่ในหัวเรื่อง เช่น "สัดส่วน... ปี 2560 - ปี 2567"
+ *
+ * @param {Object} row     แถวข้อมูลหนึ่งแถว
+ * @param {number} [skip]  จำนวนคอลัมน์แรกที่เป็นคอลัมน์ชื่อรายการ
+ * @returns {string[]}     ชื่อคอลัมน์ปี เรียงตามปีจากน้อยไปมาก
+ */
+function _getYearHeaders(row, skip = 1) {
+  return Object.keys(row)
+    .slice(skip)
+    .filter(k => /ปี\s*\d{4}\s*$/.test(String(k).trim()))
+    .sort((a, b) => _yearOf(a) - _yearOf(b));
+}
+
+/** ดึงเลขปี พ.ศ. ตัวสุดท้ายจากชื่อคอลัมน์ */
+function _yearOf(header) {
+  const m = String(header).trim().match(/(\d{4})\s*$/);
+  return m ? Number(m[1]) : NaN;
+}
+
+/** ตัดข้อความอื่นออก เหลือเฉพาะเลขปีสำหรับใช้เป็น label */
+function _yearLabel(header) {
+  const y = _yearOf(header);
+  return Number.isFinite(y) ? String(y) : String(header);
 }
 
 /**
@@ -188,8 +217,9 @@ function _getYearHeaders(row) {
  */
 function processRidershipSystemTrend(rows) {
   if (!rows || rows.length === 0) return { labels: [], datasets: [] };
-  const firstDataRow = rows.find(r => _getYearHeaders(r).length > 0) || rows[0];
-  const years = _getYearHeaders(firstDataRow).sort((a, b) => Number(a.replace(/\D/g, '')) - Number(b.replace(/\D/g, '')));
+  /* transport_report.csv: คอลัมน์ 0 ว่าง, คอลัมน์ 1 คือชื่อระบบขนส่ง */
+  const firstDataRow = rows.find(r => _getYearHeaders(r, 2).length > 0) || rows[0];
+  const years = _getYearHeaders(firstDataRow, 2);
   const nameKey = Object.keys(firstDataRow)[1] || Object.keys(firstDataRow)[0];
 
   const pickRow = (matcher) => rows.find(r => matcher(String(r[nameKey] || '')));
@@ -205,7 +235,7 @@ function processRidershipSystemTrend(rows) {
   const mrtPurpleRow = pickRow(name => name.includes('MRT สายสีม่วง'));
 
   return {
-    labels: years.map(y => y.replace(/^ปี\s*/, '')),
+    labels: years.map(_yearLabel),
     datasets: [
       { label: 'รถประจำทาง (ขสมก.)', data: buildSeries(busRow) },
       { label: 'BTS สายสีเขียว', data: buildSeries(btsGreenRow) },
@@ -258,15 +288,16 @@ function processMonthlyRidershipData(rows) {
  */
 function processModalShareData(rows) {
   if (!rows || rows.length === 0) return { labels: [], public: [], private: [] };
-  const firstDataRow = rows.find(r => _getYearHeaders(r).length > 0) || rows[0];
-  const years = _getYearHeaders(firstDataRow).sort((a, b) => Number(a.replace(/\D/g, '')) - Number(b.replace(/\D/g, '')));
+  /* transport_share.csv: คอลัมน์ 0 คือชื่อรายการ (มีเลขปีในหัวเรื่อง จึงต้อง skip) */
+  const firstDataRow = rows.find(r => _getYearHeaders(r, 1).length > 0) || rows[0];
+  const years = _getYearHeaders(firstDataRow, 1);
   const nameKey = Object.keys(firstDataRow)[0];
 
   const publicRow = rows.find(r => String(r[nameKey] || '').includes('สัดส่วนสาธารณะ'));
   const privateRow = rows.find(r => String(r[nameKey] || '').includes('สัดส่วนระบบรถส่วนบุคคล'));
 
   return {
-    labels: years.map(y => y.replace(/^ปี\s*/, '')),
+    labels: years.map(_yearLabel),
     public: years.map(y => _toNumber(publicRow ? publicRow[y] : null)),
     private: years.map(y => _toNumber(privateRow ? privateRow[y] : null)),
   };

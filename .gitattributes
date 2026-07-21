@@ -1,0 +1,26 @@
+# ── Normalise line endings ────────────────────────────────────────────
+# ป้องกันปัญหา CRLF/LF ที่ทำให้ทุกไฟล์ขึ้นเป็น "modified" เมื่อทำงานบน Windows
+* text=auto eol=lf
+
+*.sh   text eol=lf
+*.mjs  text eol=lf
+*.js   text eol=lf
+*.css  text eol=lf
+*.html text eol=lf
+*.json text eol=lf
+*.md   text eol=lf
+*.yml  text eol=lf
+*.csv  text eol=lf
+*.ps1  text eol=crlf
+
+# ── Binary ────────────────────────────────────────────────────────────
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.pdf  binary
+*.xlsx binary
+*.zip  binary
+
+# ── Linguist ──────────────────────────────────────────────────────────
+data/**   linguist-generated=true

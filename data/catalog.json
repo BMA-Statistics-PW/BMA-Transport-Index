@@ -4,15 +4,18 @@
   "title": "BMA Urban Transport Index — Data Catalog",
   "description": "ชุดข้อมูลด้านการขนส่งสาธารณะกรุงเทพมหานคร รวบรวมโดยกลุ่มงานสถิติและวิจัย กองนโยบายและแผนงาน สำนักการจราจรและขนส่ง กทม.",
   "publisher": "สำนักการจราจรและขนส่ง กรุงเทพมหานคร (สจส.)",
-  "language": ["th", "en"],
+  "language": [
+    "th",
+    "en"
+  ],
   "license": "https://creativecommons.org/licenses/by/4.0/",
-  "modified": "2026-04-24",
+  "modified": "2026-07-21",
   "datasets": [
     {
       "id": "bma-ridership",
       "title": "ผู้โดยสารระบบขนส่งสาธารณะกรุงเทพมหานคร",
       "titleEn": "Bangkok Public Transport Ridership",
-      "description": "จำนวนผู้โดยสารแต่ละระบบขนส่งสาธารณะในกรุงเทพมหานคร แยกรายสาย รายปี พ.ศ. 2556–2568",
+      "description": "จำนวนผู้โดยสารแต่ละระบบขนส่งสาธารณะในกรุงเทพมหานคร แยกรายระบบ รายปี พ.ศ. 2556–2568 (11 ระบบ ไม่รวมเรือโดยสาร)",
       "period": {
         "start": "2013",
         "end": "2025",
@@ -47,14 +50,16 @@
       "notes": [
         "ขสมก. ใช้ปีงบประมาณ (ต.ค.–ก.ย.) ขณะที่ระบบรางใช้ปีปฏิทิน (ม.ค.–ธ.ค.)",
         "ปี 2563–2564 ได้รับผลกระทบจาก COVID-19",
-        "BRT ปี 2567 ไม่มีข้อมูลเนื่องจากอยู่ระหว่างปรับเปลี่ยนระบบ"
+        "BRT ปี 2567 มีข้อมูลเพียง 476,934 เที่ยวคน เนื่องจากอยู่ระหว่างปรับเปลี่ยนระบบ ทำให้ %YoY ปี 2568 สูงผิดปกติ",
+        "transport_report.csv ยังไม่มีข้อมูลผู้โดยสารเรือรายระบบ — มีเฉพาะยอดรวมเรือใน transport_share.csv ถึงปี 2567",
+        "transport_share.csv มีข้อมูลถึงปี 2567 เท่านั้น (ยังไม่เผยแพร่ปี 2568)"
       ]
     },
     {
       "id": "bma-travel-speed",
       "title": "ความเร็วเฉลี่ยบนถนนสายหลักกรุงเทพมหานคร",
       "titleEn": "Bangkok Road Travel Speed Survey",
-      "description": "ความเร็วเฉลี่ยและเวลาเดินทางบนถนนสายหลัก 50 สายใน 3 โซน ช่วงชั่วโมงเร่งด่วน ปี พ.ศ. 2560–2568",
+      "description": "ความเร็วเฉลี่ยและเวลาเดินทางบนถนนสายหลัก 3 โซน ช่วงชั่วโมงเร่งด่วน ปี พ.ศ. 2560–2568",
       "period": {
         "start": "2017",
         "end": "2025",
@@ -66,7 +71,38 @@
         {
           "name": "travel_speed.csv",
           "path": "data/travel-speed/travel_speed.csv",
-          "description": "ความเร็วเฉลี่ยแยกตามโซนและช่วงเวลา"
+          "description": "ชุดข้อมูลพร้อมใช้ (tidy) ความเร็วเฉลี่ยรายปี แยกโซน/ทิศทาง/ช่วงเวลา — สร้างอัตโนมัติจากไฟล์ใน source/ ด้วย tools/build_travel_speed.py",
+          "role": "derived"
+        },
+        {
+          "name": "road_speeds_2568.csv",
+          "path": "data/travel-speed/source/road_speeds_2568.csv",
+          "description": "ต้นฉบับ: ความเร็วเฉลี่ยรายถนน 51 ช่วง ปี 2568 (เช้า/เย็น × ขาเข้า/ขาออก)",
+          "role": "source"
+        },
+        {
+          "name": "road_traveltime_2568.csv",
+          "path": "data/travel-speed/source/road_traveltime_2568.csv",
+          "description": "ต้นฉบับ: เวลาเดินทางรายถนน ปี 2568",
+          "role": "source"
+        },
+        {
+          "name": "zone_urban_trend_2560-2568.csv",
+          "path": "data/travel-speed/source/zone_urban_trend_2560-2568.csv",
+          "description": "ต้นฉบับ: อนุกรมความเร็วพื้นที่ชั้นใน 28 ช่วงถนน ปี 2560–2568 (ช่วงเช้า)",
+          "role": "source"
+        },
+        {
+          "name": "zone_suburban_trend_2560-2568.csv",
+          "path": "data/travel-speed/source/zone_suburban_trend_2560-2568.csv",
+          "description": "ต้นฉบับ: อนุกรมความเร็วพื้นที่ชั้นกลาง 20 ช่วงถนน ปี 2560–2568 (ช่วงเช้า)",
+          "role": "source"
+        },
+        {
+          "name": "zone_rural_trend_2560-2568.csv",
+          "path": "data/travel-speed/source/zone_rural_trend_2560-2568.csv",
+          "description": "ต้นฉบับ: อนุกรมความเร็วพื้นที่ชั้นนอก 7 ช่วงถนน ปี 2560–2568 (ช่วงเช้า)",
+          "role": "source"
         }
       ],
       "sources": [
@@ -74,8 +110,13 @@
         "TomTom Traffic Index 2025 (เพื่อเปรียบเทียบระดับสากล)"
       ],
       "coverage": {
-        "roads": 50,
-        "zones": ["Inner (28 roads)", "Middle (20 roads)", "Outer (7 roads)"],
+        "roadSegments2568": 51,
+        "roadSegmentsHistorical": 55,
+        "zones": [
+          "Inner (28 ช่วงถนน)",
+          "Middle (20 ช่วงถนน)",
+          "Outer (7 ช่วงถนน)"
+        ],
         "peakHours": {
           "morning": "07:00–09:00",
           "evening": "16:00–18:00"
@@ -83,7 +124,11 @@
       },
       "notes": [
         "ข้อมูลเก็บจากการสำรวจภาคสนาม ไม่ใช่ GPS probe data",
-        "TomTom ใช้เพื่อ international benchmark เท่านั้น ไม่สามารถเปรียบเทียบโดยตรง"
+        "ปี 2568 มีการปรับปรุงช่วงถนนและระยะทางใหม่ เหลือ 51 ช่วง (เดิม 55 ช่วง) ถนนที่พาดผ่านหลายโซนถูกนับในทุกโซนที่พาดผ่าน",
+        "อนุกรมย้อนหลัง 2560–2567 มีเฉพาะช่วงเร่งด่วนเช้า — ข้อมูลช่วงเย็นมีเฉพาะปี 2568",
+        "ปี 2563–2564 ได้รับผลกระทบจาก COVID-19 ความเร็วสูงกว่าปกติ",
+        "TomTom ใช้เพื่อ international benchmark เท่านั้น ไม่สามารถเปรียบเทียบโดยตรง",
+        "ถนนสามเสนอยู่ระหว่างการก่อสร้างรถไฟฟ้า"
       ]
     }
   ]

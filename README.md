@@ -3,7 +3,6 @@
 **ดัชนีระบบขนส่งสาธารณะและการจราจร กรุงเทพมหานคร**
 
 [![Deploy to GitHub Pages](https://github.com/bma-statistics-pw/BMA-Transport-Index/actions/workflows/deploy.yml/badge.svg)](https://github.com/bma-statistics-pw/BMA-Transport-Index/actions/workflows/deploy.yml)
-[![Update Transport Data](https://github.com/bma-statistics-pw/BMA-Transport-Index/actions/workflows/update-data.yml/badge.svg)](https://github.com/bma-statistics-pw/BMA-Transport-Index/actions/workflows/update-data.yml)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
 ---
@@ -38,7 +37,7 @@
 - **Google Sheets (รายงาน)**: [`1OV02tcFrMC6_gNKoHrb3K8mheRallx0cwYsFjZFqNb4`](https://docs.google.com/spreadsheets/d/1OV02tcFrMC6_gNKoHrb3K8mheRallx0cwYsFjZFqNb4)  
   Sheet: `Report`
 - **Google Sheets (Modal Share)**: [`1fOIvRw9bxC1DOWCnTN8hVW2Z8L4n6ICgzD_WxgIDYt0`](https://docs.google.com/spreadsheets/d/1fOIvRw9bxC1DOWCnTN8hVW2Z8L4n6ICgzD_WxgIDYt0)
-- อัปเดตอัตโนมัติทุกวันจันทร์ผ่าน GitHub Actions
+- อัปเดตด้วยตนเอง: รัน `scripts/update_transport_csv.sh` แล้ว commit (ดู [การอัปเดตข้อมูล](#การอัปเดตข้อมูล-manual))
 
 ### Travel Speed
 - **BMA Field Survey** — สำรวจภาคสนาม 51 ช่วงถนนสายหลัก กรุงเทพมหานคร (ปี 2568)
@@ -105,7 +104,6 @@ BMA_urban_transport_index/
 ├── .github/
 │   └── workflows/
 │       ├── deploy.yml           # GitHub Pages auto-deploy
-│       ├── update-data.yml      # Weekly Monday data refresh
 │       └── sanity-check.yml     # Triggered on data/ changes
 │
 ├── README.md
@@ -151,7 +149,7 @@ node scripts/sanity_check.mjs
 
 ## การนำไปใช้งาน (Getting Started)
 
-### ดูในเครื่อง (Local)
+### <a id="การอัปเดตข้อมูล-manual"></a>ดูในเครื่อง (Local)
 
 เนื่องจาก `fetch()` ใช้ CORS policy จำเป็นต้องรันผ่าน local HTTP server:
 
@@ -175,8 +173,17 @@ npx serve .
 
 ### อัปเดตข้อมูล
 
-ข้อมูลจะอัปเดตอัตโนมัติทุกวันจันทร์เวลา 08:00 น. (ICT) ผ่าน GitHub Actions  
-สามารถ trigger manual ได้ที่ Actions → **Update Transport Data** → Run workflow
+ข้อมูลผู้โดยสารอัปเดตด้วยตนเอง (ไม่มี scheduled workflow เพื่อเลี่ยงการใช้โควตา
+GitHub Actions โดยไม่จำเป็น):
+
+```bash
+bash scripts/update_transport_csv.sh   # ดึง CSV ล่าสุดจาก Google Sheets
+node scripts/sanity_check.mjs          # ตรวจความถูกต้อง
+git add data/ && git commit -m "chore(data): update transport CSV" && git push
+```
+
+> workflow `sanity-check.yml` และ `deploy.yml` ยังทำงานอัตโนมัติเมื่อมี push
+> (ฟรีสำหรับ public repository)
 
 ---
 

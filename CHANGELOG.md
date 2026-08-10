@@ -45,6 +45,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   อ้างถึง `data/transit.json` ที่ไม่มีอยู่ และไม่ถูก include จากหน้าใด
 
 ### Removed
+- `.github/workflows/update-data.yml` — scheduled (cron) workflow รายสัปดาห์
+  เปลี่ยนการอัปเดตข้อมูลผู้โดยสารเป็นแบบ manual (รัน `scripts/update_transport_csv.sh` เอง)
+  เพื่อเลี่ยงการใช้โควตา GitHub Actions โดยไม่จำเป็น — `deploy.yml` และ
+  `sanity-check.yml` ยังทำงานอัตโนมัติเมื่อมี push (ฟรีสำหรับ public repo)
 - KPI และกราฟผู้โดยสารเรือ — ไม่มีข้อมูลเรือใน `data/ridership/` เลย
   (มีเพียงยอดรวมใน `transport_share.csv` ถึงปี 2567)
 - `TRANSIT.performance` (radar "ดัชนีประสิทธิภาพระบบขนส่ง") — ไม่มีผลสำรวจรองรับ
